@@ -1,0 +1,9 @@
+..\output\lcdconf_lin_template.o: ..\STemWinLibrary522\Config\LCDConf_Lin_Template.c
+..\output\lcdconf_lin_template.o: ..\STemWinLibrary522\inc\GUI.h
+..\output\lcdconf_lin_template.o: ..\STemWinLibrary522\inc\GUI_ConfDefaults.h
+..\output\lcdconf_lin_template.o: ..\STemWinLibrary522\Config\GUIConf.h
+..\output\lcdconf_lin_template.o: ..\STemWinLibrary522\inc\GUI_Type.h
+..\output\lcdconf_lin_template.o: ..\STemWinLibrary522\inc\LCD.h
+..\output\lcdconf_lin_template.o: ..\STemWinLibrary522\inc\Global.h
+..\output\lcdconf_lin_template.o: ..\STemWinLibrary522\inc\GUI_Version.h
+..\output\lcdconf_lin_template.o: ..\STemWinLibrary522\inc\GUIDRV_Lin.h
