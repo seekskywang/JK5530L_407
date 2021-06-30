@@ -35890,6 +35890,10 @@ N						mainswitch = 0;
 N						sendwait = 3;
 N//						Off_GPOI_ResetSet();
 N						Para.CSET_Current_Laod =  Para.IR_Start_C;
+N						LOAD_MODE = 0;
+X						Run_Control[6] = 0;
+N						GPIO_ResetBits(GPIOC,GPIO_Pin_12);//CCģʽ
+X						GPIO_ResetBits(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x00020000) + 0x0800)),((uint16_t)0x1000));
 N						finishflag = 1;
 N						mainswitch = 0;
 N						if(Para.ACT_DELAY != 0)
@@ -36112,14 +36116,14 @@ N				shutcount3++;
 N				if(shutcount3 >= 500)
 N				{
 N					Off_GPOI_ResetSet();
-N					shutcount1 = 0;
-N					shutcount2 = 0;
+N//					shutcount1 = 0;
+N//					shutcount2 = 0;
 N					shutcount3 = 0;
 N					mainswitch = 0;
 N				}
 N			}else{
-N				shutcount1 = 0;
-N				shutcount2 = 0;
+N//				shutcount1 = 0;
+N//				shutcount2 = 0;
 N				shutcount3 = 0;
 N			}
 N			if(DISS_Current > 60 && DISS_Current < 100)
@@ -36132,9 +36136,6 @@ N					mainswitch = 0;
 N					shutcount1 = 0;
 N				}
 N			}else{
-N				shutcount1 = 0;
-N				shutcount2 = 0;
-N				shutcount3 = 0;
 N				shutcount4 = 0;
 N			}
 N		}else{
@@ -36144,29 +36145,29 @@ N				shutcount3++;
 N				if(shutcount3 >= 500)
 N				{
 N					Off_GPOI_ResetSet();
-N					shutcount1 = 0;
-N					shutcount2 = 0;
+N//					shutcount1 = 0;
+N//					shutcount2 = 0;
 N					shutcount3 = 0;
 N					mainswitch = 0;
 N				}
 N			}else{
-N				shutcount1 = 0;
-N				shutcount2 = 0;
+N//				shutcount1 = 0;
+N//				shutcount2 = 0;
 N				shutcount3 = 0;
 N			}
 N			if(DISS_Current > 60 && DISS_Current < 160)
 N			{
-N				shutcount1 ++;
-N				if(shutcount1 >= 2000)
+N				shutcount4 ++;
+N				if(shutcount4 >= 2000)
 N				{
 N					Off_GPOI_ResetSet();
 N					mainswitch = 0;
-N					shutcount1 = 0;
+N					shutcount4 = 0;
 N				}
 N			}else{
-N				shutcount1 = 0;
-N				shutcount2 = 0;
-N				shutcount3 = 0;
+N				shutcount4 = 0;
+N//				shutcount2 = 0;
+N//				shutcount3 = 0;
 N			}
 N		}
 N//		else if((PPower > 100 && PPower < 200) || (LPower > 100 && LPower < 200)){

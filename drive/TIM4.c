@@ -466,6 +466,8 @@ void TIM3_IRQHandler(void){
 						sendwait = 3;
 //						Off_GPOI_ResetSet();
 						Para.CSET_Current_Laod =  Para.IR_Start_C;
+						LOAD_MODE = 0;
+						GPIO_ResetBits(GPIOC,GPIO_Pin_12);//CCģʽ
 						finishflag = 1;
 						mainswitch = 0;
 						if(Para.ACT_DELAY != 0)
@@ -682,14 +684,14 @@ void TIM3_IRQHandler(void){
 				if(shutcount3 >= 500)
 				{
 					Off_GPOI_ResetSet();
-					shutcount1 = 0;
-					shutcount2 = 0;
+//					shutcount1 = 0;
+//					shutcount2 = 0;
 					shutcount3 = 0;
 					mainswitch = 0;
 				}
 			}else{
-				shutcount1 = 0;
-				shutcount2 = 0;
+//				shutcount1 = 0;
+//				shutcount2 = 0;
 				shutcount3 = 0;
 			}
 			if(DISS_Current > 60 && DISS_Current < 100)
@@ -702,9 +704,6 @@ void TIM3_IRQHandler(void){
 					shutcount1 = 0;
 				}
 			}else{
-				shutcount1 = 0;
-				shutcount2 = 0;
-				shutcount3 = 0;
 				shutcount4 = 0;
 			}
 		}else{
@@ -714,29 +713,29 @@ void TIM3_IRQHandler(void){
 				if(shutcount3 >= 500)
 				{
 					Off_GPOI_ResetSet();
-					shutcount1 = 0;
-					shutcount2 = 0;
+//					shutcount1 = 0;
+//					shutcount2 = 0;
 					shutcount3 = 0;
 					mainswitch = 0;
 				}
 			}else{
-				shutcount1 = 0;
-				shutcount2 = 0;
+//				shutcount1 = 0;
+//				shutcount2 = 0;
 				shutcount3 = 0;
 			}
 			if(DISS_Current > 60 && DISS_Current < 160)
 			{
-				shutcount1 ++;
-				if(shutcount1 >= 2000)
+				shutcount4 ++;
+				if(shutcount4 >= 2000)
 				{
 					Off_GPOI_ResetSet();
 					mainswitch = 0;
-					shutcount1 = 0;
+					shutcount4 = 0;
 				}
 			}else{
-				shutcount1 = 0;
-				shutcount2 = 0;
-				shutcount3 = 0;
+				shutcount4 = 0;
+//				shutcount2 = 0;
+//				shutcount3 = 0;
 			}
 		}
 //		else if((PPower > 100 && PPower < 200) || (LPower > 100 && LPower < 200)){

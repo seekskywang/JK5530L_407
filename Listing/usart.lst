@@ -37560,6 +37560,11 @@ N	switch(MODE)
 N	{
 N		case 0://电子负载
 N		{
+N//			OnOff_GPOI_ResetSet( 2, 0 );
+N			mainswitch = 0;
+N			sendwait = 3;
+N			LOAD_MODE = Para.CLOAD_MODE;
+X			Run_Control[6] = Para.CLOAD_MODE;
 N			Para.CSET_Current_Laod = Para.LOAD_C;
 N			Para.CSET_Voltage_Laod = Para.LOAD_V;
 N			if(Para.CSET_Current_Laod > 20000)
@@ -37573,6 +37578,8 @@ N			}
 N		}break;
 N		case 1://稳压电源
 N		{
+N//			OnOff_GPOI_ResetSet( 2, 0 );
+N			mainswitch = 0;
 N//			if(USART3_Recive_flg == 1)
 N//			{
 N				sendwait = 1;
@@ -37586,6 +37593,10 @@ N//			SetPowerC(Para.POWER_Limit_C);
 N		}break;
 N		case 2://过流测试
 N		{
+N//			OnOff_GPOI_ResetSet( 2, 0 );
+N			mainswitch = 0;
+N			sendwait = 3;
+N			
 N			LOAD_MODE = 0;
 X			Run_Control[6] = 0;
 N			LOAD_I_SW = 1;
@@ -37595,8 +37606,14 @@ N			Para.CSET_Current_Laod = Para.IR_Start_C;
 N		}break;
 N		case 3://列表
 N		{
+N//			OnOff_GPOI_ResetSet( 2, 0 );
+N			mainswitch = 0;
+N			sendwait = 3;
+N			
 N			LOAD_MODE = 0;
 X			Run_Control[6] = 0;
+N			GPIO_ResetBits(GPIOC,GPIO_Pin_12);//CC模式
+X			GPIO_ResetBits(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x00020000) + 0x0800)),((uint16_t)0x1000));
 N			LOAD_I_SW = 1;
 X			Run_Control[8] = 1;
 N//			Para.CSET_Current = 1000;
@@ -38249,6 +38266,7 @@ N//					{
 N//						return SetErr_ACK(buf, addr ,PARA_ERR);
 N//					}
 N					MODE=temp1;
+N					Off_GPOI_ResetSet();
 N					MODE_PARASET(MODE);
 N	//				Change_LM_Val(LM_S_Vale);
 N					buf[currCharNum++] = ChrEndR;
@@ -38482,8 +38500,7 @@ N						}
 N					}	
 N					if(MODE == 0)
 N					{
-N						LOAD_MODE = temp1;//负载模式
-X						Run_Control[6] = temp1;
+N						Para.CLOAD_MODE = temp1;//负载模式
 N					}
 N					temp1 = 0;
 N//					MODE_PARASET(MODE);

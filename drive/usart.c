@@ -441,6 +441,10 @@ void MODE_PARASET(vu8 value)
 	{
 		case 0://电子负载
 		{
+//			OnOff_GPOI_ResetSet( 2, 0 );
+			mainswitch = 0;
+			sendwait = 3;
+			LOAD_MODE = Para.CLOAD_MODE;
 			Para.CSET_Current_Laod = Para.LOAD_C;
 			Para.CSET_Voltage_Laod = Para.LOAD_V;
 			if(Para.CSET_Current_Laod > 20000)
@@ -452,6 +456,8 @@ void MODE_PARASET(vu8 value)
 		}break;
 		case 1://稳压电源
 		{
+//			OnOff_GPOI_ResetSet( 2, 0 );
+			mainswitch = 0;
 //			if(USART3_Recive_flg == 1)
 //			{
 				sendwait = 1;
@@ -465,6 +471,10 @@ void MODE_PARASET(vu8 value)
 		}break;
 		case 2://过流测试
 		{
+//			OnOff_GPOI_ResetSet( 2, 0 );
+			mainswitch = 0;
+			sendwait = 3;
+			
 			LOAD_MODE = 0;
 			LOAD_I_SW = 1;
 			Para.CSET_Current = 1000;
@@ -472,7 +482,12 @@ void MODE_PARASET(vu8 value)
 		}break;
 		case 3://列表
 		{
+//			OnOff_GPOI_ResetSet( 2, 0 );
+			mainswitch = 0;
+			sendwait = 3;
+			
 			LOAD_MODE = 0;
+			GPIO_ResetBits(GPIOC,GPIO_Pin_12);//CC模式
 			LOAD_I_SW = 1;
 //			Para.CSET_Current = 1000;
 		}break;
@@ -1075,6 +1090,7 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 //						return SetErr_ACK(buf, addr ,PARA_ERR);
 //					}
 					MODE=temp1;
+					Off_GPOI_ResetSet();
 					MODE_PARASET(MODE);
 	//				Change_LM_Val(LM_S_Vale);
 					buf[currCharNum++] = ChrEndR;
@@ -1303,7 +1319,7 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 					}	
 					if(MODE == 0)
 					{
-						LOAD_MODE = temp1;//负载模式
+						Para.CLOAD_MODE = temp1;//负载模式
 					}
 					temp1 = 0;
 //					MODE_PARASET(MODE);
