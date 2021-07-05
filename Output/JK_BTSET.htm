@@ -3,7 +3,7 @@
 <title>Static Call Graph - [..\Output\JK_BTSET.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image ..\Output\JK_BTSET.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Wed Jun 30 14:32:25 2021
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Mon Jul 05 14:49:20 2021
 <BR><P>
 <H3>Maximum Stack Usage =        408 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1367,8 +1367,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SerialRemoteHandleL
 </UL>
 
-<P><STRONG><a name="[e6]"></a>LIST_ONOFF</STRONG> (Thumb, 332 bytes, Stack size 40 bytes, usart.o(i.LIST_ONOFF))
-<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = LIST_ONOFF &rArr; Off_GPOI_ResetSet &rArr; OnOff_GPOI_ResetSet
+<P><STRONG><a name="[e6]"></a>LIST_ONOFF</STRONG> (Thumb, 378 bytes, Stack size 48 bytes, usart.o(i.LIST_ONOFF))
+<BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = LIST_ONOFF &rArr; Off_GPOI_ResetSet &rArr; OnOff_GPOI_ResetSet
 </UL>
 <BR>[Calls]<UL><LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
 <LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ResetBits
@@ -1399,7 +1399,7 @@ Global Symbols
 <LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SerialRemoteHandleL
 </UL>
 
-<P><STRONG><a name="[e9]"></a>MODE_PARASET</STRONG> (Thumb, 108 bytes, Stack size 16 bytes, usart.o(i.MODE_PARASET))
+<P><STRONG><a name="[e9]"></a>MODE_PARASET</STRONG> (Thumb, 92 bytes, Stack size 16 bytes, usart.o(i.MODE_PARASET))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = MODE_PARASET
 </UL>
 <BR>[Calls]<UL><LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ResetBits
@@ -1487,7 +1487,8 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
 <LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ResetBits
 </UL>
-<BR>[Called By]<UL><LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Off_GPOI_ResetSet
+<BR>[Called By]<UL><LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SerialRemoteHandleL
+<LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Off_GPOI_ResetSet
 <LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalHandle
 <LI><a href="#[2a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM3_IRQHandler
 </UL>
@@ -1753,7 +1754,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[2a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM3_IRQHandler
 </UL>
 
-<P><STRONG><a name="[119]"></a>SerialRemoteHandleL</STRONG> (Thumb, 3354 bytes, Stack size 248 bytes, usart.o(i.SerialRemoteHandleL))
+<P><STRONG><a name="[119]"></a>SerialRemoteHandleL</STRONG> (Thumb, 3342 bytes, Stack size 248 bytes, usart.o(i.SerialRemoteHandleL))
 <BR><BR>[Stack]<UL><LI>Max Depth = 408 + Unknown Stack Size
 <LI>Call Chain = SerialRemoteHandleL &rArr; SetErr_ACK &rArr; __2sprintf &rArr; _printf_char_common &rArr; __printf
 </UL>
@@ -1761,6 +1762,7 @@ Global Symbols
 <LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ResetBits
 <LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MODE_PARASET
 <LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MODE_ONOFF
+<LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OnOff_GPOI_ResetSet
 <LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Off_GPOI_ResetSet
 <LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;JumpBoot
 <LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Write_Boot_Flag

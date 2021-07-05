@@ -336,6 +336,7 @@ void LIST_ONOFF(vu8 value)
 	{
 		case 0://电子负载ON/OFF
 		{
+
 			if( value == 0 ){
 				
 				Flag_Swtich_ON = 0;
@@ -442,8 +443,8 @@ void MODE_PARASET(vu8 value)
 		case 0://电子负载
 		{
 //			OnOff_GPOI_ResetSet( 2, 0 );
-			mainswitch = 0;
-			sendwait = 3;
+//			mainswitch = 0;
+//			sendwait = 3;
 			LOAD_MODE = Para.CLOAD_MODE;
 			Para.CSET_Current_Laod = Para.LOAD_C;
 			Para.CSET_Voltage_Laod = Para.LOAD_V;
@@ -457,7 +458,7 @@ void MODE_PARASET(vu8 value)
 		case 1://稳压电源
 		{
 //			OnOff_GPOI_ResetSet( 2, 0 );
-			mainswitch = 0;
+//			mainswitch = 0;
 //			if(USART3_Recive_flg == 1)
 //			{
 				sendwait = 1;
@@ -472,8 +473,8 @@ void MODE_PARASET(vu8 value)
 		case 2://过流测试
 		{
 //			OnOff_GPOI_ResetSet( 2, 0 );
-			mainswitch = 0;
-			sendwait = 3;
+//			mainswitch = 0;
+//			sendwait = 3;
 			
 			LOAD_MODE = 0;
 			LOAD_I_SW = 1;
@@ -483,8 +484,8 @@ void MODE_PARASET(vu8 value)
 		case 3://列表
 		{
 //			OnOff_GPOI_ResetSet( 2, 0 );
-			mainswitch = 0;
-			sendwait = 3;
+//			mainswitch = 0;
+//			sendwait = 3;
 			
 			LOAD_MODE = 0;
 			GPIO_ResetBits(GPIOC,GPIO_Pin_12);//CC模式
@@ -506,6 +507,7 @@ void CalHandle(u8 mode,u8 range,u32 data)
 			x1 = Vmon_Load_value;
 			y1 = data;
 		}else if(range == 1){//低档位高段
+			
 			x2 = Vmon_Load_value;
 			y2 = data;
 			CalPara.TestLV[0] = ((float)y2 - (float)y1)/((float)x2 - (float)x1);
@@ -638,7 +640,7 @@ void CalHandle(u8 mode,u8 range,u32 data)
 		}else if(range == 3){//负载电流高档位1
 			LOAD_I_SW = 1;
 			GPIO_ResetBits(GPIOC,GPIO_Pin_11);//电流测量为高档位
-			Contr_Laod = 8000;
+			Contr_Laod = 6500;
 			calflag = 1;
 			OnOff_GPOI_ResetSet(2,1);
 		}else if(range == 4){//负载电流高档位2
@@ -649,7 +651,7 @@ void CalHandle(u8 mode,u8 range,u32 data)
 			y1 = Contr_Laod;
 			x3 = Imon_Load_value;
 			y3 = data;
-			Contr_Laod = 33000;
+			Contr_Laod = 29000;
 		}else if(range == 5){//负载电流高档位3
 			
 			x2 = data;
@@ -1090,7 +1092,10 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 //						return SetErr_ACK(buf, addr ,PARA_ERR);
 //					}
 					MODE=temp1;
-					Off_GPOI_ResetSet();
+//					Off_GPOI_ResetSet();
+					OnOff_GPOI_ResetSet( 2, 0 );
+					mainswitch = 0;
+					sendwait = 3;
 					MODE_PARASET(MODE);
 	//				Change_LM_Val(LM_S_Vale);
 					buf[currCharNum++] = ChrEndR;
