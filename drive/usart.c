@@ -336,7 +336,8 @@ void LIST_ONOFF(vu8 value)
 	{
 		case 0://电子负载ON/OFF
 		{
-
+			LOAD_MODE=0;
+			GPIO_ResetBits(GPIOC,GPIO_Pin_12);//CC模式
 			if( value == 0 ){
 				
 				Flag_Swtich_ON = 0;
