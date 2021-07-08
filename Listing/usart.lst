@@ -37462,7 +37462,7 @@ N		}break;
 N		case 1://稳压电源ON/OFF
 N		{
 N			if( value == 0 ){
-N				listsend = 1;
+N				listsend = 3;
 N//				PowerSwitch(0);
 N//				GPIO_ResetBits(GPIOC,GPIO_Pin_1); //关闭电源输出
 N//				Para.CSET_Voltage = 0;
@@ -37595,7 +37595,7 @@ N//			SetPowerV(Para.POWER_OutPut_V);
 N//	//			Para.CSET_Current = Para.POWER_Limit_C;
 N//			SetPowerC(Para.POWER_Limit_C);
 N		}break;
-N		case 2://过流测试
+N		case 2://放电过流测试
 N		{
 N//			OnOff_GPOI_ResetSet( 2, 0 );
 N//			mainswitch = 0;
@@ -37621,6 +37621,14 @@ X			GPIO_ResetBits(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x00020000) + 0x
 N			LOAD_I_SW = 1;
 X			Run_Control[8] = 1;
 N//			Para.CSET_Current = 1000;
+N		}break;
+N		case 4://充电过流测试
+N		{
+N//			OnOff_GPOI_ResetSet( 2, 0 );
+N//			mainswitch = 0;
+N//			sendwait = 3;
+N			
+N			sendwait = 1;
 N		}break;
 N	}
 N}

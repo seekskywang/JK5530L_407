@@ -141,6 +141,10 @@
       <TargetDriverDllRegistry>
         <SetRegEntry>
           <Number>0</Number>
+          <Key>DLGUARM</Key>
+        </SetRegEntry>
+        <SetRegEntry>
+          <Number>0</Number>
           <Key>ARMRTXEVENTFLAGS</Key>
           <Name>-L70 -Z18 -C0 -M0 -T1</Name>
         </SetRegEntry>
@@ -175,7 +179,24 @@
           <Name>UL2CM3(-O207 -S0 -C0 -FO7  -FN1 -FC800 -FD20000000 -FF0STM32F4xx_1024 -FL080000 -FS08000000</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
-      <Breakpoint/>
+      <Breakpoint>
+        <Bp>
+          <Number>0</Number>
+          <Type>0</Type>
+          <LineNumber>1452</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134368098</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\drive\usart.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\JK_BTSET\../drive/usart.c\1452</Expression>
+        </Bp>
+      </Breakpoint>
       <WatchWindow1>
         <Ww>
           <count>0</count>
@@ -713,6 +734,11 @@
           <count>69</count>
           <WinNumber>2</WinNumber>
           <ItemText>mode_sw</ItemText>
+        </Ww>
+        <Ww>
+          <count>70</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>listsend,0x0A</ItemText>
         </Ww>
       </WatchWindow2>
       <MemoryWindow4>

@@ -352,7 +352,7 @@ void LIST_ONOFF(vu8 value)
 		case 1://稳压电源ON/OFF
 		{
 			if( value == 0 ){
-				listsend = 1;
+				listsend = 3;
 //				PowerSwitch(0);
 //				GPIO_ResetBits(GPIOC,GPIO_Pin_1); //关闭电源输出
 //				Para.CSET_Voltage = 0;
@@ -471,7 +471,7 @@ void MODE_PARASET(vu8 value)
 //	//			Para.CSET_Current = Para.POWER_Limit_C;
 //			SetPowerC(Para.POWER_Limit_C);
 		}break;
-		case 2://过流测试
+		case 2://放电过流测试
 		{
 //			OnOff_GPOI_ResetSet( 2, 0 );
 //			mainswitch = 0;
@@ -492,6 +492,14 @@ void MODE_PARASET(vu8 value)
 			GPIO_ResetBits(GPIOC,GPIO_Pin_12);//CC模式
 			LOAD_I_SW = 1;
 //			Para.CSET_Current = 1000;
+		}break;
+		case 4://充电过流测试
+		{
+//			OnOff_GPOI_ResetSet( 2, 0 );
+//			mainswitch = 0;
+//			sendwait = 3;
+			
+			sendwait = 1;
 		}break;
 	}
 }
