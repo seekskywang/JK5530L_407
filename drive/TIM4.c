@@ -437,7 +437,7 @@ void TIM3_IRQHandler(void){
 //							shortold_I = 0;
 //						}
 //					}
-					if(DISS_Voltage/testv < 0.4)
+					if(DISS_Voltage/testv < 0.4 || shorttime==255)
 					{
 						shortflag = 0;
 						Off_GPOI_ResetSet();

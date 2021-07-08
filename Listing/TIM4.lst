@@ -35861,7 +35861,7 @@ N//							sendwait = 1;
 N//							shortold_I = 0;
 N//						}
 N//					}
-N					if(DISS_Voltage/testv < 0.4)
+N					if(DISS_Voltage/testv < 0.4 || shorttime==255)
 N					{
 N						shortflag = 0;
 N						Off_GPOI_ResetSet();
