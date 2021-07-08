@@ -3,7 +3,7 @@
 <title>Static Call Graph - [..\Output\JK_BTSET.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image ..\Output\JK_BTSET.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Thu Jul 08 08:37:44 2021
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Thu Jul 08 08:43:10 2021
 <BR><P>
 <H3>Maximum Stack Usage =        408 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -666,12 +666,12 @@ Global Symbols
 <P><STRONG><a name="[91]"></a>_printf_fp_dec_real</STRONG> (Thumb, 620 bytes, Stack size 104 bytes, _printf_fp_dec.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 324<LI>Call Chain = _printf_fp_dec_real &rArr; _fp_digits &rArr; _btod_etento &rArr; _btod_emul &rArr; _e2e
 </UL>
-<BR>[Calls]<UL><LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_fpclassify
+<BR>[Calls]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_post_padding
+<LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_pre_padding
+<LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_fpclassify
 <LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_fp_infnan
 <LI><a href="#[6e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_locale
 <LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_fp_digits
-<LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_post_padding
-<LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_pre_padding
 </UL>
 <BR>[Called By]<UL><LI><a href="#[68]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_fp_dec
 </UL>
@@ -1285,12 +1285,12 @@ Global Symbols
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Ds18b20WriteByte
 <LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Ds18b20Rst
 <LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Ds18b20ReadBit
+<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_AD7689_Read
 <LI><a href="#[129]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPowerModeS
 <LI><a href="#[125]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetListPS
 <LI><a href="#[e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LIST_ONOFF
 <LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalHandle
 <LI><a href="#[2a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM3_IRQHandler
-<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_AD7689_Read
 </UL>
 
 <P><STRONG><a name="[a2]"></a>GPIO_SetBits</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, stm32f4xx_gpio.o(i.GPIO_SetBits))
@@ -1313,12 +1313,12 @@ Global Symbols
 <LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Ds18b20Rst
 <LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Ds18b20ReadBit
 <LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Ds18b20Init
+<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_AD7689_Read
 <LI><a href="#[129]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPowerModeS
 <LI><a href="#[125]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetListPS
 <LI><a href="#[e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LIST_ONOFF
 <LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalHandle
 <LI><a href="#[2a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM3_IRQHandler
-<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_AD7689_Read
 </UL>
 
 <P><STRONG><a name="[5]"></a>HardFault_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32f4xx_it.o(i.HardFault_Handler))
@@ -1770,12 +1770,12 @@ Global Symbols
 <LI><a href="#[e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LIST_ONOFF
 <LI><a href="#[11f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IsDigitChar
 <LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CalHandle
+<LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strncat
+<LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
 <LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[11a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
 <LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strncmp
 <LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strlen
-<LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strncat
-<LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -1784,10 +1784,10 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 160 + Unknown Stack Size
 <LI>Call Chain = SetErr_ACK &rArr; __2sprintf &rArr; _printf_char_common &rArr; __printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memmove
-<LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strlen
-<LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strncat
+<BR>[Calls]<UL><LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strncat
 <LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memmove
+<LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strlen
 </UL>
 <BR>[Called By]<UL><LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SerialRemoteHandleL
 </UL>
