@@ -35421,7 +35421,7 @@ Nfloat testv;
 Nvu8 finishflag;
 Nvu32 finishdelay;
 Nvu8 lockflag;
-Nvu8 version=12;
+Nvu8 version=13;
 Nvu32 battery_c;
 Nvu8 charge_step;
 Nvu8 loop;
@@ -35742,7 +35742,7 @@ N			//¹ýÁ÷
 N			case 2:{
 N				
 N				if( trig_flag_state == 1 && C_DISCHARGE == 1){		
-N					finishflag = 0;
+N//					finishflag = 0;
 N					step_c =  (float)Para.IR_Step_C / 1000 ;
 N					
 N					step_time = (int)Para.IR_Step_Time;

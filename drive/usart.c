@@ -60,6 +60,7 @@ u8    USART3_Recive_leng = 0;                           //串口1数据接收长度
 u8    USART3_Recive_flg  = 0;                           //串口1数据接收完成标识
 u8 MasterSendbuf[MAXRxTxLen];
 u8 MasterRecbuf[MAXRxTxLen];
+u8 listocwatch,listpowwatch1,listpowwatch2;
 char CmdStr[CmdNumb][CmdLen] =
 {
 	{"STATUS_\0"},        //状态读取
@@ -142,12 +143,14 @@ void SetPowerModeS(void)
 	{
 		GPIO_SetBits(GPIOE,GPIO_Pin_2);
 		Delay_ms(POWER_SW_DELAY);
+		PowerSwitch(mainswitch);
 	}else if(mainswitch == 0)
 	{
+		PowerSwitch(mainswitch);
 		Delay_ms(POWER_SW_DELAY);
 		GPIO_ResetBits(GPIOE,GPIO_Pin_2); //关闭电源输出继电器
 	}
-	PowerSwitch(mainswitch);
+	
 	sendwait = 0;
 }
 void SetListPV(void)
@@ -169,14 +172,16 @@ void SetListPS(void)
 	{
 		GPIO_SetBits(GPIOE,GPIO_Pin_2);
 		Delay_ms(POWER_SW_DELAY);
+		PowerSwitch(mainswitch);
 	}
 	
 	if(mainswitch == 0)
 	{
+		PowerSwitch(mainswitch);
 		Delay_ms(POWER_SW_DELAY);
 		GPIO_ResetBits(GPIOE,GPIO_Pin_2); //关闭电源输出继电器
 	}
-	PowerSwitch(mainswitch);
+	
 	listsend = 0;
 }
 
@@ -353,6 +358,7 @@ void LIST_ONOFF(vu8 value)
 		{
 			if( value == 0 ){
 				listsend = 3;
+				listpowwatch1 ++;
 //				PowerSwitch(0);
 //				GPIO_ResetBits(GPIOC,GPIO_Pin_1); //关闭电源输出
 //				Para.CSET_Voltage = 0;
@@ -361,6 +367,7 @@ void LIST_ONOFF(vu8 value)
 			}
 			else if( value == 1 ){
 				listsend = 1;
+				listpowwatch2 ++;
 //				PowerSwitch(1);
 //				Para.CSET_Voltage = Para.CDC_OutPut_V;
 //				Para.CSET_Current = Para.CDC_Limit_C;
@@ -370,6 +377,7 @@ void LIST_ONOFF(vu8 value)
 		}break;
 		case 2://过流测试ON/OFF
 		{
+			listocwatch++;
 			if( value == 0 ){
 				
 				Off_GPOI_ResetSet();
@@ -1360,7 +1368,7 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 					
 					MODE_PARASET(MODE);
 					
-					 buf[currCharNum++] = ChrEndS;
+					 buf[currCharNum++] = ChrEndR;
 		        }
 				break;
 				case 4:
@@ -1488,7 +1496,11 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 							}
 						}
 						mainswitch = temp1;//开关
-						finishflag = 0;
+						
+						if(mainswitch == 1)
+						{
+							finishflag = 0;
+						}
 					}else if(MODE == 3){
 						if(buf[currCharNum++] == ',')
 						{
@@ -1628,7 +1640,7 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 //					MODE_PARASET(MODE);
 					Off_GPOI_ResetSet();
 					LIST_ONOFF(mainswitch);
-					buf[currCharNum++] = ChrEndS;
+					buf[currCharNum++] = ChrEndR;
 		        }
 				break;
 				case 12://电压校准

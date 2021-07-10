@@ -36,7 +36,7 @@ float testv;
 vu8 finishflag;
 vu32 finishdelay;
 vu8 lockflag;
-vu8 version=12;
+vu8 version=13;
 vu32 battery_c;
 vu8 charge_step;
 vu8 loop;
@@ -320,7 +320,7 @@ void TIM3_IRQHandler(void){
 			case 2:{
 				
 				if( trig_flag_state == 1 && C_DISCHARGE == 1){		
-					finishflag = 0;
+//					finishflag = 0;
 					step_c =  (float)Para.IR_Step_C / 1000 ;
 					
 					step_time = (int)Para.IR_Step_Time;

@@ -37147,6 +37147,7 @@ Nu8 MasterSendbuf[MAXRxTxLen];
 Xu8 MasterSendbuf[128];
 Nu8 MasterRecbuf[MAXRxTxLen];
 Xu8 MasterRecbuf[128];
+Nu8 listocwatch,listpowwatch1,listpowwatch2;
 Nchar CmdStr[CmdNumb][CmdLen] =
 Xchar CmdStr[19][9] =
 N{
@@ -37232,14 +37233,16 @@ N		GPIO_SetBits(GPIOE,GPIO_Pin_2);
 X		GPIO_SetBits(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x00020000) + 0x1000)),((uint16_t)0x0004));
 N		Delay_ms(POWER_SW_DELAY);
 X		Delay_ms(10);
+N		PowerSwitch(mainswitch);
 N	}else if(mainswitch == 0)
 N	{
+N		PowerSwitch(mainswitch);
 N		Delay_ms(POWER_SW_DELAY);
 X		Delay_ms(10);
 N		GPIO_ResetBits(GPIOE,GPIO_Pin_2); //关闭电源输出继电器
 X		GPIO_ResetBits(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x00020000) + 0x1000)),((uint16_t)0x0004)); 
 N	}
-N	PowerSwitch(mainswitch);
+N	
 N	sendwait = 0;
 N}
 Nvoid SetListPV(void)
@@ -37263,16 +37266,18 @@ N		GPIO_SetBits(GPIOE,GPIO_Pin_2);
 X		GPIO_SetBits(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x00020000) + 0x1000)),((uint16_t)0x0004));
 N		Delay_ms(POWER_SW_DELAY);
 X		Delay_ms(10);
+N		PowerSwitch(mainswitch);
 N	}
 N	
 N	if(mainswitch == 0)
 N	{
+N		PowerSwitch(mainswitch);
 N		Delay_ms(POWER_SW_DELAY);
 X		Delay_ms(10);
 N		GPIO_ResetBits(GPIOE,GPIO_Pin_2); //关闭电源输出继电器
 X		GPIO_ResetBits(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x00020000) + 0x1000)),((uint16_t)0x0004)); 
 N	}
-N	PowerSwitch(mainswitch);
+N	
 N	listsend = 0;
 N}
 N
@@ -37463,6 +37468,7 @@ N		case 1://稳压电源ON/OFF
 N		{
 N			if( value == 0 ){
 N				listsend = 3;
+N				listpowwatch1 ++;
 N//				PowerSwitch(0);
 N//				GPIO_ResetBits(GPIOC,GPIO_Pin_1); //关闭电源输出
 N//				Para.CSET_Voltage = 0;
@@ -37471,6 +37477,7 @@ N//				GPIO_ResetBits(GPIOE,GPIO_Pin_2); //关闭电源输出继电器
 N			}
 N			else if( value == 1 ){
 N				listsend = 1;
+N				listpowwatch2 ++;
 N//				PowerSwitch(1);
 N//				Para.CSET_Voltage = Para.CDC_OutPut_V;
 N//				Para.CSET_Current = Para.CDC_Limit_C;
@@ -37480,6 +37487,7 @@ N			}
 N		}break;
 N		case 2://过流测试ON/OFF
 N		{
+N			listocwatch++;
 N			if( value == 0 ){
 N				
 N				Off_GPOI_ResetSet();
@@ -38543,8 +38551,8 @@ N					temp1 = 0;
 N					
 N					MODE_PARASET(MODE);
 N					
-N					 buf[currCharNum++] = ChrEndS;
-X					 buf[currCharNum++] = 0x0A;
+N					 buf[currCharNum++] = ChrEndR;
+X					 buf[currCharNum++] = 0x0D;
 N		        }
 N				break;
 N				case 4:
@@ -38681,7 +38689,11 @@ N								temp1 = temp1*10+(buf[currCharNum++]-0x30);
 N							}
 N						}
 N						mainswitch = temp1;//开关
-N						finishflag = 0;
+N						
+N						if(mainswitch == 1)
+N						{
+N							finishflag = 0;
+N						}
 N					}else if(MODE == 3){
 N						if(buf[currCharNum++] == ',')
 N						{
@@ -38827,8 +38839,8 @@ N					temp1 = 0;
 N//					MODE_PARASET(MODE);
 N					Off_GPOI_ResetSet();
 N					LIST_ONOFF(mainswitch);
-N					buf[currCharNum++] = ChrEndS;
-X					buf[currCharNum++] = 0x0A;
+N					buf[currCharNum++] = ChrEndR;
+X					buf[currCharNum++] = 0x0D;
 N		        }
 N				break;
 N				case 12://电压校准
