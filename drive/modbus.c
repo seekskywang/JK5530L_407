@@ -929,7 +929,7 @@ void Transformation_ADC(void)
 //		}
 //		else var32 = var32 + CLists.CREG_LoadV_Offset_LOW;
 //		var32 = var32 >> 12;
-		if (var32 < 10) var32 = 0;				  //40mV以下清零
+		if (var32 < 30) var32 = 0;				  //40mV以下清零
 		Para.CVoltage = var32;
 //		DISS_Voltage=Para.CVoltage;
 		DISS_Voltage=(float)Para.CVoltage/1000;//计算显示电压

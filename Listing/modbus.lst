@@ -38076,7 +38076,7 @@ N//			else var32 = var32 - CLists.CREG_LoadV_Offset_LOW;
 N//		}
 N//		else var32 = var32 + CLists.CREG_LoadV_Offset_LOW;
 N//		var32 = var32 >> 12;
-N		if (var32 < 10) var32 = 0;				  //40mV以下清零
+N		if (var32 < 30) var32 = 0;				  //40mV以下清零
 N		Para.CVoltage = var32;
 N//		DISS_Voltage=Para.CVoltage;
 N		DISS_Voltage=(float)Para.CVoltage/1000;//计算显示电压

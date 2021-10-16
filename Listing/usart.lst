@@ -37775,7 +37775,7 @@ N		if(range == 0)//负载电流低档位1
 N		{		
 N			LOAD_I_SW = 0;
 X			Run_Control[8] = 0;
-N			Contr_Laod = 7000;
+N			Contr_Laod = 5000;
 N			calflag = 1;
 N			OnOff_GPOI_ResetSet(2,1);
 N		}

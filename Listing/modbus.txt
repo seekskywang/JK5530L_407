@@ -93,11 +93,11 @@
 ;;;916    	vu32 var32a;
 ;;;917    /*****************************负载测量电压转换******************************************/
 ;;;918    	if(LOAD_V_SW==0)//低档
-000002  4bc6              LDR      r3,|L2.796|
+000002  4bc7              LDR      r3,|L2.800|
 000004  69de              LDR      r6,[r3,#0x1c]  ; Run_Control
 ;;;919    	{
 ;;;920    		var32 = Vmon_Load_value;
-000006  4dc6              LDR      r5,|L2.800|
+000006  4dc7              LDR      r5,|L2.804|
 ;;;921    		var32 = var32 * CalPara.TestLV[0] + CalPara.OffsetLV[0];  
 ;;;922    //		if ((CLists.CPolar0 & 0x01) == 0x01)		  
 ;;;923    //		{
@@ -109,14 +109,14 @@
 ;;;929    //		}
 ;;;930    //		else var32 = var32 + CLists.CREG_LoadV_Offset_LOW;
 ;;;931    //		var32 = var32 >> 12;
-;;;932    		if (var32 < 10) var32 = 0;				  //40mV以下清零
+;;;932    		if (var32 < 30) var32 = 0;				  //40mV以下清零
 ;;;933    		Para.CVoltage = var32;
 ;;;934    //		DISS_Voltage=Para.CVoltage;
 ;;;935    		DISS_Voltage=(float)Para.CVoltage/1000;//计算显示电压
-000008  4cc6              LDR      r4,|L2.804|
-00000a  ed9f0ac7          VLDR     s0,|L2.808|
-00000e  4ac7              LDR      r2,|L2.812|
-000010  49c7              LDR      r1,|L2.816|
+000008  4cc7              LDR      r4,|L2.808|
+00000a  ed9f0ac8          VLDR     s0,|L2.812|
+00000e  4ac8              LDR      r2,|L2.816|
+000010  49c8              LDR      r1,|L2.820|
 ;;;936    // 		if( DISS_Voltage >= 10 ){
 ;;;937    // 				CLists.CLOAD_V_SW  = 1;
 ;;;938    // 		}
@@ -129,7 +129,7 @@
 000012  882d              LDRH     r5,[r5,#0]  ; Vmon_Load_value
 000014  2000              MOVS     r0,#0                 ;933
 000016  9500              STR      r5,[sp,#0]            ;914
-000018  b3ee              CBZ      r6,|L2.150|
+000018  b196              CBZ      r6,|L2.64|
 ;;;945    		var32 = var32 * CalPara.TestLV[1] + CalPara.OffsetLV[1]; 
 00001a  ee005a90          VMOV     s1,r5
 00001e  ed921a05          VLDR     s2,[r2,#0x14]
@@ -137,13 +137,6 @@
 000026  eef80a60          VCVT.F32.U32 s1,s1
 00002a  ee001aa1          VMLA.F32 s2,s1,s3
 00002e  eefc0ac1          VCVT.U32.F32 s1,s2
-                  |L2.50|
-000032  ee105a90          VMOV     r5,s1                 ;932
-000036  edcd0a00          VSTR     s1,[sp,#0]            ;921
-00003a  2d0a              CMP      r5,#0xa               ;932
-00003c  d200              BCS      |L2.64|
-00003e  9000              STR      r0,[sp,#0]            ;932
-                  |L2.64|
 ;;;946    //		if ((CLists.CPolar0 & 0x04) == 0x04)		  
 ;;;947    //		{
 ;;;948    //			if (var32 < CLists.CREG_LoadV_Offset_HIG) 
@@ -155,16 +148,35 @@
 ;;;954    //		else var32 = var32 + CLists.CREG_LoadV_Offset_HIG;
 ;;;955    //		var32 = var32 >> 12;
 ;;;956    		if (var32 < 10) var32 = 0;				  //40mV以下清零
+000032  ee105a90          VMOV     r5,s1
+000036  edcd0a00          VSTR     s1,[sp,#0]            ;945
+00003a  2d0a              CMP      r5,#0xa
+00003c  d312              BCC      |L2.100|
+00003e  e012              B        |L2.102|
+                  |L2.64|
+000040  ee015a10          VMOV     s2,r5                 ;921
+000044  edd20a04          VLDR     s1,[r2,#0x10]         ;921
+000048  edd21a00          VLDR     s3,[r2,#0]            ;921
+00004c  eeb81a41          VCVT.F32.U32 s2,s2                 ;921
+000050  ee410a21          VMLA.F32 s1,s2,s3              ;921
+000054  eefc0ae0          VCVT.U32.F32 s1,s1                 ;921
+000058  ee105a90          VMOV     r5,s1                 ;932
+00005c  edcd0a00          VSTR     s1,[sp,#0]            ;921
+000060  2d1e              CMP      r5,#0x1e              ;932
+000062  d200              BCS      |L2.102|
+                  |L2.100|
+000064  9000              STR      r0,[sp,#0]            ;932
+                  |L2.102|
 ;;;957    		Para.CVoltage = var32;
-000040  9d00              LDR      r5,[sp,#0]
-000042  62cd              STR      r5,[r1,#0x2c]  ; Para
+000066  9d00              LDR      r5,[sp,#0]
+000068  62cd              STR      r5,[r1,#0x2c]  ; Para
 ;;;958    //		DISS_Voltage=Para.CVoltage;
 ;;;959    		DISS_Voltage=(float)Para.CVoltage/1000;//计算显示电压
-000044  6acd              LDR      r5,[r1,#0x2c]  ; Para
-000046  ee005a90          VMOV     s1,r5
-00004a  eef80a60          VCVT.F32.U32 s1,s1
-00004e  ee801a80          VDIV.F32 s2,s1,s0
-000052  ed841a00          VSTR     s2,[r4,#0]
+00006a  6acd              LDR      r5,[r1,#0x2c]  ; Para
+00006c  ee005a90          VMOV     s1,r5
+000070  eef80a60          VCVT.F32.U32 s1,s1
+000074  ee801a80          VDIV.F32 s2,s1,s0
+000078  ed841a00          VSTR     s2,[r4,#0]
 ;;;960    // 		if( DISS_Voltage < 12 ){
 ;;;961    // 				CLists.CLOAD_V_SW  = 0;
 ;;;962    // 		}
@@ -174,11 +186,11 @@
 ;;;966    	
 ;;;967    	/*******************负载测量电流转换**************************************/
 ;;;968    	if(LOAD_I_SW==0)//低档
-000056  9000              STR      r0,[sp,#0]
-000058  6a1e              LDR      r6,[r3,#0x20]  ; Run_Control
+00007c  9000              STR      r0,[sp,#0]
+00007e  6a1e              LDR      r6,[r3,#0x20]  ; Run_Control
 ;;;969    	{
 ;;;970    		var32 = Imon_Load_value;
-00005a  4db6              LDR      r5,|L2.820|
+000080  4dad              LDR      r5,|L2.824|
 ;;;971    		var32 = var32 * CalPara.TestLC[0] + CalPara.OffsetTestLC[0];  
 ;;;972    //		if ((CLists.CPolar2 & 0x01) == 0x01)		  
 ;;;973    //		{
@@ -193,7 +205,7 @@
 ;;;982    		Para.CLaod_Current = var32;
 ;;;983    //		DISS_Current=Para.CLaod_Current;
 ;;;984    		DISS_Current=(float)Para.CLaod_Current/1000;//计算显示电流
-00005c  4cb6              LDR      r4,|L2.824|
+000082  4cae              LDR      r4,|L2.828|
 ;;;985    		var32 = 0;	
 ;;;986    	}
 ;;;987    	else//高档
@@ -212,45 +224,41 @@
 ;;;1000   //		var32 = var32 >> 12;
 ;;;1001   		Para.CLaod_Current = var32;
 ;;;1002   		if(Para.CLaod_Current < 1000)
-00005e  f44f7c7a          MOV      r12,#0x3e8
-000062  882d              LDRH     r5,[r5,#0]            ;989  ; Imon_Load_value
-000064  9500              STR      r5,[sp,#0]            ;964
-000066  b3a6              CBZ      r6,|L2.210|
-000068  ee015a10          VMOV     s2,r5                 ;990
-00006c  edd20a15          VLDR     s1,[r2,#0x54]         ;990
-000070  edd21a0d          VLDR     s3,[r2,#0x34]         ;990
-000074  eeb81a41          VCVT.F32.U32 s2,s2                 ;990
-000078  ee410a21          VMLA.F32 s1,s2,s3              ;990
-00007c  eefc0ae0          VCVT.U32.F32 s1,s1                 ;990
-000080  ee105a90          VMOV     r5,s1                 ;1001
-000084  edcd0a00          VSTR     s1,[sp,#0]            ;990
-000088  634d              STR      r5,[r1,#0x34]         ;1001  ; Para
-00008a  6b4d              LDR      r5,[r1,#0x34]  ; Para
-00008c  4565              CMP      r5,r12
-00008e  d200              BCS      |L2.146|
+000084  f44f7c7a          MOV      r12,#0x3e8
+000088  882d              LDRH     r5,[r5,#0]            ;989  ; Imon_Load_value
+00008a  9500              STR      r5,[sp,#0]            ;964
+00008c  b32e              CBZ      r6,|L2.218|
+00008e  ee015a10          VMOV     s2,r5                 ;990
+000092  edd20a15          VLDR     s1,[r2,#0x54]         ;990
+000096  edd21a0d          VLDR     s3,[r2,#0x34]         ;990
+00009a  eeb81a41          VCVT.F32.U32 s2,s2                 ;990
+00009e  ee410a21          VMLA.F32 s1,s2,s3              ;990
+0000a2  eefc0ae0          VCVT.U32.F32 s1,s1                 ;990
+0000a6  ee105a90          VMOV     r5,s1                 ;1001
+0000aa  edcd0a00          VSTR     s1,[sp,#0]            ;990
+0000ae  634d              STR      r5,[r1,#0x34]         ;1001  ; Para
+0000b0  6b4d              LDR      r5,[r1,#0x34]  ; Para
+0000b2  4565              CMP      r5,r12
+0000b4  d200              BCS      |L2.184|
 ;;;1003   		{
 ;;;1004   			Para.CLaod_Current = 0;
-000090  6348              STR      r0,[r1,#0x34]  ; Para
-                  |L2.146|
+0000b6  6348              STR      r0,[r1,#0x34]  ; Para
+                  |L2.184|
 ;;;1005   		}
 ;;;1006   //		DISS_Current=Para.CLaod_Current;
 ;;;1007   		DISS_Current=(float)Para.CLaod_Current/1000;//计算显示电流
-000092  6b4d              LDR      r5,[r1,#0x34]  ; Para
-000094  e000              B        |L2.152|
-                  |L2.150|
-000096  e00f              B        |L2.184|
-                  |L2.152|
-000098  ee005a90          VMOV     s1,r5
-00009c  eef80a60          VCVT.F32.U32 s1,s1
-0000a0  ee801a80          VDIV.F32 s2,s1,s0
-0000a4  ed841a00          VSTR     s2,[r4,#0]
+0000b8  6b4d              LDR      r5,[r1,#0x34]  ; Para
+0000ba  ee005a90          VMOV     s1,r5
+0000be  eef80a60          VCVT.F32.U32 s1,s1
+0000c2  ee801a80          VDIV.F32 s2,s1,s0
+0000c6  ed841a00          VSTR     s2,[r4,#0]
 ;;;1008   		var32 = 0;
 ;;;1009   	}
 ;;;1010   	
 ;;;1011   	/*************************负载电压和电流控制转换**************************************/
 ;;;1012   	if(LOAD_MODE==0)//CC
-0000a8  9000              STR      r0,[sp,#0]
-0000aa  699d              LDR      r5,[r3,#0x18]  ; Run_Control
+0000ca  9000              STR      r0,[sp,#0]
+0000cc  699d              LDR      r5,[r3,#0x18]  ; Run_Control
 ;;;1013   	{
 ;;;1014   		if(LOAD_I_SW==0)//低档
 ;;;1015   		{
@@ -266,8 +274,8 @@
 ;;;1025   //			var32 = var32/CLists.CSET_Load_CorrectionA_LOW;
 ;;;1026   //			var32=var32>>1;
 ;;;1027   			Contr_Laod = var32;
-0000ac  4ca3              LDR      r4,|L2.828|
-0000ae  b31d              CBZ      r5,|L2.248|
+0000ce  4c9c              LDR      r4,|L2.832|
+0000d0  b1ad              CBZ      r5,|L2.254|
 ;;;1028   			if(Para.CSET_Current_Laod==0)
 ;;;1029   			{
 ;;;1030   				Contr_Laod=0;
@@ -296,62 +304,52 @@
 ;;;1053   		
 ;;;1054   	}
 ;;;1055   	else if(LOAD_MODE==1)//CV
-0000b0  699d              LDR      r5,[r3,#0x18]  ; Run_Control
-0000b2  2d01              CMP      r5,#1
-0000b4  d048              BEQ      |L2.328|
-0000b6  e05d              B        |L2.372|
-                  |L2.184|
-0000b8  ee015a10          VMOV     s2,r5                 ;921
-0000bc  edd20a04          VLDR     s1,[r2,#0x10]         ;921
-0000c0  edd21a00          VLDR     s3,[r2,#0]            ;921
-0000c4  eeb81a41          VCVT.F32.U32 s2,s2                 ;921
-0000c8  ee410a21          VMLA.F32 s1,s2,s3              ;921
-0000cc  eefc0ae0          VCVT.U32.F32 s1,s1                 ;921
-0000d0  e7af              B        |L2.50|
-                  |L2.210|
-0000d2  e7ff              B        |L2.212|
-                  |L2.212|
-0000d4  ee015a10          VMOV     s2,r5                 ;971
-0000d8  edd20a14          VLDR     s1,[r2,#0x50]         ;971
-0000dc  edd21a0c          VLDR     s3,[r2,#0x30]         ;971
-0000e0  eeb81a41          VCVT.F32.U32 s2,s2                 ;971
-0000e4  ee410a21          VMLA.F32 s1,s2,s3              ;971
-0000e8  eefc0ae0          VCVT.U32.F32 s1,s1                 ;971
-0000ec  ee105a90          VMOV     r5,s1                 ;982
-0000f0  edcd0a00          VSTR     s1,[sp,#0]            ;971
-0000f4  634d              STR      r5,[r1,#0x34]         ;982  ; Para
-0000f6  e7cc              B        |L2.146|
-                  |L2.248|
-0000f8  6a1d              LDR      r5,[r3,#0x20]         ;1014  ; Run_Control
-0000fa  2d00              CMP      r5,#0                 ;1014
-0000fc  694d              LDR      r5,[r1,#0x14]         ;1036  ; Para
-0000fe  d014              BEQ      |L2.298|
-000100  edd20a11          VLDR     s1,[r2,#0x44]         ;1037
-000104  694d              LDR      r5,[r1,#0x14]         ;1037  ; Para
-000106  edd21a09          VLDR     s3,[r2,#0x24]         ;1037
-00010a  ee015a10          VMOV     s2,r5                 ;1037
-00010e  eeb81a41          VCVT.F32.U32 s2,s2                 ;1037
-000112  ee410a21          VMLA.F32 s1,s2,s3              ;1037
-                  |L2.278|
-000116  eefc0ae0          VCVT.U32.F32 s1,s1                 ;1037
-00011a  ee105a90          VMOV     r5,s1                 ;1046
-00011e  edcd0a00          VSTR     s1,[sp,#0]            ;1037
-000122  8025              STRH     r5,[r4,#0]            ;1046
-000124  694d              LDR      r5,[r1,#0x14]         ;1047  ; Para
-                  |L2.294|
-000126  b165              CBZ      r5,|L2.322|
-000128  e00c              B        |L2.324|
-                  |L2.298|
-00012a  edd20a10          VLDR     s1,[r2,#0x40]         ;1017
-00012e  694d              LDR      r5,[r1,#0x14]         ;1017  ; Para
-000130  ee015a10          VMOV     s2,r5                 ;1017
-000134  eef81a41          VCVT.F32.U32 s3,s2                 ;1017
-000138  ed921a08          VLDR     s2,[r2,#0x20]         ;1017
-00013c  ee410a81          VMLA.F32 s1,s3,s2              ;1017
-000140  e7e9              B        |L2.278|
-                  |L2.322|
-000142  8020              STRH     r0,[r4,#0]            ;1049
-                  |L2.324|
+0000d2  699d              LDR      r5,[r3,#0x18]  ; Run_Control
+0000d4  2d01              CMP      r5,#1
+0000d6  d03a              BEQ      |L2.334|
+0000d8  e04f              B        |L2.378|
+                  |L2.218|
+0000da  ee015a10          VMOV     s2,r5                 ;971
+0000de  edd20a14          VLDR     s1,[r2,#0x50]         ;971
+0000e2  edd21a0c          VLDR     s3,[r2,#0x30]         ;971
+0000e6  eeb81a41          VCVT.F32.U32 s2,s2                 ;971
+0000ea  ee410a21          VMLA.F32 s1,s2,s3              ;971
+0000ee  eefc0ae0          VCVT.U32.F32 s1,s1                 ;971
+0000f2  ee105a90          VMOV     r5,s1                 ;982
+0000f6  edcd0a00          VSTR     s1,[sp,#0]            ;971
+0000fa  634d              STR      r5,[r1,#0x34]         ;982  ; Para
+0000fc  e7dc              B        |L2.184|
+                  |L2.254|
+0000fe  6a1d              LDR      r5,[r3,#0x20]         ;1014  ; Run_Control
+000100  2d00              CMP      r5,#0                 ;1014
+000102  694d              LDR      r5,[r1,#0x14]         ;1036  ; Para
+000104  d014              BEQ      |L2.304|
+000106  edd20a11          VLDR     s1,[r2,#0x44]         ;1037
+00010a  694d              LDR      r5,[r1,#0x14]         ;1037  ; Para
+00010c  edd21a09          VLDR     s3,[r2,#0x24]         ;1037
+000110  ee015a10          VMOV     s2,r5                 ;1037
+000114  eeb81a41          VCVT.F32.U32 s2,s2                 ;1037
+000118  ee410a21          VMLA.F32 s1,s2,s3              ;1037
+                  |L2.284|
+00011c  eefc0ae0          VCVT.U32.F32 s1,s1                 ;1037
+000120  ee105a90          VMOV     r5,s1                 ;1046
+000124  edcd0a00          VSTR     s1,[sp,#0]            ;1037
+000128  8025              STRH     r5,[r4,#0]            ;1046
+00012a  694d              LDR      r5,[r1,#0x14]         ;1047  ; Para
+                  |L2.300|
+00012c  b165              CBZ      r5,|L2.328|
+00012e  e00c              B        |L2.330|
+                  |L2.304|
+000130  edd20a10          VLDR     s1,[r2,#0x40]         ;1017
+000134  694d              LDR      r5,[r1,#0x14]         ;1017  ; Para
+000136  ee015a10          VMOV     s2,r5                 ;1017
+00013a  eef81a41          VCVT.F32.U32 s3,s2                 ;1017
+00013e  ed921a08          VLDR     s2,[r2,#0x20]         ;1017
+000142  ee410a81          VMLA.F32 s1,s3,s2              ;1017
+000146  e7e9              B        |L2.284|
+                  |L2.328|
+000148  8020              STRH     r0,[r4,#0]            ;1049
+                  |L2.330|
 ;;;1056   	{
 ;;;1057   		if(LOAD_V_SW==0)//低档
 ;;;1058   		{
@@ -371,25 +369,25 @@
 ;;;1072   				Contr_Laod=0;
 ;;;1073   			}
 ;;;1074   			var32 = 0;
-000144  9000              STR      r0,[sp,#0]
-000146  e015              B        |L2.372|
-                  |L2.328|
-000148  69dd              LDR      r5,[r3,#0x1c]         ;1057  ; Run_Control
-00014a  2d00              CMP      r5,#0                 ;1057
+00014a  9000              STR      r0,[sp,#0]
+00014c  e015              B        |L2.378|
+                  |L2.334|
+00014e  69dd              LDR      r5,[r3,#0x1c]         ;1057  ; Run_Control
+000150  2d00              CMP      r5,#0                 ;1057
 ;;;1075   		}
 ;;;1076   		else//高档
 ;;;1077   		{
 ;;;1078   			var32 = Para.CSET_Voltage_Laod;
-00014c  690d              LDR      r5,[r1,#0x10]  ; Para
-00014e  d048              BEQ      |L2.482|
+000152  690d              LDR      r5,[r1,#0x10]  ; Para
+000154  d048              BEQ      |L2.488|
 ;;;1079   			var32 = Para.CSET_Voltage_Laod * CalPara.SetCV[1] + CalPara.OffsetCV[1];  
-000150  edd20a13          VLDR     s1,[r2,#0x4c]
-000154  690d              LDR      r5,[r1,#0x10]  ; Para
-000156  edd21a0b          VLDR     s3,[r2,#0x2c]
-00015a  ee015a10          VMOV     s2,r5
-00015e  eeb81a41          VCVT.F32.U32 s2,s2
-000162  ee410a21          VMLA.F32 s1,s2,s3
-000166  eefc0ae0          VCVT.U32.F32 s1,s1
+000156  edd20a13          VLDR     s1,[r2,#0x4c]
+00015a  690d              LDR      r5,[r1,#0x10]  ; Para
+00015c  edd21a0b          VLDR     s3,[r2,#0x2c]
+000160  ee015a10          VMOV     s2,r5
+000164  eeb81a41          VCVT.F32.U32 s2,s2
+000168  ee410a21          VMLA.F32 s1,s2,s3
+00016c  eefc0ae0          VCVT.U32.F32 s1,s1
 ;;;1080   //			if ((CLists.CPolar2 & 0x04) == 0)			   
 ;;;1081   //			{
 ;;;1082   //				if (var32 < CLists.CSET_LoadV_Offset_HIG) var32 = 0;
@@ -399,10 +397,10 @@
 ;;;1086   //			var32 = var32/CLists.CSET_Load_CorrectionV_HIG;
 ;;;1087   //			var32=var32>>1;
 ;;;1088   			Contr_Laod = var32;
-00016a  ee105a90          VMOV     r5,s1
-00016e  edcd0a00          VSTR     s1,[sp,#0]            ;1079
-000172  8025              STRH     r5,[r4,#0]
-                  |L2.372|
+000170  ee105a90          VMOV     r5,s1
+000174  edcd0a00          VSTR     s1,[sp,#0]            ;1079
+000178  8025              STRH     r5,[r4,#0]
+                  |L2.378|
 ;;;1089   //			if(Para.CSET_Voltage_Laod==0)
 ;;;1090   //			{
 ;;;1091   //				Contr_Laod=0;
@@ -413,11 +411,11 @@
 ;;;1096   	}
 ;;;1097   /*****************************内阻值转换*******************************************/
 ;;;1098   	if(RCONT_SW==0)//低档
-000174  6a5c              LDR      r4,[r3,#0x24]  ; Run_Control
+00017a  6a5c              LDR      r4,[r3,#0x24]  ; Run_Control
 ;;;1099   	{
 ;;;1100   		var32 = Rmon_value;
-000176  4b73              LDR      r3,|L2.836|
-000178  2c00              CMP      r4,#0                 ;1098
+00017c  4b72              LDR      r3,|L2.840|
+00017e  2c00              CMP      r4,#0                 ;1098
 ;;;1101   		var32 = var32 * CalPara.TestR[0] + CalPara.OffsetR[0];  
 ;;;1102   //		if ((CLists.CPolar4 & 0x01) == 0x01)		  
 ;;;1103   //		{
@@ -435,10 +433,10 @@
 ;;;1115   //		}
 ;;;1116   		Para.CR_VLUE = var32;
 ;;;1117   		if(Rmon_value > 60000 && finishdelay == 0)
-00017a  4e71              LDR      r6,|L2.832|
+000180  4e70              LDR      r6,|L2.836|
 ;;;1118   		{
 ;;;1119   			if(finishflag == 1)
-00017c  4d72              LDR      r5,|L2.840|
+000182  4d72              LDR      r5,|L2.844|
 ;;;1120   			{
 ;;;1121   				finishflag = 0;
 ;;;1122   			}
@@ -452,17 +450,17 @@
 ;;;1130   	else//高档
 ;;;1131   	{
 ;;;1132   		var32 = Rmon_value;
-00017e  881c              LDRH     r4,[r3,#0]  ; Rmon_value
-000180  f64e2760          MOV      r7,#0xea60            ;1117
-000184  9400              STR      r4,[sp,#0]            ;1098
-000186  d040              BEQ      |L2.522|
+000184  881c              LDRH     r4,[r3,#0]  ; Rmon_value
+000186  f64e2760          MOV      r7,#0xea60            ;1117
+00018a  9400              STR      r4,[sp,#0]            ;1098
+00018c  d040              BEQ      |L2.528|
 ;;;1133   		var32 = var32 * CalPara.TestR[1] + CalPara.OffsetR[1];  
-000188  ee014a10          VMOV     s2,r4
-00018c  edd20a1e          VLDR     s1,[r2,#0x78]
-000190  edd21a19          VLDR     s3,[r2,#0x64]
-000194  eeb81a41          VCVT.F32.U32 s2,s2
-000198  ee410a21          VMLA.F32 s1,s2,s3
-00019c  eefc0ae0          VCVT.U32.F32 s1,s1
+00018e  ee014a10          VMOV     s2,r4
+000192  edd20a1e          VLDR     s1,[r2,#0x78]
+000196  edd21a19          VLDR     s3,[r2,#0x64]
+00019a  eeb81a41          VCVT.F32.U32 s2,s2
+00019e  ee410a21          VMLA.F32 s1,s2,s3
+0001a2  eefc0ae0          VCVT.U32.F32 s1,s1
 ;;;1134   //		if ((CLists.CPolar4 & 0x04) == 0x04)		  
 ;;;1135   //		{
 ;;;1136   //			if (var32 < CLists.CREG_ReadR_Offset_HIG) 
@@ -478,61 +476,61 @@
 ;;;1146   //			var32 = 0;				  //清零
 ;;;1147   //		}
 ;;;1148   		Para.CR_VLUE = var32;
-0001a0  ee104a90          VMOV     r4,s1
-0001a4  edcd0a00          VSTR     s1,[sp,#0]            ;1133
-0001a8  638c              STR      r4,[r1,#0x38]  ; Para
+0001a6  ee104a90          VMOV     r4,s1
+0001aa  edcd0a00          VSTR     s1,[sp,#0]            ;1133
+0001ae  638c              STR      r4,[r1,#0x38]  ; Para
 ;;;1149   		if(Para.CR_VLUE > 1000)
-0001aa  6b8c              LDR      r4,[r1,#0x38]  ; Para
-0001ac  4564              CMP      r4,r12
-0001ae  d912              BLS      |L2.470|
+0001b0  6b8c              LDR      r4,[r1,#0x38]  ; Para
+0001b2  4564              CMP      r4,r12
+0001b4  d912              BLS      |L2.476|
 ;;;1150   		{
 ;;;1151   			var32 = Rmon_value;
-0001b0  881c              LDRH     r4,[r3,#0]  ; Rmon_value
+0001b6  881c              LDRH     r4,[r3,#0]  ; Rmon_value
 ;;;1152   			var32 = var32 * CalPara.TestR[2] + CalPara.OffsetR[2];
-0001b2  9400              STR      r4,[sp,#0]
-0001b4  edd20a1f          VLDR     s1,[r2,#0x7c]
-0001b8  edd21a1a          VLDR     s3,[r2,#0x68]
-                  |L2.444|
-0001bc  ee014a10          VMOV     s2,r4                 ;1101
-0001c0  eeb81a41          VCVT.F32.U32 s2,s2                 ;1101
-0001c4  ee410a21          VMLA.F32 s1,s2,s3              ;1101
-0001c8  eefc0ae0          VCVT.U32.F32 s1,s1                 ;1101
-0001cc  ee104a90          VMOV     r4,s1                 ;1116
-0001d0  edcd0a00          VSTR     s1,[sp,#0]            ;1101
-0001d4  638c              STR      r4,[r1,#0x38]         ;1116  ; Para
-                  |L2.470|
+0001b8  9400              STR      r4,[sp,#0]
+0001ba  edd20a1f          VLDR     s1,[r2,#0x7c]
+0001be  edd21a1a          VLDR     s3,[r2,#0x68]
+                  |L2.450|
+0001c2  ee014a10          VMOV     s2,r4                 ;1101
+0001c6  eeb81a41          VCVT.F32.U32 s2,s2                 ;1101
+0001ca  ee410a21          VMLA.F32 s1,s2,s3              ;1101
+0001ce  eefc0ae0          VCVT.U32.F32 s1,s1                 ;1101
+0001d2  ee104a90          VMOV     r4,s1                 ;1116
+0001d6  edcd0a00          VSTR     s1,[sp,#0]            ;1101
+0001da  638c              STR      r4,[r1,#0x38]         ;1116  ; Para
+                  |L2.476|
 ;;;1153   			Para.CR_VLUE = var32;
 ;;;1154   		}
 ;;;1155   		if(Rmon_value > 60000 && finishdelay == 0)
-0001d6  881b              LDRH     r3,[r3,#0]  ; Rmon_value
-0001d8  42bb              CMP      r3,r7
-0001da  d91f              BLS      |L2.540|
-0001dc  6833              LDR      r3,[r6,#0]            ;1117  ; finishdelay
-0001de  b1cb              CBZ      r3,|L2.532|
-0001e0  e01c              B        |L2.540|
-                  |L2.482|
-0001e2  edd20a12          VLDR     s1,[r2,#0x48]         ;1060
-0001e6  690d              LDR      r5,[r1,#0x10]         ;1060  ; Para
-0001e8  edd21a0a          VLDR     s3,[r2,#0x28]         ;1060
-0001ec  ee015a10          VMOV     s2,r5                 ;1060
-0001f0  eeb81a41          VCVT.F32.U32 s2,s2                 ;1060
-0001f4  ee410a21          VMLA.F32 s1,s2,s3              ;1060
-0001f8  eefc0ae0          VCVT.U32.F32 s1,s1                 ;1060
-0001fc  ee105a90          VMOV     r5,s1                 ;1069
-000200  edcd0a00          VSTR     s1,[sp,#0]            ;1060
-000204  8025              STRH     r5,[r4,#0]            ;1069
-000206  690d              LDR      r5,[r1,#0x10]         ;1070  ; Para
-000208  e78d              B        |L2.294|
-                  |L2.522|
-00020a  edd20a1d          VLDR     s1,[r2,#0x74]         ;1101
-00020e  edd21a18          VLDR     s3,[r2,#0x60]         ;1101
-000212  e7d3              B        |L2.444|
-                  |L2.532|
-000214  782b              LDRB     r3,[r5,#0]            ;1119  ; finishflag
-000216  2b01              CMP      r3,#1                 ;1119
-000218  d100              BNE      |L2.540|
-00021a  7028              STRB     r0,[r5,#0]            ;1121
-                  |L2.540|
+0001dc  881b              LDRH     r3,[r3,#0]  ; Rmon_value
+0001de  42bb              CMP      r3,r7
+0001e0  d91f              BLS      |L2.546|
+0001e2  6833              LDR      r3,[r6,#0]            ;1117  ; finishdelay
+0001e4  b1cb              CBZ      r3,|L2.538|
+0001e6  e01c              B        |L2.546|
+                  |L2.488|
+0001e8  edd20a12          VLDR     s1,[r2,#0x48]         ;1060
+0001ec  690d              LDR      r5,[r1,#0x10]         ;1060  ; Para
+0001ee  edd21a0a          VLDR     s3,[r2,#0x28]         ;1060
+0001f2  ee015a10          VMOV     s2,r5                 ;1060
+0001f6  eeb81a41          VCVT.F32.U32 s2,s2                 ;1060
+0001fa  ee410a21          VMLA.F32 s1,s2,s3              ;1060
+0001fe  eefc0ae0          VCVT.U32.F32 s1,s1                 ;1060
+000202  ee105a90          VMOV     r5,s1                 ;1069
+000206  edcd0a00          VSTR     s1,[sp,#0]            ;1060
+00020a  8025              STRH     r5,[r4,#0]            ;1069
+00020c  690d              LDR      r5,[r1,#0x10]         ;1070  ; Para
+00020e  e78d              B        |L2.300|
+                  |L2.528|
+000210  edd20a1d          VLDR     s1,[r2,#0x74]         ;1101
+000214  edd21a18          VLDR     s3,[r2,#0x60]         ;1101
+000218  e7d3              B        |L2.450|
+                  |L2.538|
+00021a  782b              LDRB     r3,[r5,#0]            ;1119  ; finishflag
+00021c  2b01              CMP      r3,#1                 ;1119
+00021e  d100              BNE      |L2.546|
+000220  7028              STRB     r0,[r5,#0]            ;1121
+                  |L2.546|
 ;;;1156   		{
 ;;;1157   			if(finishflag == 1)
 ;;;1158   			{
@@ -559,13 +557,13 @@
 ;;;1179   //	Para.CPOW_Voltage = var32;
 ;;;1180   //	//	DISS_POW_Voltage=Para.CPOW_Voltage;
 ;;;1181   	DISS_POW_Voltage=(float)Para.CPOW_Voltage/1000;//计算显示电压
-00021c  9000              STR      r0,[sp,#0]
-00021e  6a8b              LDR      r3,[r1,#0x28]  ; Para
-000220  ee003a90          VMOV     s1,r3
-000224  4b49              LDR      r3,|L2.844|
-000226  eef80a60          VCVT.F32.U32 s1,s1
-00022a  ee801a80          VDIV.F32 s2,s1,s0
-00022e  ed831a00          VSTR     s2,[r3,#0]
+000222  9000              STR      r0,[sp,#0]
+000224  6a8b              LDR      r3,[r1,#0x28]  ; Para
+000226  ee003a90          VMOV     s1,r3
+00022a  4b49              LDR      r3,|L2.848|
+00022c  eef80a60          VCVT.F32.U32 s1,s1
+000230  ee801a80          VDIV.F32 s2,s1,s0
+000234  ed831a00          VSTR     s2,[r3,#0]
 ;;;1182   //	var32 = 0;
 ;;;1183   /*****************************稳压电源测量电流转换*******************************************/
 ;;;1184   //	var32 = Imon_POWE_value;
@@ -585,13 +583,13 @@
 ;;;1198   //		Para.CCurrent = var32;
 ;;;1199   ////		DISS_POW_Current=Para.CCurrent;
 ;;;1200   		DISS_POW_Current=(float)Para.CCurrent/100;//计算显示电流
-000232  6b0b              LDR      r3,[r1,#0x30]  ; Para
-000234  ee003a10          VMOV     s0,r3
-000238  eeb80a40          VCVT.F32.U32 s0,s0
-00023c  eddf0a44          VLDR     s1,|L2.848|
-000240  4b44              LDR      r3,|L2.852|
-000242  ee801a20          VDIV.F32 s2,s0,s1
-000246  ed831a00          VSTR     s2,[r3,#0]
+000238  6b0b              LDR      r3,[r1,#0x30]  ; Para
+00023a  ee003a10          VMOV     s0,r3
+00023e  eeb80a40          VCVT.F32.U32 s0,s0
+000242  eddf0a44          VLDR     s1,|L2.852|
+000246  4b44              LDR      r3,|L2.856|
+000248  ee801a20          VDIV.F32 s2,s0,s1
+00024c  ed831a00          VSTR     s2,[r3,#0]
 ;;;1201   //	}
 ;;;1202   //	else
 ;;;1203   //	{
@@ -612,13 +610,13 @@
 ;;;1218   //	}
 ;;;1219   /**************************稳压电源设置电压转换******************************************/
 ;;;1220   	var32 = Para.CSET_Voltage;
-00024a  688b              LDR      r3,[r1,#8]  ; Para
+000250  688b              LDR      r3,[r1,#8]  ; Para
 ;;;1221   	var32 = var32 * CalPara.SetPV[0] + CalPara.OffsetSetPV[0];   
-00024c  9300              STR      r3,[sp,#0]
-00024e  ee003a90          VMOV     s1,r3
-000252  ed920a06          VLDR     s0,[r2,#0x18]
-000256  ed921a02          VLDR     s2,[r2,#8]
-00025a  eef80a60          VCVT.F32.U32 s1,s1
+000252  9300              STR      r3,[sp,#0]
+000254  ee003a90          VMOV     s1,r3
+000258  ed920a06          VLDR     s0,[r2,#0x18]
+00025c  ed921a02          VLDR     s2,[r2,#8]
+000260  eef80a60          VCVT.F32.U32 s1,s1
 ;;;1222   //	if ((CLists.CPolar5 & 0x04) == 0)			   
 ;;;1223   //	{
 ;;;1224   //		if (var32 < CLists.CSET_POWERV_Offset) var32 = 0;
@@ -628,30 +626,30 @@
 ;;;1228   //	var32 = var32/CLists.CSET_POWER_CorrectionV;
 ;;;1229   //	var32=var32>>1;
 ;;;1230   	Contr_Voltage = var32;
-00025e  4b3e              LDR      r3,|L2.856|
-000260  ee000a81          VMLA.F32 s0,s1,s2              ;1221
-000264  eebc0ac0          VCVT.U32.F32 s0,s0                 ;1221
-000268  ee104a10          VMOV     r4,s0
-00026c  ed8d0a00          VSTR     s0,[sp,#0]            ;1221
-000270  801c              STRH     r4,[r3,#0]
+000264  4b3d              LDR      r3,|L2.860|
+000266  ee000a81          VMLA.F32 s0,s1,s2              ;1221
+00026a  eebc0ac0          VCVT.U32.F32 s0,s0                 ;1221
+00026e  ee104a10          VMOV     r4,s0
+000272  ed8d0a00          VSTR     s0,[sp,#0]            ;1221
+000276  801c              STRH     r4,[r3,#0]
 ;;;1231   	if(Para.CSET_Voltage==0)
-000272  688c              LDR      r4,[r1,#8]  ; Para
-000274  b904              CBNZ     r4,|L2.632|
+000278  688c              LDR      r4,[r1,#8]  ; Para
+00027a  b904              CBNZ     r4,|L2.638|
 ;;;1232   	{
 ;;;1233   		Contr_Voltage=0;
-000276  8018              STRH     r0,[r3,#0]
-                  |L2.632|
+00027c  8018              STRH     r0,[r3,#0]
+                  |L2.638|
 ;;;1234   	}
 ;;;1235   	var32 = 0;
 ;;;1236   /**************************稳压电源设置电流转换**************************************/
 ;;;1237   	var32 = Para.CSET_Current;
-000278  68cb              LDR      r3,[r1,#0xc]  ; Para
+00027e  68cb              LDR      r3,[r1,#0xc]  ; Para
 ;;;1238   	var32 = var32 * CalPara.SetPC[0] + CalPara.OffsetPC[0];  
-00027a  9300              STR      r3,[sp,#0]
-00027c  ee003a90          VMOV     s1,r3
-000280  ed920a16          VLDR     s0,[r2,#0x58]
-000284  ed921a0e          VLDR     s2,[r2,#0x38]
-000288  eef80a60          VCVT.F32.U32 s1,s1
+000280  9300              STR      r3,[sp,#0]
+000282  ee003a90          VMOV     s1,r3
+000286  ed920a16          VLDR     s0,[r2,#0x58]
+00028a  ed921a0e          VLDR     s2,[r2,#0x38]
+00028e  eef80a60          VCVT.F32.U32 s1,s1
 ;;;1239   //	if ((CLists.CPolar6 & 0x04) == 0)			   
 ;;;1240   //	{
 ;;;1241   //		if (var32 < CLists.CSET_POWERA_Offset) var32 = 0;
@@ -661,41 +659,41 @@
 ;;;1245   //	var32 = var32/CLists.CSET_POWER_CorrectionA;
 ;;;1246   //	var32=var32>>1;
 ;;;1247   	Contr_Current = var32;
-00028c  4b33              LDR      r3,|L2.860|
-00028e  ee000a81          VMLA.F32 s0,s1,s2              ;1238
-000292  eebc0ac0          VCVT.U32.F32 s0,s0                 ;1238
-000296  ee104a10          VMOV     r4,s0
-00029a  ed8d0a00          VSTR     s0,[sp,#0]            ;1238
-00029e  801c              STRH     r4,[r3,#0]
+000292  4b33              LDR      r3,|L2.864|
+000294  ee000a81          VMLA.F32 s0,s1,s2              ;1238
+000298  eebc0ac0          VCVT.U32.F32 s0,s0                 ;1238
+00029c  ee104a10          VMOV     r4,s0
+0002a0  ed8d0a00          VSTR     s0,[sp,#0]            ;1238
+0002a4  801c              STRH     r4,[r3,#0]
 ;;;1248   	if(Para.CSET_Current==0)
-0002a0  68cc              LDR      r4,[r1,#0xc]  ; Para
-0002a2  b904              CBNZ     r4,|L2.678|
+0002a6  68cc              LDR      r4,[r1,#0xc]  ; Para
+0002a8  b904              CBNZ     r4,|L2.684|
 ;;;1249   	{
 ;;;1250   		Contr_Current=0;
-0002a4  8018              STRH     r0,[r3,#0]
-                  |L2.678|
+0002aa  8018              STRH     r0,[r3,#0]
+                  |L2.684|
 ;;;1251   	}
 ;;;1252   	var32 = 0;
 ;;;1253   	
 ;;;1254   /********************识别电阻1转换******************************/
 ;;;1255   //	var32=(R1mon_value*1000)/(65535-R1mon_value);
 ;;;1256   	var32 = (R1mon_value*1000)/(65535-R1mon_value);
-0002a6  4b2e              LDR      r3,|L2.864|
-0002a8  881c              LDRH     r4,[r3,#0]  ; R1mon_value
-0002aa  f44f757a          MOV      r5,#0x3e8
-0002ae  881b              LDRH     r3,[r3,#0]  ; R1mon_value
-0002b0  436c              MULS     r4,r5,r4
-0002b2  f64f75ff          MOV      r5,#0xffff
-0002b6  1aeb              SUBS     r3,r5,r3
-0002b8  fbb4f3f3          UDIV     r3,r4,r3
+0002ac  4b2d              LDR      r3,|L2.868|
+0002ae  881c              LDRH     r4,[r3,#0]  ; R1mon_value
+0002b0  f44f757a          MOV      r5,#0x3e8
+0002b4  881b              LDRH     r3,[r3,#0]  ; R1mon_value
+0002b6  436c              MULS     r4,r5,r4
+0002b8  f64f75ff          MOV      r5,#0xffff
+0002bc  1aeb              SUBS     r3,r5,r3
+0002be  fbb4f3f3          UDIV     r3,r4,r3
 ;;;1257   	var32 = var32 * CalPara.TestR1[0] + CalPara.OffsetR1[0];  
-0002bc  ee003a90          VMOV     s1,r3
-0002c0  9300              STR      r3,[sp,#0]
-0002c2  ed920a20          VLDR     s0,[r2,#0x80]
-0002c6  eef80a60          VCVT.F32.U32 s1,s1
-0002ca  ed921a1b          VLDR     s2,[r2,#0x6c]
-0002ce  ee000a81          VMLA.F32 s0,s1,s2
-0002d2  eebc0ac0          VCVT.U32.F32 s0,s0
+0002c2  ee003a90          VMOV     s1,r3
+0002c6  9300              STR      r3,[sp,#0]
+0002c8  ed920a20          VLDR     s0,[r2,#0x80]
+0002cc  eef80a60          VCVT.F32.U32 s1,s1
+0002d0  ed921a1b          VLDR     s2,[r2,#0x6c]
+0002d4  ee000a81          VMLA.F32 s0,s1,s2
+0002d8  eebc0ac0          VCVT.U32.F32 s0,s0
 ;;;1258   //	if ((CLists.CPolar7 & 0x01) == 0x01)		  
 ;;;1259   //	{
 ;;;1260   //		if (var32 < CLists.CREG_ReadR1_Offset) 
@@ -711,9 +709,9 @@
 ;;;1270   //		var32 = 0;				  //清零
 ;;;1271   //	}
 ;;;1272   	Para.CR1_VLUE = var32;
-0002d6  ee103a10          VMOV     r3,s0
-0002da  ed8d0a00          VSTR     s0,[sp,#0]            ;1257
-0002de  63cb              STR      r3,[r1,#0x3c]  ; Para
+0002dc  ee103a10          VMOV     r3,s0
+0002e0  ed8d0a00          VSTR     s0,[sp,#0]            ;1257
+0002e4  63cb              STR      r3,[r1,#0x3c]  ; Para
 ;;;1273   //	if(R1mon_value > 34000)
 ;;;1274   //	{
 ;;;1275   //		Para.CR1_VLUE = 100;
@@ -723,21 +721,21 @@
 ;;;1279   	
 ;;;1280   /********************识别电阻2转换******************************/	
 ;;;1281   	var32 = (R2mon_value*1000)/(65535-R2mon_value);
-0002e0  4b20              LDR      r3,|L2.868|
-0002e2  881c              LDRH     r4,[r3,#0]  ; R2mon_value
-0002e4  f44f767a          MOV      r6,#0x3e8
-0002e8  881b              LDRH     r3,[r3,#0]  ; R2mon_value
-0002ea  4374              MULS     r4,r6,r4
-0002ec  1aeb              SUBS     r3,r5,r3
-0002ee  fbb4f3f3          UDIV     r3,r4,r3
+0002e6  4b20              LDR      r3,|L2.872|
+0002e8  881c              LDRH     r4,[r3,#0]  ; R2mon_value
+0002ea  f44f767a          MOV      r6,#0x3e8
+0002ee  881b              LDRH     r3,[r3,#0]  ; R2mon_value
+0002f0  4374              MULS     r4,r6,r4
+0002f2  1aeb              SUBS     r3,r5,r3
+0002f4  fbb4f3f3          UDIV     r3,r4,r3
 ;;;1282   	var32 = var32 * CalPara.TestR2[0] + CalPara.OffsetR2[0];   
-0002f2  ee003a90          VMOV     s1,r3
-0002f6  9300              STR      r3,[sp,#0]
-0002f8  ed920a21          VLDR     s0,[r2,#0x84]
-0002fc  eef80a60          VCVT.F32.U32 s1,s1
-000300  ed921a1c          VLDR     s2,[r2,#0x70]
-000304  ee000a81          VMLA.F32 s0,s1,s2
-000308  eebc0ac0          VCVT.U32.F32 s0,s0
+0002f8  ee003a90          VMOV     s1,r3
+0002fc  9300              STR      r3,[sp,#0]
+0002fe  ed920a21          VLDR     s0,[r2,#0x84]
+000302  eef80a60          VCVT.F32.U32 s1,s1
+000306  ed921a1c          VLDR     s2,[r2,#0x70]
+00030a  ee000a81          VMLA.F32 s0,s1,s2
+00030e  eebc0ac0          VCVT.U32.F32 s0,s0
 ;;;1283   //	if ((CLists.CPolar7 & 0x04) == 0x04)		  
 ;;;1284   //	{
 ;;;1285   //		if (var32 < CLists.CREG_ReadR2_Offset) 
@@ -753,54 +751,53 @@
 ;;;1295   //		var32 = 0;				  //清零
 ;;;1296   //	}
 ;;;1297   	Para.CR2_VLUE = var32;
-00030c  ee102a10          VMOV     r2,s0
-000310  ed8d0a00          VSTR     s0,[sp,#0]            ;1282
-000314  640a              STR      r2,[r1,#0x40]  ; Para
+000312  ee102a10          VMOV     r2,s0
+000316  ed8d0a00          VSTR     s0,[sp,#0]            ;1282
+00031a  640a              STR      r2,[r1,#0x40]  ; Para
 ;;;1298   	var32 = 0;	
-000316  9000              STR      r0,[sp,#0]
+00031c  9000              STR      r0,[sp,#0]
 ;;;1299   }
-000318  bdf8              POP      {r3-r7,pc}
+00031e  bdf8              POP      {r3-r7,pc}
 ;;;1300   /********************************************************************************
                           ENDP
 
-00031a  0000              DCW      0x0000
-                  |L2.796|
-                          DCD      ||area_number.7||
                   |L2.800|
-                          DCD      Vmon_Load_value
+                          DCD      ||area_number.7||
                   |L2.804|
-                          DCD      DISS_Voltage
+                          DCD      Vmon_Load_value
                   |L2.808|
-000328  447a0000          DCFS     0x447a0000 ; 1000
+                          DCD      DISS_Voltage
                   |L2.812|
-                          DCD      CalPara
+00032c  447a0000          DCFS     0x447a0000 ; 1000
                   |L2.816|
-                          DCD      Para
+                          DCD      CalPara
                   |L2.820|
-                          DCD      Imon_Load_value
+                          DCD      Para
                   |L2.824|
-                          DCD      DISS_Current
+                          DCD      Imon_Load_value
                   |L2.828|
-                          DCD      Contr_Laod
+                          DCD      DISS_Current
                   |L2.832|
-                          DCD      finishdelay
+                          DCD      Contr_Laod
                   |L2.836|
-                          DCD      Rmon_value
+                          DCD      finishdelay
                   |L2.840|
-                          DCD      finishflag
+                          DCD      Rmon_value
                   |L2.844|
-                          DCD      DISS_POW_Voltage
+                          DCD      finishflag
                   |L2.848|
-000350  42c80000          DCFS     0x42c80000 ; 100
+                          DCD      DISS_POW_Voltage
                   |L2.852|
-                          DCD      DISS_POW_Current
+000354  42c80000          DCFS     0x42c80000 ; 100
                   |L2.856|
-                          DCD      Contr_Voltage
+                          DCD      DISS_POW_Current
                   |L2.860|
-                          DCD      Contr_Current
+                          DCD      Contr_Voltage
                   |L2.864|
-                          DCD      R1mon_value
+                          DCD      Contr_Current
                   |L2.868|
+                          DCD      R1mon_value
+                  |L2.872|
                           DCD      R2mon_value
 
                           AREA ||i.UART_Action||, CODE, READONLY, ALIGN=2
