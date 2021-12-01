@@ -745,6 +745,11 @@ Ntypedef unsigned           int uint32_t;
 Ntypedef unsigned       __INT64 uint64_t;
 Xtypedef unsigned       __int64 uint64_t;
 N
+Ntypedef unsigned          char u8;
+Ntypedef unsigned short     int u16;
+Ntypedef unsigned           int u32;
+Ntypedef unsigned       __INT64 u64;
+Xtypedef unsigned       __int64 u64;
 N    /* 7.18.1.2 */
 N
 N    /* smallest type of at least n bits */
@@ -34998,6 +35003,7 @@ Nextern vu8 version;
 Nextern short Temperature;
 Nextern vu8 sendwait;
 Nextern vu8 listsend;
+Nextern vu8 overflag;
 N#define onoff_Load                    Run_Control[0]  //ON/OFF
 N#define onoff_POWE                    Run_Control[1]  //ON/OFF
 N#define SET_Voltage 	    	          Run_Control[2]  //电源设定电压
@@ -35433,6 +35439,7 @@ Nvu16 watchcurrent[1000];
 Nu16 watchcount;
 Nuint8_t vccbuf[13];
 Nfloat shortold_I = 0;
+Nvu8 overflag;
 N/*****************************************************************/
 Nvoid TIM4_Config(void)
 N{
@@ -36115,6 +36122,7 @@ N			{
 N				shutcount3++;
 N				if(shutcount3 >= 500)
 N				{
+N					overflag = 1;
 N					Off_GPOI_ResetSet();
 N//					shutcount1 = 0;
 N//					shutcount2 = 0;
@@ -36131,6 +36139,7 @@ N			{
 N				shutcount4 ++;
 N				if(shutcount4 >= 20000)
 N				{
+N					overflag = 1;
 N					Off_GPOI_ResetSet();
 N					mainswitch = 0;
 N					shutcount1 = 0;
@@ -36144,6 +36153,7 @@ N			{
 N				shutcount3++;
 N				if(shutcount3 >= 500)
 N				{
+N					overflag = 1;
 N					Off_GPOI_ResetSet();
 N//					shutcount1 = 0;
 N//					shutcount2 = 0;
@@ -36160,6 +36170,7 @@ N			{
 N				shutcount4 ++;
 N				if(shutcount4 >= 2000)
 N				{
+N					overflag = 1;
 N					Off_GPOI_ResetSet();
 N					mainswitch = 0;
 N					shutcount4 = 0;

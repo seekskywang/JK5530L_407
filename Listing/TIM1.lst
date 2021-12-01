@@ -745,6 +745,11 @@ Ntypedef unsigned           int uint32_t;
 Ntypedef unsigned       __INT64 uint64_t;
 Xtypedef unsigned       __int64 uint64_t;
 N
+Ntypedef unsigned          char u8;
+Ntypedef unsigned short     int u16;
+Ntypedef unsigned           int u32;
+Ntypedef unsigned       __INT64 u64;
+Xtypedef unsigned       __int64 u64;
 N    /* 7.18.1.2 */
 N
 N    /* smallest type of at least n bits */
@@ -34998,6 +35003,7 @@ Nextern vu8 version;
 Nextern short Temperature;
 Nextern vu8 sendwait;
 Nextern vu8 listsend;
+Nextern vu8 overflag;
 N#define onoff_Load                    Run_Control[0]  //ON/OFF
 N#define onoff_POWE                    Run_Control[1]  //ON/OFF
 N#define SET_Voltage 	    	          Run_Control[2]  //电源设定电压

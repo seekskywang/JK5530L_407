@@ -141,6 +141,10 @@
       <TargetDriverDllRegistry>
         <SetRegEntry>
           <Number>0</Number>
+          <Key>DLGUARM</Key>
+        </SetRegEntry>
+        <SetRegEntry>
+          <Number>0</Number>
           <Key>ARMRTXEVENTFLAGS</Key>
           <Name>-L70 -Z18 -C0 -M0 -T1</Name>
         </SetRegEntry>
@@ -808,6 +812,16 @@
           <count>85</count>
           <WinNumber>2</WinNumber>
           <ItemText>Para.IR_Start_C,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>86</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>MasterSendbuf</ItemText>
+        </Ww>
+        <Ww>
+          <count>87</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>MasterRecbuf</ItemText>
         </Ww>
       </WatchWindow2>
       <MemoryWindow4>

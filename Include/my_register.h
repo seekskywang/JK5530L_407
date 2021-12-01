@@ -141,6 +141,7 @@ extern vu8 version;
 extern short Temperature;
 extern vu8 sendwait;
 extern vu8 listsend;
+extern vu8 overflag;
 #define onoff_Load                    Run_Control[0]  //ON/OFF
 #define onoff_POWE                    Run_Control[1]  //ON/OFF
 #define SET_Voltage 	    	          Run_Control[2]  //电源设定电压

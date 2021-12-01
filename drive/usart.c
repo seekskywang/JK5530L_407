@@ -68,7 +68,7 @@ char CmdStr[CmdNumb][CmdLen] =
 	{"TRIG_\0"},           //打开关闭
 	{"SETPARA_\0"},           //模式切换    1个字符  
 	{"SETLIST_\0"},           //读取CS1237电流的数据 
-	{"POWV_\0"},          //ADC电流
+	{"OPRESET_\0"},          //过功率标志
 	{"POWI_\0"},            //启动LM5116 1个字符 
 	{"ADCV_\0"},          //ADC电压
 	{"LOWI_\0"},          //被拉低时过流 1个字符 
@@ -626,7 +626,7 @@ void CalHandle(u8 mode,u8 range,u32 data)
 		if(range == 0)//负载电流低档位1
 		{		
 			LOAD_I_SW = 0;
-			Contr_Laod = 5000;
+			Contr_Laod = 8000;
 			calflag = 1;
 			OnOff_GPOI_ResetSet(2,1);
 		}
@@ -668,7 +668,7 @@ void CalHandle(u8 mode,u8 range,u32 data)
 			y1 = Contr_Laod;
 			x3 = Imon_Load_value;
 			y3 = data;
-			Contr_Laod = 29000;
+			Contr_Laod = 27000;
 		}else if(range == 5){//负载电流高档位3
 			
 			x2 = data;
@@ -1068,6 +1068,10 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 					buf[currCharNum++]=(',');
 					sprintf(&buf[currCharNum],"%03d",Temperature);
 					currCharNum+=3;
+					
+					buf[currCharNum++]=(',');
+					sprintf(&buf[currCharNum],"%1d",overflag);
+					currCharNum+=1;
 //					buf[currCharNum++]=(',');
 //					sprintf(&buf[currCharNum],"%d",H_L);
 //					currCharNum++;
@@ -1694,6 +1698,39 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 						
 					}
 				}break;
+				case 5:
+				pntlen = 1;
+				if(buf[currCharNum]=='?')
+				{
+					sprintf(&buf[currCharNum],"%1d",C_DISCHARGE);
+				    currCharNum+=pntlen;
+				    buf[currCharNum ++] = ChrEndS;
+					
+				}
+				else
+				{
+					pntlen = 1;				
+					for(i=0,temp1=0;i<pntlen;i++)
+					{
+						  temp1 = temp1*10+(buf[currCharNum++]-0x30);
+					}		                   
+					if(temp1>1)
+					{
+						return SetErr_ACK(buf, addr ,PARA_ERR);
+					}
+//					MODE=temp1;
+					
+					
+					overflag = temp1;
+//						Para.CSET_Voltage = 5000;
+//						Para.CSET_Current = 1000;
+					
+						
+//					MODE_ONOFF(mainswitch);
+	//				Change_LM_Val(LM_S_Vale);
+					buf[currCharNum++] = ChrEndR;
+		        }
+				break;
 				case 13://电流校准
 				{
 					pntlen = 8;

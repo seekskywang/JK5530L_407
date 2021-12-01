@@ -745,6 +745,11 @@ Ntypedef unsigned           int uint32_t;
 Ntypedef unsigned       __INT64 uint64_t;
 Xtypedef unsigned       __int64 uint64_t;
 N
+Ntypedef unsigned          char u8;
+Ntypedef unsigned short     int u16;
+Ntypedef unsigned           int u32;
+Ntypedef unsigned       __INT64 u64;
+Xtypedef unsigned       __int64 u64;
 N    /* 7.18.1.2 */
 N
 N    /* smallest type of at least n bits */
@@ -34998,6 +35003,7 @@ Nextern vu8 version;
 Nextern short Temperature;
 Nextern vu8 sendwait;
 Nextern vu8 listsend;
+Nextern vu8 overflag;
 N#define onoff_Load                    Run_Control[0]  //ON/OFF
 N#define onoff_POWE                    Run_Control[1]  //ON/OFF
 N#define SET_Voltage 	    	          Run_Control[2]  //电源设定电压
@@ -37156,7 +37162,7 @@ N	{"MOD_\0"},           //模式切换
 N	{"TRIG_\0"},           //打开关闭
 N	{"SETPARA_\0"},           //模式切换    1个字符  
 N	{"SETLIST_\0"},           //读取CS1237电流的数据 
-N	{"POWV_\0"},          //ADC电流
+N	{"OPRESET_\0"},          //过功率标志
 N	{"POWI_\0"},            //启动LM5116 1个字符 
 N	{"ADCV_\0"},          //ADC电压
 N	{"LOWI_\0"},          //被拉低时过流 1个字符 
@@ -37775,7 +37781,7 @@ N		if(range == 0)//负载电流低档位1
 N		{		
 N			LOAD_I_SW = 0;
 X			Run_Control[8] = 0;
-N			Contr_Laod = 5000;
+N			Contr_Laod = 8000;
 N			calflag = 1;
 N			OnOff_GPOI_ResetSet(2,1);
 N		}
@@ -37823,7 +37829,7 @@ N			x1 = data;
 N			y1 = Contr_Laod;
 N			x3 = Imon_Load_value;
 N			y3 = data;
-N			Contr_Laod = 29000;
+N			Contr_Laod = 27000;
 N		}else if(range == 5){//负载电流高档位3
 N			
 N			x2 = data;
@@ -38242,6 +38248,10 @@ N
 N					buf[currCharNum++]=(',');
 N					sprintf(&buf[currCharNum],"%03d",Temperature);
 N					currCharNum+=3;
+N					
+N					buf[currCharNum++]=(',');
+N					sprintf(&buf[currCharNum],"%1d",overflag);
+N					currCharNum+=1;
 N//					buf[currCharNum++]=(',');
 N//					sprintf(&buf[currCharNum],"%d",H_L);
 N//					currCharNum++;
@@ -38897,6 +38907,42 @@ N						CalHandle(0,fsingal,temp1);
 N						
 N					}
 N				}break;
+N				case 5:
+N				pntlen = 1;
+N				if(buf[currCharNum]=='?')
+N				{
+N					sprintf(&buf[currCharNum],"%1d",C_DISCHARGE);
+N				    currCharNum+=pntlen;
+N				    buf[currCharNum ++] = ChrEndS;
+X				    buf[currCharNum ++] = 0x0A;
+N					
+N				}
+N				else
+N				{
+N					pntlen = 1;				
+N					for(i=0,temp1=0;i<pntlen;i++)
+N					{
+N						  temp1 = temp1*10+(buf[currCharNum++]-0x30);
+N					}		                   
+N					if(temp1>1)
+N					{
+N						return SetErr_ACK(buf, addr ,PARA_ERR);
+X						return SetErr_ACK(buf, addr ,1);
+N					}
+N//					MODE=temp1;
+N					
+N					
+N					overflag = temp1;
+N//						Para.CSET_Voltage = 5000;
+N//						Para.CSET_Current = 1000;
+N					
+N						
+N//					MODE_ONOFF(mainswitch);
+N	//				Change_LM_Val(LM_S_Vale);
+N					buf[currCharNum++] = ChrEndR;
+X					buf[currCharNum++] = 0x0D;
+N		        }
+N				break;
 N				case 13://电流校准
 N				{
 N					pntlen = 8;

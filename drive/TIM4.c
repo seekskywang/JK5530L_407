@@ -48,6 +48,7 @@ vu16 watchcurrent[1000];
 u16 watchcount;
 uint8_t vccbuf[13];
 float shortold_I = 0;
+vu8 overflag;
 /*****************************************************************/
 void TIM4_Config(void)
 {
@@ -683,6 +684,7 @@ void TIM3_IRQHandler(void){
 				shutcount3++;
 				if(shutcount3 >= 500)
 				{
+					overflag = 1;
 					Off_GPOI_ResetSet();
 //					shutcount1 = 0;
 //					shutcount2 = 0;
@@ -699,6 +701,7 @@ void TIM3_IRQHandler(void){
 				shutcount4 ++;
 				if(shutcount4 >= 20000)
 				{
+					overflag = 1;
 					Off_GPOI_ResetSet();
 					mainswitch = 0;
 					shutcount1 = 0;
@@ -712,6 +715,7 @@ void TIM3_IRQHandler(void){
 				shutcount3++;
 				if(shutcount3 >= 500)
 				{
+					overflag = 1;
 					Off_GPOI_ResetSet();
 //					shutcount1 = 0;
 //					shutcount2 = 0;
@@ -728,6 +732,7 @@ void TIM3_IRQHandler(void){
 				shutcount4 ++;
 				if(shutcount4 >= 2000)
 				{
+					overflag = 1;
 					Off_GPOI_ResetSet();
 					mainswitch = 0;
 					shutcount4 = 0;
