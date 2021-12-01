@@ -980,6 +980,12 @@ void Transformation_ADC(void)
 //		else var32 = var32 + CLists.CREG_LoadA_Offset_LOW;
 //		var32 = var32 >> 12;
 		Para.CLaod_Current = var32;
+		if(Para.CSET_Current_Laod >= 5000)
+		{
+			var32 = Imon_Load_value;
+			var32 = var32 * CalPara.TestLC[1] + CalPara.OffsetTestLC[1];
+			Para.CLaod_Current = var32;
+		}
 //		DISS_Current=Para.CLaod_Current;
 		DISS_Current=(float)Para.CLaod_Current/1000;//计算显示电流
 		var32 = 0;	
@@ -987,7 +993,7 @@ void Transformation_ADC(void)
 	else//高档
 	{
 		var32 = Imon_Load_value;
-		var32 = var32 * CalPara.TestLC[1] + CalPara.OffsetTestLC[1];   
+		var32 = var32 * CalPara.TestLC[2] + CalPara.OffsetTestLC[2];   
 //		if ((CLists.CPolar4 & 0x01) == 0x01)		  
 //		{
 //			if (var32 < CLists.CREG_LoadA_Offset_HIG) 
@@ -1003,6 +1009,18 @@ void Transformation_ADC(void)
 		{
 			Para.CLaod_Current = 0;
 		}
+		if(Para.CSET_Current_Laod >= 20000)
+		{
+			var32 = Imon_Load_value;
+			var32 = var32 * CalPara.TestLC[3] + CalPara.OffsetTestLC[3];
+			Para.CLaod_Current = var32;
+		}
+		if(Para.CSET_Current_Laod >= 50000)
+		{
+			var32 = Imon_Load_value;
+			var32 = var32 * CalPara.TestLC[4] + CalPara.OffsetTestLC[4];
+			Para.CLaod_Current = var32;
+		}
 //		DISS_Current=Para.CLaod_Current;
 		DISS_Current=(float)Para.CLaod_Current/1000;//计算显示电流
 		var32 = 0;
@@ -1014,7 +1032,12 @@ void Transformation_ADC(void)
 		if(LOAD_I_SW==0)//低档
 		{
 			var32 = Para.CSET_Current_Laod;
-			var32 = Para.CSET_Current_Laod * CalPara.SetLC[0] + CalPara.OffsetLC[0];
+			if(Para.CSET_Current_Laod < 5000)
+			{
+				var32 = Para.CSET_Current_Laod * CalPara.SetLC[0] + CalPara.OffsetLC[0];
+			}else{
+				var32 = Para.CSET_Current_Laod * CalPara.SetLC[1] + CalPara.OffsetLC[1];
+			}
 //			var32=var32<<12;   
 //			if ((CLists.CPolar2 & 0x04) == 0)			   
 //			{
@@ -1034,7 +1057,14 @@ void Transformation_ADC(void)
 		else//高档
 		{
 			var32 = Para.CSET_Current_Laod;
-			var32 = Para.CSET_Current_Laod * CalPara.SetLC[1] + CalPara.OffsetLC[1];  
+			if(Para.CSET_Current_Laod < 20000)
+			{
+				var32 = Para.CSET_Current_Laod * CalPara.SetLC[2] + CalPara.OffsetLC[2];  
+			}else if(Para.CSET_Current_Laod >= 20000 && Para.CSET_Current_Laod < 50000){
+				var32 = Para.CSET_Current_Laod * CalPara.SetLC[3] + CalPara.OffsetLC[3];  
+			}else if(Para.CSET_Current_Laod >= 50000){
+				var32 = Para.CSET_Current_Laod * CalPara.SetLC[4] + CalPara.OffsetLC[4];  
+			}
 //			if ((CLists.CPolar3 & 0x04) == 0)			   
 //			{
 //				if (var32 < CLists.CSET_LoadA_Offset_HIG) var32 = 0;

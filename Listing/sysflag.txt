@@ -12,7 +12,7 @@
 ;;;46     	int return_flag;
 ;;;47     	
 ;;;48     	return_flag = ReadBytes( &bootflag, sizeof(CalPara), 1);
-000002  2188              MOVS     r1,#0x88
+000002  21b8              MOVS     r1,#0xb8
 000004  4801              LDR      r0,|L1.12|
 000006  f7ffbffe          B.W      ReadBytes
 ;;;49     }
@@ -28,7 +28,7 @@
                   Read_Flash_Bytes PROC
 ;;;28     
 ;;;29     void Read_Flash_Bytes(){
-000000  2288              MOVS     r2,#0x88
+000000  22b8              MOVS     r2,#0xb8
 ;;;30     	
 ;;;31     	int return_flag;
 ;;;32     	
@@ -55,7 +55,7 @@
 ;;;39     	int return_flag;
 ;;;40     	
 ;;;41     	return_flag = WriteBytes( &bootflag, sizeof(CalPara), 1);
-000002  2188              MOVS     r1,#0x88
+000002  21b8              MOVS     r1,#0xb8
 000004  4801              LDR      r0,|L3.12|
 000006  f7ffbffe          B.W      WriteBytes
 ;;;42     }
@@ -71,7 +71,7 @@
                   Write_Flash_Bytes PROC
 ;;;20     
 ;;;21     void Write_Flash_Bytes(){
-000000  2288              MOVS     r2,#0x88
+000000  22b8              MOVS     r2,#0xb8
 ;;;22     	
 ;;;23     	int return_flag;
 ;;;24     	

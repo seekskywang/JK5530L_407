@@ -35200,15 +35200,15 @@ N	float OffsetSetPV[1];//设置电源电压b
 N	float OffsetPV[1];//测量电源电压b
 N		
 N/////////////////////////////////////		
-N	float SetLC[2];//设置CC负载电流k
+N	float SetLC[5];//设置CC负载电流k
 N	float SetCV[2];//设置CV负载电压k
-N	float TestLC[2];//测量负载电流k
+N	float TestLC[5];//测量负载电流k
 N	float SetPC[1];//设置电源电流k
 N	float TestPC[1];//测量电源电流k
 N	
-N	float OffsetLC[2];//设置CC负载电流b
+N	float OffsetLC[5];//设置CC负载电流b
 N	float OffsetCV[2];//设置CV负载电压b
-N	float OffsetTestLC[2];//测量负载电流b
+N	float OffsetTestLC[5];//测量负载电流b
 N	float OffsetPC[1];//设置电源电流b
 N	float OffsetTestPC[1];//测量电源电流b
 N	
@@ -37139,7 +37139,7 @@ Nextern vu32 Modify_B_ACT;
 Nextern vu32 Correct_Parametet[17];//校准参数
 Nextern vu32 Correct_Strong[17];//校准系数
 Nextern vu8  correct_por[8];
-Nuint32_t x1,y1,x2,y2,x3,y3,x4,y4;
+Nuint32_t x1,y1,x2,y2,x3,y3,x4,y4,x5,y5,x6,y6,x7,y7,x8,y8;
 Nvu32 powsetdelay;
 Nvu8 sendwait;
 Nvu8 listsend;
@@ -37791,27 +37791,40 @@ N			LOAD_I_SW = 0;
 X			Run_Control[8] = 0;			
 N			x1 = data;
 N			y1 = Contr_Laod;
-N			x3 = Imon_Load_value;
-N			y3 = data;
-N			Contr_Laod = 56000;
-N		}else if(range == 2){//负载电流低档位3
-N			
-N			x2 = data;
-N			y2 = Contr_Laod;
 N			x4 = Imon_Load_value;
 N			y4 = data;
+N			Contr_Laod = 25000;
+N		}else if(range == 2)//负载电流低档位3
+N		{
+N			LOAD_I_SW = 0;			
+X			Run_Control[8] = 0;			
+N			x2 = data;
+N			y2 = Contr_Laod;
+N			x5 = Imon_Load_value;
+N			y5 = data;
+N			Contr_Laod = 56000;
+N		}else if(range == 3){//负载电流低档位4
+N			
+N			x3 = data;
+N			y3 = Contr_Laod;
+N			x6 = Imon_Load_value;
+N			y6 = data;
 N			
 N			CalPara.SetLC[0] = ((float)y2 - (float)y1)/((float)x2 - (float)x1);
 N			CalPara.OffsetLC[0] = (float)y2 - CalPara.SetLC[0]*(float)x2;
+N			CalPara.SetLC[1] = ((float)y3 - (float)y2)/((float)x3 - (float)x2);
+N			CalPara.OffsetLC[1] = (float)y3 - CalPara.SetLC[0]*(float)x3;
 N			
-N			CalPara.TestLC[0] = ((float)y4 - (float)y3)/((float)x4 - (float)x3);
-N			CalPara.OffsetTestLC[0] = (float)y4 - CalPara.TestLC[0]*(float)x4;
+N			CalPara.TestLC[0] = ((float)y5 - (float)y4)/((float)x5 - (float)x4);
+N			CalPara.OffsetTestLC[0] = (float)y5 - CalPara.TestLC[0]*(float)x5;
+N			CalPara.TestLC[1] = ((float)y6 - (float)y5)/((float)x6 - (float)x5);
+N			CalPara.OffsetTestLC[1] = (float)y6 - CalPara.TestLC[0]*(float)x6;
 N				
 N			Flag_DAC_OFF =0;
 X			(flagB . bit3) =0;
 N			calflag = 0;
 N			Off_GPOI_ResetSet();
-N		}else if(range == 3){//负载电流高档位1
+N		}else if(range == 4){//负载电流高档位1
 N			LOAD_I_SW = 1;
 X			Run_Control[8] = 1;
 N			GPIO_ResetBits(GPIOC,GPIO_Pin_11);//电流测量为高档位
@@ -37819,7 +37832,7 @@ X			GPIO_ResetBits(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x00020000) + 0x
 N			Contr_Laod = 6500;
 N			calflag = 1;
 N			OnOff_GPOI_ResetSet(2,1);
-N		}else if(range == 4){//负载电流高档位2
+N		}else if(range == 5){//负载电流高档位2
 N			
 N			LOAD_I_SW = 1;
 X			Run_Control[8] = 1;
@@ -37827,32 +37840,62 @@ N			GPIO_ResetBits(GPIOC,GPIO_Pin_11);//电流测量为高档位
 X			GPIO_ResetBits(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x00020000) + 0x0800)),((uint16_t)0x0800));
 N			x1 = data;
 N			y1 = Contr_Laod;
-N			x3 = Imon_Load_value;
-N			y3 = data;
-N			Contr_Laod = 27000;
-N		}else if(range == 5){//负载电流高档位3
+N			x5 = Imon_Load_value;
+N			y5 = data;
+N			Contr_Laod = 12000;
+N		}else if(range == 6){//负载电流高档位3
 N			
+N			LOAD_I_SW = 1;
+X			Run_Control[8] = 1;
+N			GPIO_ResetBits(GPIOC,GPIO_Pin_11);//电流测量为高档位
+X			GPIO_ResetBits(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x00020000) + 0x0800)),((uint16_t)0x0800));
 N			x2 = data;
 N			y2 = Contr_Laod;
-N			x4 = Imon_Load_value;
-N			y4 = data;
+N			x6 = Imon_Load_value;
+N			y6 = data;
+N			Contr_Laod = 20000;
+N		}else if(range == 7){//负载电流高档位4
 N			
-N			CalPara.SetLC[1] = ((float)y2 - (float)y1)/((float)x2 - (float)x1);
-N			CalPara.OffsetLC[1] = (float)y2 - CalPara.SetLC[1]*(float)x2;
+N			LOAD_I_SW = 1;
+X			Run_Control[8] = 1;
+N			GPIO_ResetBits(GPIOC,GPIO_Pin_11);//电流测量为高档位
+X			GPIO_ResetBits(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x00020000) + 0x0800)),((uint16_t)0x0800));
+N			x3 = data;
+N			y3 = Contr_Laod;
+N			x7 = Imon_Load_value;
+N			y7 = data;
+N			Contr_Laod = 27000;
+N		}else if(range == 8){//负载电流高档位5
 N			
-N			CalPara.TestLC[1] = ((float)y4 - (float)y3)/((float)x4 - (float)x3);
-N			CalPara.OffsetTestLC[1] = (float)y4 - CalPara.TestLC[1]*(float)x4;
+N			x4 = data;
+N			y4 = Contr_Laod;
+N			x8 = Imon_Load_value;
+N			y8 = data;
+N			
+N			CalPara.SetLC[2] = ((float)y2 - (float)y1)/((float)x2 - (float)x1);
+N			CalPara.OffsetLC[2] = (float)y2 - CalPara.SetLC[1]*(float)x2;
+N			CalPara.SetLC[3] = ((float)y3 - (float)y2)/((float)x3 - (float)x2);
+N			CalPara.OffsetLC[3] = (float)y3 - CalPara.SetLC[1]*(float)x3;
+N			CalPara.SetLC[4] = ((float)y4 - (float)y3)/((float)x4 - (float)x3);
+N			CalPara.OffsetLC[4] = (float)y4 - CalPara.SetLC[1]*(float)x4;
+N			
+N			CalPara.TestLC[2] = ((float)y6 - (float)y5)/((float)x6 - (float)x5);
+N			CalPara.OffsetTestLC[2] = (float)y6 - CalPara.TestLC[1]*(float)x6;
+N			CalPara.TestLC[3] = ((float)y7 - (float)y6)/((float)x7 - (float)x6);
+N			CalPara.OffsetTestLC[3] = (float)y7 - CalPara.TestLC[1]*(float)x7;
+N			CalPara.TestLC[4] = ((float)y8 - (float)y7)/((float)x8 - (float)x7);
+N			CalPara.OffsetTestLC[4] = (float)y8 - CalPara.TestLC[1]*(float)x8;
 N				
 N			Flag_DAC_OFF =0;
 X			(flagB . bit3) =0;
 N			calflag = 0;
 N			Off_GPOI_ResetSet();
-N		}else if(range == 6){//电源电流1
+N		}else if(range == 9){//电源电流1
 N			Contr_Voltage = 3500;
 N			Contr_Current = 4000;
 N			calflag = 1;
 N			OnOff_GPOI_ResetSet(0,1);
-N		}else if(range == 7){//电源电流2
+N		}else if(range == 10){//电源电流2
 N			
 N			x1 = data;
 N			y1 = Contr_Current;
@@ -37860,7 +37903,7 @@ N			x3 = Imon_POWE_value;
 N			y3 = data;
 N			Contr_Voltage = 3500;
 N			Contr_Current = 14000;
-N		}else if(range == 8){//电源电流3
+N		}else if(range == 11){//电源电流3
 N			
 N			x2 = data;
 N			y2 = Contr_Current;

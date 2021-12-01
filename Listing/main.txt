@@ -1120,7 +1120,7 @@
 
                           EXPORTAS ||area_number.18||, ||.bss||
                   CalPara
-                          %        136
+                          %        184
 
                           AREA ||area_number.19||, DATA, NOINIT, ALIGN=2
 

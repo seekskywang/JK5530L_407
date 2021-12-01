@@ -35201,15 +35201,15 @@ N	float OffsetSetPV[1];//设置电源电压b
 N	float OffsetPV[1];//测量电源电压b
 N		
 N/////////////////////////////////////		
-N	float SetLC[2];//设置CC负载电流k
+N	float SetLC[5];//设置CC负载电流k
 N	float SetCV[2];//设置CV负载电压k
-N	float TestLC[2];//测量负载电流k
+N	float TestLC[5];//测量负载电流k
 N	float SetPC[1];//设置电源电流k
 N	float TestPC[1];//测量电源电流k
 N	
-N	float OffsetLC[2];//设置CC负载电流b
+N	float OffsetLC[5];//设置CC负载电流b
 N	float OffsetCV[2];//设置CV负载电压b
-N	float OffsetTestLC[2];//测量负载电流b
+N	float OffsetTestLC[5];//测量负载电流b
 N	float OffsetPC[1];//设置电源电流b
 N	float OffsetTestPC[1];//测量电源电流b
 N	
@@ -36919,15 +36919,15 @@ S	float OffsetSetPV[1];//设置电源电压b
 S	float OffsetPV[1];//测量电源电压b
 S		
 S/////////////////////////////////////		
-S	float SetLC[2];//设置CC负载电流k
+S	float SetLC[5];//设置CC负载电流k
 S	float SetCV[2];//设置CV负载电压k
-S	float TestLC[2];//测量负载电流k
+S	float TestLC[5];//测量负载电流k
 S	float SetPC[1];//设置电源电流k
 S	float TestPC[1];//测量电源电流k
 S	
-S	float OffsetLC[2];//设置CC负载电流b
+S	float OffsetLC[5];//设置CC负载电流b
 S	float OffsetCV[2];//设置CV负载电压b
-S	float OffsetTestLC[2];//测量负载电流b
+S	float OffsetTestLC[5];//测量负载电流b
 S	float OffsetPC[1];//设置电源电流b
 S	float OffsetTestPC[1];//测量电源电流b
 S	
@@ -38135,6 +38135,12 @@ N//		}
 N//		else var32 = var32 + CLists.CREG_LoadA_Offset_LOW;
 N//		var32 = var32 >> 12;
 N		Para.CLaod_Current = var32;
+N		if(Para.CSET_Current_Laod >= 5000)
+N		{
+N			var32 = Imon_Load_value;
+N			var32 = var32 * CalPara.TestLC[1] + CalPara.OffsetTestLC[1];
+N			Para.CLaod_Current = var32;
+N		}
 N//		DISS_Current=Para.CLaod_Current;
 N		DISS_Current=(float)Para.CLaod_Current/1000;//计算显示电流
 N		var32 = 0;	
@@ -38142,7 +38148,7 @@ N	}
 N	else//高档
 N	{
 N		var32 = Imon_Load_value;
-N		var32 = var32 * CalPara.TestLC[1] + CalPara.OffsetTestLC[1];   
+N		var32 = var32 * CalPara.TestLC[2] + CalPara.OffsetTestLC[2];   
 N//		if ((CLists.CPolar4 & 0x01) == 0x01)		  
 N//		{
 N//			if (var32 < CLists.CREG_LoadA_Offset_HIG) 
@@ -38158,6 +38164,18 @@ N		if(Para.CLaod_Current < 1000)
 N		{
 N			Para.CLaod_Current = 0;
 N		}
+N		if(Para.CSET_Current_Laod >= 20000)
+N		{
+N			var32 = Imon_Load_value;
+N			var32 = var32 * CalPara.TestLC[3] + CalPara.OffsetTestLC[3];
+N			Para.CLaod_Current = var32;
+N		}
+N		if(Para.CSET_Current_Laod >= 50000)
+N		{
+N			var32 = Imon_Load_value;
+N			var32 = var32 * CalPara.TestLC[4] + CalPara.OffsetTestLC[4];
+N			Para.CLaod_Current = var32;
+N		}
 N//		DISS_Current=Para.CLaod_Current;
 N		DISS_Current=(float)Para.CLaod_Current/1000;//计算显示电流
 N		var32 = 0;
@@ -38171,7 +38189,12 @@ N		if(LOAD_I_SW==0)//低档
 X		if(Run_Control[8]==0)
 N		{
 N			var32 = Para.CSET_Current_Laod;
-N			var32 = Para.CSET_Current_Laod * CalPara.SetLC[0] + CalPara.OffsetLC[0];
+N			if(Para.CSET_Current_Laod < 5000)
+N			{
+N				var32 = Para.CSET_Current_Laod * CalPara.SetLC[0] + CalPara.OffsetLC[0];
+N			}else{
+N				var32 = Para.CSET_Current_Laod * CalPara.SetLC[1] + CalPara.OffsetLC[1];
+N			}
 N//			var32=var32<<12;   
 N//			if ((CLists.CPolar2 & 0x04) == 0)			   
 N//			{
@@ -38191,7 +38214,14 @@ N		}
 N		else//高档
 N		{
 N			var32 = Para.CSET_Current_Laod;
-N			var32 = Para.CSET_Current_Laod * CalPara.SetLC[1] + CalPara.OffsetLC[1];  
+N			if(Para.CSET_Current_Laod < 20000)
+N			{
+N				var32 = Para.CSET_Current_Laod * CalPara.SetLC[2] + CalPara.OffsetLC[2];  
+N			}else if(Para.CSET_Current_Laod >= 20000 && Para.CSET_Current_Laod < 50000){
+N				var32 = Para.CSET_Current_Laod * CalPara.SetLC[3] + CalPara.OffsetLC[3];  
+N			}else if(Para.CSET_Current_Laod >= 50000){
+N				var32 = Para.CSET_Current_Laod * CalPara.SetLC[4] + CalPara.OffsetLC[4];  
+N			}
 N//			if ((CLists.CPolar3 & 0x04) == 0)			   
 N//			{
 N//				if (var32 < CLists.CSET_LoadA_Offset_HIG) var32 = 0;

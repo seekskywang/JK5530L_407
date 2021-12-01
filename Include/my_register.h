@@ -338,15 +338,15 @@ typedef struct {
 	float OffsetPV[1];//测量电源电压b
 		
 /////////////////////////////////////		
-	float SetLC[2];//设置CC负载电流k
+	float SetLC[5];//设置CC负载电流k
 	float SetCV[2];//设置CV负载电压k
-	float TestLC[2];//测量负载电流k
+	float TestLC[5];//测量负载电流k
 	float SetPC[1];//设置电源电流k
 	float TestPC[1];//测量电源电流k
 	
-	float OffsetLC[2];//设置CC负载电流b
+	float OffsetLC[5];//设置CC负载电流b
 	float OffsetCV[2];//设置CV负载电压b
-	float OffsetTestLC[2];//测量负载电流b
+	float OffsetTestLC[5];//测量负载电流b
 	float OffsetPC[1];//设置电源电流b
 	float OffsetTestPC[1];//测量电源电流b
 	

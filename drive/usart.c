@@ -48,7 +48,7 @@ extern vu32 Modify_B_ACT;
 extern vu32 Correct_Parametet[17];//校准参数
 extern vu32 Correct_Strong[17];//校准系数
 extern vu8  correct_por[8];
-uint32_t x1,y1,x2,y2,x3,y3,x4,y4;
+uint32_t x1,y1,x2,y2,x3,y3,x4,y4,x5,y5,x6,y6,x7,y7,x8,y8;
 vu32 powsetdelay;
 vu8 sendwait;
 vu8 listsend;
@@ -635,62 +635,100 @@ void CalHandle(u8 mode,u8 range,u32 data)
 			LOAD_I_SW = 0;			
 			x1 = data;
 			y1 = Contr_Laod;
-			x3 = Imon_Load_value;
-			y3 = data;
-			Contr_Laod = 56000;
-		}else if(range == 2){//负载电流低档位3
-			
-			x2 = data;
-			y2 = Contr_Laod;
 			x4 = Imon_Load_value;
 			y4 = data;
+			Contr_Laod = 25000;
+		}else if(range == 2)//负载电流低档位3
+		{
+			LOAD_I_SW = 0;			
+			x2 = data;
+			y2 = Contr_Laod;
+			x5 = Imon_Load_value;
+			y5 = data;
+			Contr_Laod = 56000;
+		}else if(range == 3){//负载电流低档位4
+			
+			x3 = data;
+			y3 = Contr_Laod;
+			x6 = Imon_Load_value;
+			y6 = data;
 			
 			CalPara.SetLC[0] = ((float)y2 - (float)y1)/((float)x2 - (float)x1);
 			CalPara.OffsetLC[0] = (float)y2 - CalPara.SetLC[0]*(float)x2;
+			CalPara.SetLC[1] = ((float)y3 - (float)y2)/((float)x3 - (float)x2);
+			CalPara.OffsetLC[1] = (float)y3 - CalPara.SetLC[0]*(float)x3;
 			
-			CalPara.TestLC[0] = ((float)y4 - (float)y3)/((float)x4 - (float)x3);
-			CalPara.OffsetTestLC[0] = (float)y4 - CalPara.TestLC[0]*(float)x4;
+			CalPara.TestLC[0] = ((float)y5 - (float)y4)/((float)x5 - (float)x4);
+			CalPara.OffsetTestLC[0] = (float)y5 - CalPara.TestLC[0]*(float)x5;
+			CalPara.TestLC[1] = ((float)y6 - (float)y5)/((float)x6 - (float)x5);
+			CalPara.OffsetTestLC[1] = (float)y6 - CalPara.TestLC[0]*(float)x6;
 				
 			Flag_DAC_OFF =0;
 			calflag = 0;
 			Off_GPOI_ResetSet();
-		}else if(range == 3){//负载电流高档位1
+		}else if(range == 4){//负载电流高档位1
 			LOAD_I_SW = 1;
 			GPIO_ResetBits(GPIOC,GPIO_Pin_11);//电流测量为高档位
 			Contr_Laod = 6500;
 			calflag = 1;
 			OnOff_GPOI_ResetSet(2,1);
-		}else if(range == 4){//负载电流高档位2
+		}else if(range == 5){//负载电流高档位2
 			
 			LOAD_I_SW = 1;
 			GPIO_ResetBits(GPIOC,GPIO_Pin_11);//电流测量为高档位
 			x1 = data;
 			y1 = Contr_Laod;
-			x3 = Imon_Load_value;
-			y3 = data;
-			Contr_Laod = 27000;
-		}else if(range == 5){//负载电流高档位3
+			x5 = Imon_Load_value;
+			y5 = data;
+			Contr_Laod = 12000;
+		}else if(range == 6){//负载电流高档位3
 			
+			LOAD_I_SW = 1;
+			GPIO_ResetBits(GPIOC,GPIO_Pin_11);//电流测量为高档位
 			x2 = data;
 			y2 = Contr_Laod;
-			x4 = Imon_Load_value;
-			y4 = data;
+			x6 = Imon_Load_value;
+			y6 = data;
+			Contr_Laod = 20000;
+		}else if(range == 7){//负载电流高档位4
 			
-			CalPara.SetLC[1] = ((float)y2 - (float)y1)/((float)x2 - (float)x1);
-			CalPara.OffsetLC[1] = (float)y2 - CalPara.SetLC[1]*(float)x2;
+			LOAD_I_SW = 1;
+			GPIO_ResetBits(GPIOC,GPIO_Pin_11);//电流测量为高档位
+			x3 = data;
+			y3 = Contr_Laod;
+			x7 = Imon_Load_value;
+			y7 = data;
+			Contr_Laod = 27000;
+		}else if(range == 8){//负载电流高档位5
 			
-			CalPara.TestLC[1] = ((float)y4 - (float)y3)/((float)x4 - (float)x3);
-			CalPara.OffsetTestLC[1] = (float)y4 - CalPara.TestLC[1]*(float)x4;
+			x4 = data;
+			y4 = Contr_Laod;
+			x8 = Imon_Load_value;
+			y8 = data;
+			
+			CalPara.SetLC[2] = ((float)y2 - (float)y1)/((float)x2 - (float)x1);
+			CalPara.OffsetLC[2] = (float)y2 - CalPara.SetLC[1]*(float)x2;
+			CalPara.SetLC[3] = ((float)y3 - (float)y2)/((float)x3 - (float)x2);
+			CalPara.OffsetLC[3] = (float)y3 - CalPara.SetLC[1]*(float)x3;
+			CalPara.SetLC[4] = ((float)y4 - (float)y3)/((float)x4 - (float)x3);
+			CalPara.OffsetLC[4] = (float)y4 - CalPara.SetLC[1]*(float)x4;
+			
+			CalPara.TestLC[2] = ((float)y6 - (float)y5)/((float)x6 - (float)x5);
+			CalPara.OffsetTestLC[2] = (float)y6 - CalPara.TestLC[1]*(float)x6;
+			CalPara.TestLC[3] = ((float)y7 - (float)y6)/((float)x7 - (float)x6);
+			CalPara.OffsetTestLC[3] = (float)y7 - CalPara.TestLC[1]*(float)x7;
+			CalPara.TestLC[4] = ((float)y8 - (float)y7)/((float)x8 - (float)x7);
+			CalPara.OffsetTestLC[4] = (float)y8 - CalPara.TestLC[1]*(float)x8;
 				
 			Flag_DAC_OFF =0;
 			calflag = 0;
 			Off_GPOI_ResetSet();
-		}else if(range == 6){//电源电流1
+		}else if(range == 9){//电源电流1
 			Contr_Voltage = 3500;
 			Contr_Current = 4000;
 			calflag = 1;
 			OnOff_GPOI_ResetSet(0,1);
-		}else if(range == 7){//电源电流2
+		}else if(range == 10){//电源电流2
 			
 			x1 = data;
 			y1 = Contr_Current;
@@ -698,7 +736,7 @@ void CalHandle(u8 mode,u8 range,u32 data)
 			y3 = data;
 			Contr_Voltage = 3500;
 			Contr_Current = 14000;
-		}else if(range == 8){//电源电流3
+		}else if(range == 11){//电源电流3
 			
 			x2 = data;
 			y2 = Contr_Current;

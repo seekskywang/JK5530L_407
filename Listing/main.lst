@@ -35200,15 +35200,15 @@ N	float OffsetSetPV[1];//设置电源电压b
 N	float OffsetPV[1];//测量电源电压b
 N		
 N/////////////////////////////////////		
-N	float SetLC[2];//设置CC负载电流k
+N	float SetLC[5];//设置CC负载电流k
 N	float SetCV[2];//设置CV负载电压k
-N	float TestLC[2];//测量负载电流k
+N	float TestLC[5];//测量负载电流k
 N	float SetPC[1];//设置电源电流k
 N	float TestPC[1];//测量电源电流k
 N	
-N	float OffsetLC[2];//设置CC负载电流b
+N	float OffsetLC[5];//设置CC负载电流b
 N	float OffsetCV[2];//设置CV负载电压b
-N	float OffsetTestLC[2];//测量负载电流b
+N	float OffsetTestLC[5];//测量负载电流b
 N	float OffsetPC[1];//设置电源电流b
 N	float OffsetTestPC[1];//测量电源电流b
 N	
@@ -35857,15 +35857,15 @@ S	float OffsetSetPV[1];//设置电源电压b
 S	float OffsetPV[1];//测量电源电压b
 S		
 S/////////////////////////////////////		
-S	float SetLC[2];//设置CC负载电流k
+S	float SetLC[5];//设置CC负载电流k
 S	float SetCV[2];//设置CV负载电压k
-S	float TestLC[2];//测量负载电流k
+S	float TestLC[5];//测量负载电流k
 S	float SetPC[1];//设置电源电流k
 S	float TestPC[1];//测量电源电流k
 S	
-S	float OffsetLC[2];//设置CC负载电流b
+S	float OffsetLC[5];//设置CC负载电流b
 S	float OffsetCV[2];//设置CV负载电压b
-S	float OffsetTestLC[2];//测量负载电流b
+S	float OffsetTestLC[5];//测量负载电流b
 S	float OffsetPC[1];//设置电源电流b
 S	float OffsetTestPC[1];//测量电源电流b
 S	
@@ -37552,15 +37552,15 @@ S	float OffsetSetPV[1];//设置电源电压b
 S	float OffsetPV[1];//测量电源电压b
 S		
 S/////////////////////////////////////		
-S	float SetLC[2];//设置CC负载电流k
+S	float SetLC[5];//设置CC负载电流k
 S	float SetCV[2];//设置CV负载电压k
-S	float TestLC[2];//测量负载电流k
+S	float TestLC[5];//测量负载电流k
 S	float SetPC[1];//设置电源电流k
 S	float TestPC[1];//测量电源电流k
 S	
-S	float OffsetLC[2];//设置CC负载电流b
+S	float OffsetLC[5];//设置CC负载电流b
 S	float OffsetCV[2];//设置CV负载电压b
-S	float OffsetTestLC[2];//测量负载电流b
+S	float OffsetTestLC[5];//测量负载电流b
 S	float OffsetPC[1];//设置电源电流b
 S	float OffsetTestPC[1];//测量电源电流b
 S	
@@ -51983,15 +51983,15 @@ S	float OffsetSetPV[1];//设置电源电压b
 S	float OffsetPV[1];//测量电源电压b
 S		
 S/////////////////////////////////////		
-S	float SetLC[2];//设置CC负载电流k
+S	float SetLC[5];//设置CC负载电流k
 S	float SetCV[2];//设置CV负载电压k
-S	float TestLC[2];//测量负载电流k
+S	float TestLC[5];//测量负载电流k
 S	float SetPC[1];//设置电源电流k
 S	float TestPC[1];//测量电源电流k
 S	
-S	float OffsetLC[2];//设置CC负载电流b
+S	float OffsetLC[5];//设置CC负载电流b
 S	float OffsetCV[2];//设置CV负载电压b
-S	float OffsetTestLC[2];//测量负载电流b
+S	float OffsetTestLC[5];//测量负载电流b
 S	float OffsetPC[1];//设置电源电流b
 S	float OffsetTestPC[1];//测量电源电流b
 S	
@@ -52544,15 +52544,15 @@ S	float OffsetSetPV[1];//设置电源电压b
 S	float OffsetPV[1];//测量电源电压b
 S		
 S/////////////////////////////////////		
-S	float SetLC[2];//设置CC负载电流k
+S	float SetLC[5];//设置CC负载电流k
 S	float SetCV[2];//设置CV负载电压k
-S	float TestLC[2];//测量负载电流k
+S	float TestLC[5];//测量负载电流k
 S	float SetPC[1];//设置电源电流k
 S	float TestPC[1];//测量电源电流k
 S	
-S	float OffsetLC[2];//设置CC负载电流b
+S	float OffsetLC[5];//设置CC负载电流b
 S	float OffsetCV[2];//设置CV负载电压b
-S	float OffsetTestLC[2];//测量负载电流b
+S	float OffsetTestLC[5];//测量负载电流b
 S	float OffsetPC[1];//设置电源电流b
 S	float OffsetTestPC[1];//测量电源电流b
 S	
@@ -53116,15 +53116,15 @@ S	float OffsetSetPV[1];//设置电源电压b
 S	float OffsetPV[1];//测量电源电压b
 S		
 S/////////////////////////////////////		
-S	float SetLC[2];//设置CC负载电流k
+S	float SetLC[5];//设置CC负载电流k
 S	float SetCV[2];//设置CV负载电压k
-S	float TestLC[2];//测量负载电流k
+S	float TestLC[5];//测量负载电流k
 S	float SetPC[1];//设置电源电流k
 S	float TestPC[1];//测量电源电流k
 S	
-S	float OffsetLC[2];//设置CC负载电流b
+S	float OffsetLC[5];//设置CC负载电流b
 S	float OffsetCV[2];//设置CV负载电压b
-S	float OffsetTestLC[2];//测量负载电流b
+S	float OffsetTestLC[5];//测量负载电流b
 S	float OffsetPC[1];//设置电源电流b
 S	float OffsetTestPC[1];//测量电源电流b
 S	
@@ -53679,15 +53679,15 @@ S	float OffsetSetPV[1];//设置电源电压b
 S	float OffsetPV[1];//测量电源电压b
 S		
 S/////////////////////////////////////		
-S	float SetLC[2];//设置CC负载电流k
+S	float SetLC[5];//设置CC负载电流k
 S	float SetCV[2];//设置CV负载电压k
-S	float TestLC[2];//测量负载电流k
+S	float TestLC[5];//测量负载电流k
 S	float SetPC[1];//设置电源电流k
 S	float TestPC[1];//测量电源电流k
 S	
-S	float OffsetLC[2];//设置CC负载电流b
+S	float OffsetLC[5];//设置CC负载电流b
 S	float OffsetCV[2];//设置CV负载电压b
-S	float OffsetTestLC[2];//测量负载电流b
+S	float OffsetTestLC[5];//测量负载电流b
 S	float OffsetPC[1];//设置电源电流b
 S	float OffsetTestPC[1];//测量电源电流b
 S	
@@ -54429,15 +54429,15 @@ S	float OffsetSetPV[1];//设置电源电压b
 S	float OffsetPV[1];//测量电源电压b
 S		
 S/////////////////////////////////////		
-S	float SetLC[2];//设置CC负载电流k
+S	float SetLC[5];//设置CC负载电流k
 S	float SetCV[2];//设置CV负载电压k
-S	float TestLC[2];//测量负载电流k
+S	float TestLC[5];//测量负载电流k
 S	float SetPC[1];//设置电源电流k
 S	float TestPC[1];//测量电源电流k
 S	
-S	float OffsetLC[2];//设置CC负载电流b
+S	float OffsetLC[5];//设置CC负载电流b
 S	float OffsetCV[2];//设置CV负载电压b
-S	float OffsetTestLC[2];//测量负载电流b
+S	float OffsetTestLC[5];//测量负载电流b
 S	float OffsetPC[1];//设置电源电流b
 S	float OffsetTestPC[1];//测量电源电流b
 S	
