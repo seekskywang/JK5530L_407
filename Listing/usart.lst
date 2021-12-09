@@ -37781,7 +37781,7 @@ N		if(range == 0)//负载电流低档位1
 N		{		
 N			LOAD_I_SW = 0;
 X			Run_Control[8] = 0;
-N			Contr_Laod = 8000;
+N			Contr_Laod = 6000;
 N			calflag = 1;
 N			OnOff_GPOI_ResetSet(2,1);
 N		}
@@ -37793,7 +37793,7 @@ N			x1 = data;
 N			y1 = Contr_Laod;
 N			x4 = Imon_Load_value;
 N			y4 = data;
-N			Contr_Laod = 25000;
+N			Contr_Laod = 23000;
 N		}else if(range == 2)//负载电流低档位3
 N		{
 N			LOAD_I_SW = 0;			
@@ -37813,12 +37813,12 @@ N
 N			CalPara.SetLC[0] = ((float)y2 - (float)y1)/((float)x2 - (float)x1);
 N			CalPara.OffsetLC[0] = (float)y2 - CalPara.SetLC[0]*(float)x2;
 N			CalPara.SetLC[1] = ((float)y3 - (float)y2)/((float)x3 - (float)x2);
-N			CalPara.OffsetLC[1] = (float)y3 - CalPara.SetLC[0]*(float)x3;
+N			CalPara.OffsetLC[1] = (float)y3 - CalPara.SetLC[1]*(float)x3;
 N			
 N			CalPara.TestLC[0] = ((float)y5 - (float)y4)/((float)x5 - (float)x4);
 N			CalPara.OffsetTestLC[0] = (float)y5 - CalPara.TestLC[0]*(float)x5;
 N			CalPara.TestLC[1] = ((float)y6 - (float)y5)/((float)x6 - (float)x5);
-N			CalPara.OffsetTestLC[1] = (float)y6 - CalPara.TestLC[0]*(float)x6;
+N			CalPara.OffsetTestLC[1] = (float)y6 - CalPara.TestLC[1]*(float)x6;
 N				
 N			Flag_DAC_OFF =0;
 X			(flagB . bit3) =0;
@@ -37873,18 +37873,18 @@ N			x8 = Imon_Load_value;
 N			y8 = data;
 N			
 N			CalPara.SetLC[2] = ((float)y2 - (float)y1)/((float)x2 - (float)x1);
-N			CalPara.OffsetLC[2] = (float)y2 - CalPara.SetLC[1]*(float)x2;
+N			CalPara.OffsetLC[2] = (float)y2 - CalPara.SetLC[2]*(float)x2;
 N			CalPara.SetLC[3] = ((float)y3 - (float)y2)/((float)x3 - (float)x2);
-N			CalPara.OffsetLC[3] = (float)y3 - CalPara.SetLC[1]*(float)x3;
+N			CalPara.OffsetLC[3] = (float)y3 - CalPara.SetLC[3]*(float)x3;
 N			CalPara.SetLC[4] = ((float)y4 - (float)y3)/((float)x4 - (float)x3);
-N			CalPara.OffsetLC[4] = (float)y4 - CalPara.SetLC[1]*(float)x4;
+N			CalPara.OffsetLC[4] = (float)y4 - CalPara.SetLC[4]*(float)x4;
 N			
 N			CalPara.TestLC[2] = ((float)y6 - (float)y5)/((float)x6 - (float)x5);
-N			CalPara.OffsetTestLC[2] = (float)y6 - CalPara.TestLC[1]*(float)x6;
+N			CalPara.OffsetTestLC[2] = (float)y6 - CalPara.TestLC[2]*(float)x6;
 N			CalPara.TestLC[3] = ((float)y7 - (float)y6)/((float)x7 - (float)x6);
-N			CalPara.OffsetTestLC[3] = (float)y7 - CalPara.TestLC[1]*(float)x7;
+N			CalPara.OffsetTestLC[3] = (float)y7 - CalPara.TestLC[3]*(float)x7;
 N			CalPara.TestLC[4] = ((float)y8 - (float)y7)/((float)x8 - (float)x7);
-N			CalPara.OffsetTestLC[4] = (float)y8 - CalPara.TestLC[1]*(float)x8;
+N			CalPara.OffsetTestLC[4] = (float)y8 - CalPara.TestLC[4]*(float)x8;
 N				
 N			Flag_DAC_OFF =0;
 X			(flagB . bit3) =0;

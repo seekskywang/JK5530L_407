@@ -36,7 +36,7 @@ float testv;
 vu8 finishflag;
 vu32 finishdelay;
 vu8 lockflag;
-vu8 version=13;
+vu8 version=14;
 vu32 battery_c;
 vu8 charge_step;
 vu8 loop;
@@ -636,8 +636,14 @@ void TIM3_IRQHandler(void){
 			abc_time++; 
 	
 		ms_time++;
-		PPower = DISS_POW_Voltage * DISS_POW_Current;
-		LPower = DISS_Voltage * DISS_Current;
+		if(calflag == 0)
+		{
+			PPower = DISS_POW_Voltage * DISS_POW_Current;
+			LPower = DISS_Voltage * DISS_Current;
+		}else{
+			PPower=0;
+			LPower=0;
+		}
 //		if((PPower > 80) || (LPower > 80))
 //		{
 //			Off_GPOI_ResetSet();

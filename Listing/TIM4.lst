@@ -35427,7 +35427,7 @@ Nfloat testv;
 Nvu8 finishflag;
 Nvu32 finishdelay;
 Nvu8 lockflag;
-Nvu8 version=13;
+Nvu8 version=14;
 Nvu32 battery_c;
 Nvu8 charge_step;
 Nvu8 loop;
@@ -36074,8 +36074,14 @@ N
 N			abc_time++; 
 N	
 N		ms_time++;
-N		PPower = DISS_POW_Voltage * DISS_POW_Current;
-N		LPower = DISS_Voltage * DISS_Current;
+N		if(calflag == 0)
+N		{
+N			PPower = DISS_POW_Voltage * DISS_POW_Current;
+N			LPower = DISS_Voltage * DISS_Current;
+N		}else{
+N			PPower=0;
+N			LPower=0;
+N		}
 N//		if((PPower > 80) || (LPower > 80))
 N//		{
 N//			Off_GPOI_ResetSet();
