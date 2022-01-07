@@ -662,11 +662,11 @@
 000036  2005              MOVS     r0,#5                 ;756
 000038  7008              STRB     r0,[r1,#0]            ;756
 00003a  481a              LDR      r0,|L12.164|
-00003c  f8b01064          LDRH     r1,[r0,#0x64]         ;758  ; Para
+00003c  f8b0106a          LDRH     r1,[r0,#0x6a]         ;758  ; Para
 000040  6081              STR      r1,[r0,#8]            ;758  ; Para
-000042  f8b01066          LDRH     r1,[r0,#0x66]         ;759  ; Para
+000042  f8b0106c          LDRH     r1,[r0,#0x6c]         ;759  ; Para
 000046  60c1              STR      r1,[r0,#0xc]          ;759  ; Para
-000048  6f01              LDR      r1,[r0,#0x70]         ;760  ; Para
+000048  6f81              LDR      r1,[r0,#0x78]         ;760  ; Para
 00004a  6141              STR      r1,[r0,#0x14]         ;760  ; Para
 00004c  7034              STRB     r4,[r6,#0]            ;761
 00004e  703c              STRB     r4,[r7,#0]            ;762
@@ -1451,14 +1451,14 @@
 00004a  e013              B        |L19.116|
 ;;;540    		case SLAVE_REG_P05://充放电输出电�?
 ;;;541    			Para.CDC_OutPut_V = reg_value*10;
-00004c  f8a23064          STRH     r3,[r2,#0x64]
+00004c  f8a2306a          STRH     r3,[r2,#0x6a]
 ;;;542    
 ;;;543    			break;
 000050  e010              B        |L19.116|
 ;;;544    
 ;;;545    		case SLAVE_REG_P06://充放限制电流
 ;;;546    			Para.CDC_Limit_C = reg_value;
-000052  f8a21066          STRH     r1,[r2,#0x66]
+000052  f8a2106c          STRH     r1,[r2,#0x6c]
 ;;;547    
 ;;;548    			break;
 000056  e00d              B        |L19.116|
@@ -1466,31 +1466,31 @@
 ;;;550    			Para.CDC_Ccutoff_V = reg_value*10;
 000058  eb010081          ADD      r0,r1,r1,LSL #2
 00005c  0040              LSLS     r0,r0,#1
-00005e  6690              STR      r0,[r2,#0x68]  ; Para
+00005e  6710              STR      r0,[r2,#0x70]  ; Para
 ;;;551    			break;
 000060  e008              B        |L19.116|
 ;;;552    		case SLAVE_REG_P08://充电截止电流
 ;;;553    			Para.CDC_Ccutoff_C = reg_value;
-000062  f8a2106c          STRH     r1,[r2,#0x6c]
+000062  f8a21074          STRH     r1,[r2,#0x74]
 ;;;554    
 ;;;555    			break;
 000066  e005              B        |L19.116|
 ;;;556    		case SLAVE_REG_P09:	//充放电负载电�?
 ;;;557    			Para.CDC_Load_C = reg_value;
-000068  6711              STR      r1,[r2,#0x70]  ; Para
+000068  6791              STR      r1,[r2,#0x78]  ; Para
 ;;;558    
 ;;;559    			break;
 00006a  e003              B        |L19.116|
 ;;;560    		case SLAVE_REG_P10:	//放电截止电压
 ;;;561    			Para.CDC_Dcutoff_V = reg_value;
-00006c  6751              STR      r1,[r2,#0x74]  ; Para
+00006c  67d1              STR      r1,[r2,#0x7c]  ; Para
 ;;;562    
 ;;;563    			break;
 00006e  e001              B        |L19.116|
 ;;;564    
 ;;;565    		case SLAVE_REG_P11://循环次数
 ;;;566    			Para.CDC_Cycle_Time = reg_value;
-000070  f8821078          STRB     r1,[r2,#0x78]
+000070  f8821080          STRB     r1,[r2,#0x80]
                   |L19.116|
 ;;;567    
 ;;;568    			break;

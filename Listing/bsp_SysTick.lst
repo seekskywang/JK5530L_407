@@ -35274,6 +35274,7 @@ N
 N	/* 程控负载 */
 N	vu32 LOAD_C;				//负载电流
 N	vu16 LOAD_V;				//负载电压
+N	vu32 LOAD_P;				//负载电压
 N	vu16 LOAD_Cutoff_V;			//负载电压
 N	
 N	/* 充放电 */
@@ -35819,6 +35820,7 @@ S
 S	/* 程控负载 */
 S	vu32 LOAD_C;				//负载电流
 S	vu16 LOAD_V;				//负载电压
+S	vu32 LOAD_P;				//负载电压
 S	vu16 LOAD_Cutoff_V;			//负载电压
 S	
 S	/* 充放电 */

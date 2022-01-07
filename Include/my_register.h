@@ -396,6 +396,7 @@ typedef struct {
 	/* 程控负载 */
 	vu32 LOAD_C;				//负载电流
 	vu16 LOAD_V;				//负载电压
+	vu32 LOAD_P;				//负载电压
 	vu16 LOAD_Cutoff_V;			//负载电压
 	
 	/* 充放电 */

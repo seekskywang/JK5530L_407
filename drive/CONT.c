@@ -82,7 +82,7 @@ void MODE_CONT(void)
 		RCONT_SW=1;
 	}
 	/**********负载模式切换***************/
-	if(LOAD_MODE==0)
+	if(LOAD_MODE==0 || LOAD_MODE==2/*CP模式*/)
 	{
 		GPIO_ResetBits(GPIOC,GPIO_Pin_12);//CC模式
 	}

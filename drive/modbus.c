@@ -1027,8 +1027,18 @@ void Transformation_ADC(void)
 	}
 	
 	/*************************负载电压和电流控制 转换**************************************/
-	if(LOAD_MODE==0)//CC
+	if(LOAD_MODE==0 || LOAD_MODE == 2)//CC
 	{
+		if(LOAD_MODE == 2)
+		{
+			Para.CSET_Current_Laod = (uint32_t)((((float)Para.LOAD_P/1000)/DISS_Voltage)*1000);
+			if(Para.CSET_Current_Laod > 20000)
+			{
+				LOAD_I_SW = 1;
+			}else{
+				LOAD_I_SW = 0;
+			}
+		}
 		if(LOAD_I_SW==0)//低档
 		{
 			var32 = Para.CSET_Current_Laod;

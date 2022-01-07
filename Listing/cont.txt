@@ -11,11 +11,11 @@
 ;;;14     {
 ;;;15     	/*********电流档位切换*************/
 ;;;16     	if(LOAD_I_SW==1)
-000004  4c3e              LDR      r4,|L1.256|
+000004  4c3f              LDR      r4,|L1.260|
 000006  6a20              LDR      r0,[r4,#0x20]  ; Run_Control
 ;;;17     	{
 ;;;18     		GPIO_ResetBits(GPIOC,GPIO_Pin_11);//电流测量为高档位
-000008  f8dfa0f8          LDR      r10,|L1.260|
+000008  f8dfa0fc          LDR      r10,|L1.264|
 00000c  2801              CMP      r0,#1                 ;16
 00000e  f44f6100          MOV      r1,#0x800
 ;;;19     	}
@@ -40,7 +40,7 @@
 00001a  69e0              LDR      r0,[r4,#0x1c]  ; Run_Control
 ;;;34     	{
 ;;;35     		GPIO_ResetBits(GPIOB,GPIO_Pin_1);//电压档位为低档 0-12V
-00001c  f8df90e8          LDR      r9,|L1.264|
+00001c  f8df90ec          LDR      r9,|L1.268|
 000020  2800              CMP      r0,#0                 ;33
 ;;;36     	}
 ;;;37     	else
@@ -56,8 +56,8 @@
 00002e  69e0              LDR      r0,[r4,#0x1c]  ; Run_Control
 ;;;42     	{
 ;;;43     		if(Para.CVoltage>12000 && calflag == 0)//当测量电压高于低档最大限制电压是档位自动跳转到高档
-000030  4d36              LDR      r5,|L1.268|
-000032  4e37              LDR      r6,|L1.272|
+000030  4d37              LDR      r5,|L1.272|
+000032  4e38              LDR      r6,|L1.276|
 ;;;44     		{
 ;;;45     			LOAD_V_SW=1;
 000034  2701              MOVS     r7,#1
@@ -124,7 +124,7 @@
 ;;;63     	}
 ;;;64     //	RCONT_SW=1;
 ;;;65     	if(Rraly == 0)
-000094  481f              LDR      r0,|L1.276|
+000094  4820              LDR      r0,|L1.280|
 000096  7801              LDRB     r1,[r0,#0]  ; Rraly
 000098  b149              CBZ      r1,|L1.174|
 ;;;66     	{
@@ -182,44 +182,46 @@
                   |L1.216|
 ;;;83     	}
 ;;;84     	/**********负载模式切换***************/
-;;;85     	if(LOAD_MODE==0)
+;;;85     	if(LOAD_MODE==0 || LOAD_MODE==2/*CP模式*/)
 0000d8  69a0              LDR      r0,[r4,#0x18]  ; Run_Control
 ;;;86     	{
 ;;;87     		GPIO_ResetBits(GPIOC,GPIO_Pin_12);//CC模式
 0000da  f44f5180          MOV      r1,#0x1000
-0000de  b138              CBZ      r0,|L1.240|
+0000de  b150              CBZ      r0,|L1.246|
+0000e0  69a0              LDR      r0,[r4,#0x18]         ;85  ; Run_Control
+0000e2  2802              CMP      r0,#2                 ;85
+0000e4  d007              BEQ      |L1.246|
 ;;;88     	}
 ;;;89     	else if(LOAD_MODE==1)
-0000e0  69a0              LDR      r0,[r4,#0x18]  ; Run_Control
-0000e2  2801              CMP      r0,#1
-0000e4  d109              BNE      |L1.250|
+0000e6  69a0              LDR      r0,[r4,#0x18]  ; Run_Control
+0000e8  2801              CMP      r0,#1
+0000ea  d109              BNE      |L1.256|
 ;;;90     	{
 ;;;91     		GPIO_SetBits(GPIOC,GPIO_Pin_12);//CV模式
-0000e6  4650              MOV      r0,r10
-0000e8  e8bd47f0          POP      {r4-r10,lr}
-0000ec  f7ffbffe          B.W      GPIO_SetBits
-                  |L1.240|
-0000f0  4650              MOV      r0,r10                ;87
-0000f2  e8bd47f0          POP      {r4-r10,lr}           ;87
-0000f6  f7ffbffe          B.W      GPIO_ResetBits
-                  |L1.250|
+0000ec  4650              MOV      r0,r10
+0000ee  e8bd47f0          POP      {r4-r10,lr}
+0000f2  f7ffbffe          B.W      GPIO_SetBits
+                  |L1.246|
+0000f6  4650              MOV      r0,r10                ;87
+0000f8  e8bd47f0          POP      {r4-r10,lr}           ;87
+0000fc  f7ffbffe          B.W      GPIO_ResetBits
+                  |L1.256|
 ;;;92     	}
 ;;;93     }
-0000fa  e8bd87f0          POP      {r4-r10,pc}
+000100  e8bd87f0          POP      {r4-r10,pc}
                           ENDP
 
-0000fe  0000              DCW      0x0000
-                  |L1.256|
-                          DCD      Run_Control
                   |L1.260|
-                          DCD      0x40020800
+                          DCD      Run_Control
                   |L1.264|
-                          DCD      0x40020400
+                          DCD      0x40020800
                   |L1.268|
-                          DCD      Para
+                          DCD      0x40020400
                   |L1.272|
-                          DCD      calflag
+                          DCD      Para
                   |L1.276|
+                          DCD      calflag
+                  |L1.280|
                           DCD      Rraly
 
 ;*** Start embedded assembler ***

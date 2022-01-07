@@ -35259,6 +35259,7 @@ N
 N	/* 程控负载 */
 N	vu32 LOAD_C;				//负载电流
 N	vu16 LOAD_V;				//负载电压
+N	vu32 LOAD_P;				//负载电压
 N	vu16 LOAD_Cutoff_V;			//负载电压
 N	
 N	/* 充放电 */
@@ -36977,6 +36978,7 @@ S
 S	/* 程控负载 */
 S	vu32 LOAD_C;				//负载电流
 S	vu16 LOAD_V;				//负载电压
+S	vu32 LOAD_P;				//负载电压
 S	vu16 LOAD_Cutoff_V;			//负载电压
 S	
 S	/* 充放电 */
@@ -38182,9 +38184,22 @@ N		var32 = 0;
 N	}
 N	
 N	/*************************负载电压和电流控制 转换**************************************/
-N	if(LOAD_MODE==0)//CC
-X	if(Run_Control[6]==0)
+N	if(LOAD_MODE==0 || LOAD_MODE == 2)//CC
+X	if(Run_Control[6]==0 || Run_Control[6] == 2)
 N	{
+N		if(LOAD_MODE == 2)
+X		if(Run_Control[6] == 2)
+N		{
+N			Para.CSET_Current_Laod = (uint32_t)((((float)Para.LOAD_P/1000)/DISS_Voltage)*1000);
+N			if(Para.CSET_Current_Laod > 20000)
+N			{
+N				LOAD_I_SW = 1;
+X				Run_Control[8] = 1;
+N			}else{
+N				LOAD_I_SW = 0;
+X				Run_Control[8] = 0;
+N			}
+N		}
 N		if(LOAD_I_SW==0)//低档
 X		if(Run_Control[8]==0)
 N		{

@@ -35259,6 +35259,7 @@ N
 N	/* 程控负载 */
 N	vu32 LOAD_C;				//负载电流
 N	vu16 LOAD_V;				//负载电压
+N	vu32 LOAD_P;				//负载电压
 N	vu16 LOAD_Cutoff_V;			//负载电压
 N	
 N	/* 充放电 */
@@ -35494,8 +35495,8 @@ N		RCONT_SW=1;
 X		Run_Control[9]=1;
 N	}
 N	/**********负载模式切换***************/
-N	if(LOAD_MODE==0)
-X	if(Run_Control[6]==0)
+N	if(LOAD_MODE==0 || LOAD_MODE==2/*CP模式*/)
+X	if(Run_Control[6]==0 || Run_Control[6]==2 )
 N	{
 N		GPIO_ResetBits(GPIOC,GPIO_Pin_12);//CC模式
 X		GPIO_ResetBits(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x00020000) + 0x0800)),((uint16_t)0x1000));

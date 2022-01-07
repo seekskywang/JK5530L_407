@@ -447,6 +447,7 @@ void LIST_ONOFF(vu8 value)
 
 void MODE_PARASET(vu8 value)
 {
+	float ptrans;
 	switch(MODE)
 	{
 		case 0://电子负载
@@ -455,7 +456,13 @@ void MODE_PARASET(vu8 value)
 //			mainswitch = 0;
 //			sendwait = 3;
 			LOAD_MODE = Para.CLOAD_MODE;
-			Para.CSET_Current_Laod = Para.LOAD_C;
+			if(LOAD_MODE == 2)
+			{
+				ptrans = (float)Para.LOAD_P/1000;
+				Para.CSET_Current_Laod = (uint32_t)((ptrans/DISS_Voltage)*1000);
+			}else{
+				Para.CSET_Current_Laod = Para.LOAD_C;
+			}
 			Para.CSET_Voltage_Laod = Para.LOAD_V;
 			if(Para.CSET_Current_Laod > 20000)
 			{
@@ -1406,6 +1413,16 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 						}
 					}	
 					Para.ACT_DELAY = temp1;//激活延时
+					temp1 = 0;
+					
+					if(buf[currCharNum++] == ',')
+					{
+						for(i=0,temp1=0;i<6;i++)
+						{
+							temp1 = temp1*10+(buf[currCharNum++]-0x30);
+						}
+					}	
+					Para.LOAD_P = temp1*10;//负载功率
 					temp1 = 0;
 					
 					MODE_PARASET(MODE);

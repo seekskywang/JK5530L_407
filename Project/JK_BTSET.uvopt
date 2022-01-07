@@ -386,6 +386,11 @@
           <WinNumber>1</WinNumber>
           <ItemText>CalPara</ItemText>
         </Ww>
+        <Ww>
+          <count>41</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Para.CSET_Current_Laod,0x0A</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>

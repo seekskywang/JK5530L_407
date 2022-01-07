@@ -1005,17 +1005,17 @@
 00049a  d014              BEQ      |L2.1222|
 00049c  e0a4              B        |L2.1512|
                   |L2.1182|
-00049e  f8db2068          LDR      r2,[r11,#0x68]        ;543  ; Para
+00049e  f8db2070          LDR      r2,[r11,#0x70]        ;543  ; Para
 0004a2  4659              MOV      r1,r11                ;543
 0004a4  f8db0028          LDR      r0,[r11,#0x28]        ;543  ; Para
 0004a8  eb000080          ADD      r0,r0,r0,LSL #2       ;543
 0004ac  ebb20f40          CMP      r2,r0,LSL #1          ;543
 0004b0  d824              BHI      |L2.1276|
-0004b2  6e88              LDR      r0,[r1,#0x68]         ;543  ; Para
+0004b2  6f08              LDR      r0,[r1,#0x70]         ;543  ; Para
 0004b4  b310              CBZ      r0,|L2.1276|
 0004b6  88f0              LDRH     r0,[r6,#6]            ;543  ; cdcswdelay
 0004b8  bb00              CBNZ     r0,|L2.1276|
-0004ba  6e88              LDR      r0,[r1,#0x68]         ;545  ; Para
+0004ba  6f08              LDR      r0,[r1,#0x70]         ;545  ; Para
 0004bc  6088              STR      r0,[r1,#8]            ;545  ; Para
 0004be  2002              MOVS     r0,#2                 ;546
 0004c0  70f0              STRB     r0,[r6,#3]            ;546
@@ -1023,13 +1023,13 @@
                   |L2.1220|
 0004c4  e01b              B        |L2.1278|
                   |L2.1222|
-0004c6  f8bb206c          LDRH     r2,[r11,#0x6c]        ;550  ; Para
+0004c6  f8bb2074          LDRH     r2,[r11,#0x74]        ;550  ; Para
 0004ca  4659              MOV      r1,r11                ;550
 0004cc  f8db0030          LDR      r0,[r11,#0x30]        ;550  ; Para
 0004d0  eb000080          ADD      r0,r0,r0,LSL #2       ;550
 0004d4  ebb20f40          CMP      r2,r0,LSL #1          ;550
 0004d8  d910              BLS      |L2.1276|
-0004da  f8b1006c          LDRH     r0,[r1,#0x6c]         ;550  ; Para
+0004da  f8b10074          LDRH     r0,[r1,#0x74]         ;550  ; Para
 0004de  b168              CBZ      r0,|L2.1276|
 0004e0  88f0              LDRH     r0,[r6,#6]            ;550  ; cdcswdelay
 0004e2  b958              CBNZ     r0,|L2.1276|
@@ -1094,7 +1094,7 @@
 ;;;581    						if(Para.CVoltage < Para.CDC_Dcutoff_V && cdcswdelay == 0)
 00053c  f8db002c          LDR      r0,[r11,#0x2c]  ; Para
 000540  465d              MOV      r5,r11
-000542  f8db1074          LDR      r1,[r11,#0x74]  ; Para
+000542  f8db107c          LDR      r1,[r11,#0x7c]  ; Para
 000546  4288              CMP      r0,r1
 000548  d24e              BCS      |L2.1512|
 00054a  88f0              LDRH     r0,[r6,#6]  ; cdcswdelay
@@ -1110,7 +1110,7 @@
 000560  2180              MOVS     r1,#0x80
 000562  f7fffffe          BL       GPIO_SetBits
 ;;;585    							if(loop == Para.CDC_Cycle_Time)
-000566  f8950078          LDRB     r0,[r5,#0x78]  ; Para
+000566  f8950080          LDRB     r0,[r5,#0x80]  ; Para
 00056a  7931              LDRB     r1,[r6,#4]  ; loop
 00056c  4288              CMP      r0,r1
 00056e  d11f              BNE      |L2.1456|
@@ -1118,7 +1118,7 @@
 ;;;587    								loop = 1;
 000570  7137              STRB     r7,[r6,#4]
 ;;;588    								battery_c = battery_c/Para.CDC_Cycle_Time;
-000572  f8950078          LDRB     r0,[r5,#0x78]  ; Para
+000572  f8950080          LDRB     r0,[r5,#0x80]  ; Para
 000576  6b31              LDR      r1,[r6,#0x30]  ; battery_c
 000578  fbb1f0f0          UDIV     r0,r1,r0
 00057c  6330              STR      r0,[r6,#0x30]  ; battery_c
@@ -1865,7 +1865,7 @@
                           AREA ||.data||, DATA, ALIGN=0
 
                   version
-000000  0e                DCB      0x0e
+000000  0f                DCB      0x0f
 
                           AREA ||area_number.11||, DATA, ALIGN=2
 
