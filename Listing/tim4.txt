@@ -1865,7 +1865,7 @@
                           AREA ||.data||, DATA, ALIGN=0
 
                   version
-000000  0f                DCB      0x0f
+000000  10                DCB      0x10
 
                           AREA ||area_number.11||, DATA, ALIGN=2
 

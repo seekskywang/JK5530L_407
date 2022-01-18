@@ -593,7 +593,7 @@ void CalHandle(u8 mode,u8 range,u32 data)
 			GPIO_ResetBits(GPIOB,GPIO_Pin_1);//电压档位为低档
 			x1 = data;
 			y1 = Contr_Laod;
-			Contr_Laod = 8000;
+			Contr_Laod = 20000;
 //			OnOff_GPOI_ResetSet(2,1);
 		}else if(range == 9){//CV控制低档3
 			x2 = data;
@@ -617,8 +617,8 @@ void CalHandle(u8 mode,u8 range,u32 data)
 			GPIO_SetBits(GPIOB,GPIO_Pin_1);//电压档位为高档
 			x1 = data;
 			y1 = Contr_Laod;
-			Contr_Laod = 8000;
-//			OnOff_GPOI_ResetSet(2,1);
+			Contr_Laod = 1500;
+			OnOff_GPOI_ResetSet(2,1);
 		}else if(range == 12){//CV控制高档3
 			x2 = data;
 			y2 = Contr_Laod;
@@ -1704,7 +1704,7 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 				break;
 				case 12://电压校准
 				{
-					pntlen = 8;
+					pntlen = 9;
 					if(buf[currCharNum]=='?')
 					{
 						buf[currCharNum++]=(Lvl_Vale>=0?'+':'-');
@@ -1717,7 +1717,7 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 						tmpFg = 1;
 						for(i=0;i<pntlen;i++)
 						{
-						   if(i==0||i==4)
+						   if(i==0||i==5)
 							  continue;
 						   if(IsDigitChar(buf[currCharNum+i])==1)
 						   {
@@ -1738,10 +1738,14 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 						{
 						   if(i==0)
 						   {
-							   fsingal = buf[currCharNum++]-0x30;
+							   fsingal = 10*(buf[currCharNum++]-0x30);
 							   continue; 
+						   }else if(i==1)
+						   {
+							  fsingal = fsingal+(buf[currCharNum++]-0x30);
+							  continue; 
 						   } 
-						   else if(i==4)
+						   else if(i==5)
 						   {
 							   currCharNum++;
 							   continue; 

@@ -142,6 +142,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
+          <Name>猬:w??趏峞</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -882,6 +883,11 @@
           <count>97</count>
           <WinNumber>2</WinNumber>
           <ItemText>Run_Control[8],0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>98</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Run_Control[7]</ItemText>
         </Ww>
       </WatchWindow2>
       <MemoryWindow4>
