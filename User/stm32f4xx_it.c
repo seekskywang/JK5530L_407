@@ -514,12 +514,15 @@ static uint8_t MODS_WriteRegValue(uint16_t reg_addr, uint16_t reg_value)
 	switch (reg_addr)							/* �жϼĴ�����ַ */
 	{	
 		case SLAVE_REG_P00://负载模式
-			if(reg_value == 0)
-			{
-				LOAD_MODE = 0;
-			}else if(reg_value == 1){
-				LOAD_MODE = 1;
-			}
+//			if(reg_value == 0)
+//			{
+//				LOAD_MODE = 0;
+//			}else if(reg_value == 1){
+//				LOAD_MODE = 1;
+//			}else if(reg_value == 2){
+//				LOAD_MODE = 2;
+//			}
+			Para.CLOAD_MODE=reg_value;
 			break;
 		case SLAVE_REG_P01://负载电压
 			Para.LOAD_V = reg_value;
@@ -567,6 +570,7 @@ static uint8_t MODS_WriteRegValue(uint16_t reg_addr, uint16_t reg_value)
 
 			break;
 		case SLAVE_REG_P12:
+//			Para.LOAD_P = reg_value * 10;
 			break;
 
 		case SLAVE_REG_P13:
@@ -580,6 +584,9 @@ static uint8_t MODS_WriteRegValue(uint16_t reg_addr, uint16_t reg_value)
 			break;
 
 		case SLAVE_REG_P17:
+			break;
+		case SLAVE_REG_P18:
+			Para.LOAD_P = reg_value * 10;
 			break;
 		default:
 			return 0;

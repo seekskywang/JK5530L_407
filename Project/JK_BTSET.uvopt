@@ -142,7 +142,9 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name>猬:w??趏峞</Name>
+          <Name>猬}wD鍔
+D鍔
+趏靪</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -888,6 +890,21 @@
           <count>98</count>
           <WinNumber>2</WinNumber>
           <ItemText>Run_Control[7]</ItemText>
+        </Ww>
+        <Ww>
+          <count>99</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Run_Control[6],0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>100</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Para.LOAD_P,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>101</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Para.CSET_Current_Laod,0x0A</ItemText>
         </Ww>
       </WatchWindow2>
       <MemoryWindow4>

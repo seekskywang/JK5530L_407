@@ -36550,14 +36550,15 @@ N	switch (reg_addr)							/* �жϼĴ�����ַ */
 N	{	
 N		case SLAVE_REG_P00://负载模式
 X		case 0x0000:
-N			if(reg_value == 0)
-N			{
-N				LOAD_MODE = 0;
-X				Run_Control[6] = 0;
-N			}else if(reg_value == 1){
-N				LOAD_MODE = 1;
-X				Run_Control[6] = 1;
-N			}
+N//			if(reg_value == 0)
+N//			{
+N//				LOAD_MODE = 0;
+N//			}else if(reg_value == 1){
+N//				LOAD_MODE = 1;
+N//			}else if(reg_value == 2){
+N//				LOAD_MODE = 2;
+N//			}
+N			Para.CLOAD_MODE=reg_value;
 N			break;
 N		case SLAVE_REG_P01://负载电压
 X		case 0x0001:
@@ -36617,6 +36618,7 @@ N
 N			break;
 N		case SLAVE_REG_P12:
 X		case 0x000C:
+N//			Para.LOAD_P = reg_value * 10;
 N			break;
 N
 N		case SLAVE_REG_P13:
@@ -36635,6 +36637,10 @@ N			break;
 N
 N		case SLAVE_REG_P17:
 X		case 0x0011:
+N			break;
+N		case SLAVE_REG_P18:
+X		case 0x0012:
+N			Para.LOAD_P = reg_value * 10;
 N			break;
 N		default:
 N			return 0;
