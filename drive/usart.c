@@ -633,7 +633,7 @@ void CalHandle(u8 mode,u8 range,u32 data)
 		if(range == 0)//负载电流低档位1
 		{		
 			LOAD_I_SW = 0;
-			Contr_Laod = 6000;
+			Contr_Laod = 5000;
 			calflag = 1;
 			OnOff_GPOI_ResetSet(2,1);
 		}

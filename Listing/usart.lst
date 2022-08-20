@@ -750,6 +750,12 @@ Ntypedef unsigned short     int u16;
 Ntypedef unsigned           int u32;
 Ntypedef unsigned       __INT64 u64;
 Xtypedef unsigned       __int64 u64;
+N
+N//typedef unsigned          char vu8;
+N//typedef unsigned short     int vu16;
+N//typedef unsigned           int vu32;
+N//typedef unsigned       __INT64 vu64;
+N
 N    /* 7.18.1.2 */
 N
 N    /* smallest type of at least n bits */
@@ -37790,7 +37796,7 @@ N		if(range == 0)//负载电流低档位1
 N		{		
 N			LOAD_I_SW = 0;
 X			Run_Control[8] = 0;
-N			Contr_Laod = 6000;
+N			Contr_Laod = 5000;
 N			calflag = 1;
 N			OnOff_GPOI_ResetSet(2,1);
 N		}
