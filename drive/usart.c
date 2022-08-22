@@ -633,7 +633,7 @@ void CalHandle(u8 mode,u8 range,u32 data)
 		if(range == 0)//负载电流低档位1
 		{		
 			LOAD_I_SW = 0;
-			Contr_Laod = 5000;
+			Contr_Laod = 6000;
 			calflag = 1;
 			OnOff_GPOI_ResetSet(2,1);
 		}
@@ -676,7 +676,7 @@ void CalHandle(u8 mode,u8 range,u32 data)
 		}else if(range == 4){//负载电流高档位1
 			LOAD_I_SW = 1;
 			GPIO_ResetBits(GPIOC,GPIO_Pin_11);//电流测量为高档位
-			Contr_Laod = 6500;
+			Contr_Laod = 6000;
 			calflag = 1;
 			OnOff_GPOI_ResetSet(2,1);
 		}else if(range == 5){//负载电流高档位2

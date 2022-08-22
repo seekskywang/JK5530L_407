@@ -38149,6 +38149,8 @@ N			var32 = Imon_Load_value;
 N			var32 = var32 * CalPara.TestLC[1] + CalPara.OffsetTestLC[1];
 N			Para.CLaod_Current = var32;
 N		}
+N		if(mainswitch == 0)
+N			Para.CLaod_Current=0;
 N//		DISS_Current=Para.CLaod_Current;
 N		DISS_Current=(float)Para.CLaod_Current/1000;//计算显示电流
 N		var32 = 0;	
@@ -38172,7 +38174,7 @@ N		if(Para.CLaod_Current < 1000)
 N		{
 N			Para.CLaod_Current = 0;
 N		}
-N		if(Para.CSET_Current_Laod >= 20000)
+N		if(Para.CSET_Current_Laod >= 30000)
 N		{
 N			var32 = Imon_Load_value;
 N			var32 = var32 * CalPara.TestLC[3] + CalPara.OffsetTestLC[3];
@@ -38184,6 +38186,8 @@ N			var32 = Imon_Load_value;
 N			var32 = var32 * CalPara.TestLC[4] + CalPara.OffsetTestLC[4];
 N			Para.CLaod_Current = var32;
 N		}
+N		if(mainswitch == 0)
+N			Para.CLaod_Current=0;
 N//		DISS_Current=Para.CLaod_Current;
 N		DISS_Current=(float)Para.CLaod_Current/1000;//计算显示电流
 N		var32 = 0;

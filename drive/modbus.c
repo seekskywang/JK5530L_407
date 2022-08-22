@@ -986,6 +986,8 @@ void Transformation_ADC(void)
 			var32 = var32 * CalPara.TestLC[1] + CalPara.OffsetTestLC[1];
 			Para.CLaod_Current = var32;
 		}
+		if(mainswitch == 0)
+			Para.CLaod_Current=0;
 //		DISS_Current=Para.CLaod_Current;
 		DISS_Current=(float)Para.CLaod_Current/1000;//计算显示电流
 		var32 = 0;	
@@ -1009,7 +1011,7 @@ void Transformation_ADC(void)
 		{
 			Para.CLaod_Current = 0;
 		}
-		if(Para.CSET_Current_Laod >= 20000)
+		if(Para.CSET_Current_Laod >= 30000)
 		{
 			var32 = Imon_Load_value;
 			var32 = var32 * CalPara.TestLC[3] + CalPara.OffsetTestLC[3];
@@ -1021,6 +1023,8 @@ void Transformation_ADC(void)
 			var32 = var32 * CalPara.TestLC[4] + CalPara.OffsetTestLC[4];
 			Para.CLaod_Current = var32;
 		}
+		if(mainswitch == 0)
+			Para.CLaod_Current=0;
 //		DISS_Current=Para.CLaod_Current;
 		DISS_Current=(float)Para.CLaod_Current/1000;//计算显示电流
 		var32 = 0;

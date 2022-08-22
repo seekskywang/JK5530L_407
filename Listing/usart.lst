@@ -37796,7 +37796,7 @@ N		if(range == 0)//负载电流低档位1
 N		{		
 N			LOAD_I_SW = 0;
 X			Run_Control[8] = 0;
-N			Contr_Laod = 5000;
+N			Contr_Laod = 6000;
 N			calflag = 1;
 N			OnOff_GPOI_ResetSet(2,1);
 N		}
@@ -37844,7 +37844,7 @@ N			LOAD_I_SW = 1;
 X			Run_Control[8] = 1;
 N			GPIO_ResetBits(GPIOC,GPIO_Pin_11);//电流测量为高档位
 X			GPIO_ResetBits(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x00020000) + 0x0800)),((uint16_t)0x0800));
-N			Contr_Laod = 6500;
+N			Contr_Laod = 6000;
 N			calflag = 1;
 N			OnOff_GPOI_ResetSet(2,1);
 N		}else if(range == 5){//负载电流高档位2
