@@ -10,7 +10,7 @@
       <TargetName>JK_BTSET</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
+      <pCCUsed>5060750::V5.06 update 6 (build 750)::.\ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -223,6 +223,9 @@
             <hadXRAM>0</hadXRAM>
             <uocXRam>0</uocXRam>
             <RvdsVP>2</RvdsVP>
+            <RvdsMve>0</RvdsMve>
+            <RvdsCdeCp>0</RvdsCdeCp>
+            <nBranchProt>0</nBranchProt>
             <hadIRAM2>1</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
@@ -373,7 +376,7 @@
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls>--no-multibyte-chars --diag_suppress=870 </MiscControls>
+              <MiscControls>--no-multibyte-chars --diag_suppress=870</MiscControls>
               <Define>USE_STDPERIPH_DRIVER,STM32F40XX,USE_USB_OTG_FS,USE_EMBEDDED_PHY,USE_USB_OTG_HS</Define>
               <Undefine></Undefine>
               <IncludePath>..\APP;..\drive;..\Include;..\Libraries\CMSIS\inc;..\Libraries\CMSIS\src;..\Libraries\FWlib\inc;..\Libraries\FWlib\src;..\Listing;..\Output;..\Project;..\STemWinLibrary522\Config;..\STemWinLibrary522\emWinTask;..\STemWinLibrary522\GUILib;..\STemWinLibrary522\inc;..\User;..\USB\STM32_USB_HOST_Library\Class\HID\inc;..\USB\STM32_USB_HOST_Library\Class\MSC\src;..\USB\STM32_USB_HOST_Library\Core\src;..\USB\USB_APP;..\USB\STM32_USB_HOST_Library\Class\HID\src;..\USB\STM32_USB_HOST_Library\Class\MSC\inc;..\USB\STM32_USB_HOST_Library\Core\inc;..\USB\STM32_USB_OTG_Driver\inc;..\FATFS\exfuns;..\FATFS\src\option;..\FATFS\src;..\MALLOC</IncludePath>
@@ -389,7 +392,7 @@
             <NoWarn>0</NoWarn>
             <uSurpInc>0</uSurpInc>
             <useXO>0</useXO>
-            <uClangAs>0</uClangAs>
+            <ClangAsOpt>4</ClangAsOpt>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>

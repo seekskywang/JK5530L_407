@@ -802,7 +802,7 @@ Xtypedef unsigned       __int64 u64;
 N
 N//typedef unsigned          char vu8;
 N//typedef unsigned short     int vu16;
-N//typedef unsigned           int vu32;
+N//typedef unsigned            int vu32;
 N//typedef unsigned       __INT64 vu64;
 N
 N    /* 7.18.1.2 */

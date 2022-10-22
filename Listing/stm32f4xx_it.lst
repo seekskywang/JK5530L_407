@@ -803,7 +803,7 @@ Xtypedef unsigned       __int64 u64;
 N
 N//typedef unsigned          char vu8;
 N//typedef unsigned short     int vu16;
-N//typedef unsigned           int vu32;
+N//typedef unsigned            int vu32;
 N//typedef unsigned       __INT64 vu64;
 N
 N    /* 7.18.1.2 */
@@ -35348,7 +35348,7 @@ N	vu16 IR_Step_Time;			//步进时间
 N	vu8  ACT_DELAY;				//激活延时
 N
 N	/* 程控电源 */
-N	vu16 POWER_OutPut_V;		//输出电压    
+N	vu32 POWER_OutPut_V;		//输出电压    
 N	vu16 POWER_Limit_C;			//限制电流
 N	vu16 POWER_Cutoff_C;;		//充电截止电流	
 N
@@ -35359,7 +35359,7 @@ N	vu32 LOAD_P;				//负载电压
 N	vu16 LOAD_Cutoff_V;			//负载电压
 N	
 N	/* 充放电 */
-N	vu16 CDC_OutPut_V;          //输出电压     
+N	vu32 CDC_OutPut_V;          //输出电压     
 N	vu16 CDC_Limit_C;			//限制电流
 N	vu32 CDC_Ccutoff_V;			//截止电压
 N	vu16 CDC_Ccutoff_C;			//截止电流
@@ -35398,7 +35398,7 @@ N	vu8 IR_Step_Time;			//步进时间
 N	
 N
 N	/* 程控电源 */
-N	vu16 POWER_OutPut_V;		//输出电压    
+N	vu32 POWER_OutPut_V;		//输出电压    
 N	vu16 POWER_Limit_C;			//限制电流
 N	vu16 POWER_Cutoff_C;		//截止电流 	
 N
@@ -35408,7 +35408,7 @@ N	vu16 LOAD_V;				//负载电流
 N	vu16 LOAD_Cutoff_V;			//截止电压
 N
 N	/* 充放电 */
-N	vu16 CDC_OutPut_V;          //输出电压     
+N	vu32 CDC_OutPut_V;          //输出电压     
 N	vu16 CDC_Limit_C;			//限制电流
 N	vu32 CDC_Ccutoff_V;			//截止电压
 N	vu16 CDC_Ccutoff_C;			//截止电流
@@ -35894,7 +35894,7 @@ S	vu16 IR_Step_Time;			//步进时间
 S	vu8  ACT_DELAY;				//激活延时
 S
 S	/* 程控电源 */
-S	vu16 POWER_OutPut_V;		//输出电压    
+S	vu32 POWER_OutPut_V;		//输出电压    
 S	vu16 POWER_Limit_C;			//限制电流
 S	vu16 POWER_Cutoff_C;;		//充电截止电流	
 S
@@ -35905,7 +35905,7 @@ S	vu32 LOAD_P;				//负载电压
 S	vu16 LOAD_Cutoff_V;			//负载电压
 S	
 S	/* 充放电 */
-S	vu16 CDC_OutPut_V;          //输出电压     
+S	vu32 CDC_OutPut_V;          //输出电压     
 S	vu16 CDC_Limit_C;			//限制电流
 S	vu32 CDC_Ccutoff_V;			//截止电压
 S	vu16 CDC_Ccutoff_C;			//截止电流
@@ -35944,7 +35944,7 @@ S	vu8 IR_Step_Time;			//步进时间
 S	
 S
 S	/* 程控电源 */
-S	vu16 POWER_OutPut_V;		//输出电压    
+S	vu32 POWER_OutPut_V;		//输出电压    
 S	vu16 POWER_Limit_C;			//限制电流
 S	vu16 POWER_Cutoff_C;		//截止电流 	
 S
@@ -35954,7 +35954,7 @@ S	vu16 LOAD_V;				//负载电流
 S	vu16 LOAD_Cutoff_V;			//截止电压
 S
 S	/* 充放电 */
-S	vu16 CDC_OutPut_V;          //输出电压     
+S	vu32 CDC_OutPut_V;          //输出电压     
 S	vu16 CDC_Limit_C;			//限制电流
 S	vu32 CDC_Ccutoff_V;			//截止电压
 S	vu16 CDC_Ccutoff_C;			//截止电流
@@ -36468,6 +36468,7 @@ X		case 0x0005:
 N			Off_GPOI_ResetSet();
 N            Para.CSET_Current_Laod = 0;
 N			Para.IR_Step_C = 10;
+N			mainswitch=1;
 N			MODE = 2;
 N			MODE_ONOFF(1);
 N//            while(usartocflag == 1);

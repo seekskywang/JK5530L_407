@@ -389,7 +389,7 @@ typedef struct {
 	vu8  ACT_DELAY;				//激活延时
 
 	/* 程控电源 */
-	vu16 POWER_OutPut_V;		//输出电压    
+	vu32 POWER_OutPut_V;		//输出电压    
 	vu16 POWER_Limit_C;			//限制电流
 	vu16 POWER_Cutoff_C;;		//充电截止电流	
 
@@ -400,7 +400,7 @@ typedef struct {
 	vu16 LOAD_Cutoff_V;			//负载电压
 	
 	/* 充放电 */
-	vu16 CDC_OutPut_V;          //输出电压     
+	vu32 CDC_OutPut_V;          //输出电压     
 	vu16 CDC_Limit_C;			//限制电流
 	vu32 CDC_Ccutoff_V;			//截止电压
 	vu16 CDC_Ccutoff_C;			//截止电流
@@ -439,7 +439,7 @@ typedef struct {
 	
 
 	/* 程控电源 */
-	vu16 POWER_OutPut_V;		//输出电压    
+	vu32 POWER_OutPut_V;		//输出电压    
 	vu16 POWER_Limit_C;			//限制电流
 	vu16 POWER_Cutoff_C;		//截止电流 	
 
@@ -449,7 +449,7 @@ typedef struct {
 	vu16 LOAD_Cutoff_V;			//截止电压
 
 	/* 充放电 */
-	vu16 CDC_OutPut_V;          //输出电压     
+	vu32 CDC_OutPut_V;          //输出电压     
 	vu16 CDC_Limit_C;			//限制电流
 	vu32 CDC_Ccutoff_V;			//截止电压
 	vu16 CDC_Ccutoff_C;			//截止电流

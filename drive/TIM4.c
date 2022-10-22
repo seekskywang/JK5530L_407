@@ -36,7 +36,7 @@ float testv;
 vu8 finishflag;
 vu32 finishdelay;
 vu8 lockflag;
-vu8 version=17;
+vu8 version=19;
 vu32 battery_c;
 vu8 charge_step;
 vu8 loop;

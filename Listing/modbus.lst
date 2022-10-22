@@ -754,7 +754,7 @@ Xtypedef unsigned       __int64 u64;
 N
 N//typedef unsigned          char vu8;
 N//typedef unsigned short     int vu16;
-N//typedef unsigned           int vu32;
+N//typedef unsigned            int vu32;
 N//typedef unsigned       __INT64 vu64;
 N
 N    /* 7.18.1.2 */
@@ -35258,7 +35258,7 @@ N	vu16 IR_Step_Time;			//步进时间
 N	vu8  ACT_DELAY;				//激活延时
 N
 N	/* 程控电源 */
-N	vu16 POWER_OutPut_V;		//输出电压    
+N	vu32 POWER_OutPut_V;		//输出电压    
 N	vu16 POWER_Limit_C;			//限制电流
 N	vu16 POWER_Cutoff_C;;		//充电截止电流	
 N
@@ -35269,7 +35269,7 @@ N	vu32 LOAD_P;				//负载电压
 N	vu16 LOAD_Cutoff_V;			//负载电压
 N	
 N	/* 充放电 */
-N	vu16 CDC_OutPut_V;          //输出电压     
+N	vu32 CDC_OutPut_V;          //输出电压     
 N	vu16 CDC_Limit_C;			//限制电流
 N	vu32 CDC_Ccutoff_V;			//截止电压
 N	vu16 CDC_Ccutoff_C;			//截止电流
@@ -35308,7 +35308,7 @@ N	vu8 IR_Step_Time;			//步进时间
 N	
 N
 N	/* 程控电源 */
-N	vu16 POWER_OutPut_V;		//输出电压    
+N	vu32 POWER_OutPut_V;		//输出电压    
 N	vu16 POWER_Limit_C;			//限制电流
 N	vu16 POWER_Cutoff_C;		//截止电流 	
 N
@@ -35318,7 +35318,7 @@ N	vu16 LOAD_V;				//负载电流
 N	vu16 LOAD_Cutoff_V;			//截止电压
 N
 N	/* 充放电 */
-N	vu16 CDC_OutPut_V;          //输出电压     
+N	vu32 CDC_OutPut_V;          //输出电压     
 N	vu16 CDC_Limit_C;			//限制电流
 N	vu32 CDC_Ccutoff_V;			//截止电压
 N	vu16 CDC_Ccutoff_C;			//截止电流
@@ -36977,7 +36977,7 @@ S	vu16 IR_Step_Time;			//步进时间
 S	vu8  ACT_DELAY;				//激活延时
 S
 S	/* 程控电源 */
-S	vu16 POWER_OutPut_V;		//输出电压    
+S	vu32 POWER_OutPut_V;		//输出电压    
 S	vu16 POWER_Limit_C;			//限制电流
 S	vu16 POWER_Cutoff_C;;		//充电截止电流	
 S
@@ -36988,7 +36988,7 @@ S	vu32 LOAD_P;				//负载电压
 S	vu16 LOAD_Cutoff_V;			//负载电压
 S	
 S	/* 充放电 */
-S	vu16 CDC_OutPut_V;          //输出电压     
+S	vu32 CDC_OutPut_V;          //输出电压     
 S	vu16 CDC_Limit_C;			//限制电流
 S	vu32 CDC_Ccutoff_V;			//截止电压
 S	vu16 CDC_Ccutoff_C;			//截止电流
@@ -37027,7 +37027,7 @@ S	vu8 IR_Step_Time;			//步进时间
 S	
 S
 S	/* 程控电源 */
-S	vu16 POWER_OutPut_V;		//输出电压    
+S	vu32 POWER_OutPut_V;		//输出电压    
 S	vu16 POWER_Limit_C;			//限制电流
 S	vu16 POWER_Cutoff_C;		//截止电流 	
 S
@@ -37037,7 +37037,7 @@ S	vu16 LOAD_V;				//负载电流
 S	vu16 LOAD_Cutoff_V;			//截止电压
 S
 S	/* 充放电 */
-S	vu16 CDC_OutPut_V;          //输出电压     
+S	vu32 CDC_OutPut_V;          //输出电压     
 S	vu16 CDC_Limit_C;			//限制电流
 S	vu32 CDC_Ccutoff_V;			//截止电压
 S	vu16 CDC_Ccutoff_C;			//截止电流
@@ -38149,7 +38149,7 @@ N			var32 = Imon_Load_value;
 N			var32 = var32 * CalPara.TestLC[1] + CalPara.OffsetTestLC[1];
 N			Para.CLaod_Current = var32;
 N		}
-N		if(mainswitch == 0)
+N		if(mainswitch == 0 && lockflag ==0)
 N			Para.CLaod_Current=0;
 N//		DISS_Current=Para.CLaod_Current;
 N		DISS_Current=(float)Para.CLaod_Current/1000;//计算显示电流
@@ -38186,7 +38186,7 @@ N			var32 = Imon_Load_value;
 N			var32 = var32 * CalPara.TestLC[4] + CalPara.OffsetTestLC[4];
 N			Para.CLaod_Current = var32;
 N		}
-N		if(mainswitch == 0)
+N		if(mainswitch == 0 && lockflag ==0)
 N			Para.CLaod_Current=0;
 N//		DISS_Current=Para.CLaod_Current;
 N		DISS_Current=(float)Para.CLaod_Current/1000;//计算显示电流
@@ -38201,7 +38201,7 @@ N		if(LOAD_MODE == 2)
 X		if(Run_Control[6] == 2)
 N		{
 N			Para.CSET_Current_Laod = (uint32_t)((((float)Para.LOAD_P/1000)/DISS_Voltage)*1000);
-N			if(Para.CSET_Current_Laod > 20000)
+N			if(Para.CSET_Current_Laod > 15000)
 N			{
 N				LOAD_I_SW = 1;
 X				Run_Control[8] = 1;

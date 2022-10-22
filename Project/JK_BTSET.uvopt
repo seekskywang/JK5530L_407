@@ -10,7 +10,7 @@
     <aExt>*.s*; *.src; *.a*</aExt>
     <oExt>*.obj</oExt>
     <lExt>*.lib</lExt>
-    <tExt>*.txt; *.h; *.inc</tExt>
+    <tExt>*.txt; *.h; *.inc; *.md</tExt>
     <pExt>*.plm</pExt>
     <CppX>*.cpp</CppX>
     <nMigrate>0</nMigrate>
@@ -142,9 +142,6 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name>猬}wD鍔
-D鍔
-趏靪</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -393,6 +390,36 @@ D鍔
           <count>41</count>
           <WinNumber>1</WinNumber>
           <ItemText>Para.CSET_Current_Laod,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>42</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>max_discahrgeNum</ItemText>
+        </Ww>
+        <Ww>
+          <count>43</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Para.CLaod_Current,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>44</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Imon_Load_value,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>45</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Contr_Laod,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>46</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>max_discahrgeNum</ItemText>
+        </Ww>
+        <Ww>
+          <count>47</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>DISS_Current</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>
@@ -906,6 +933,11 @@ D鍔
           <WinNumber>2</WinNumber>
           <ItemText>Para.CSET_Current_Laod,0x0A</ItemText>
         </Ww>
+        <Ww>
+          <count>102</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Vmon_Load_value,0x0A</ItemText>
+        </Ww>
       </WatchWindow2>
       <MemoryWindow4>
         <Mm>
@@ -921,7 +953,7 @@ D鍔
       <DebugFlag>
         <trace>0</trace>
         <periodic>1</periodic>
-        <aLwin>0</aLwin>
+        <aLwin>1</aLwin>
         <aCover>0</aCover>
         <aSer1>0</aSer1>
         <aSer2>0</aSer2>

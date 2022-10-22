@@ -986,7 +986,7 @@ void Transformation_ADC(void)
 			var32 = var32 * CalPara.TestLC[1] + CalPara.OffsetTestLC[1];
 			Para.CLaod_Current = var32;
 		}
-		if(mainswitch == 0)
+		if(mainswitch == 0 && lockflag ==0)
 			Para.CLaod_Current=0;
 //		DISS_Current=Para.CLaod_Current;
 		DISS_Current=(float)Para.CLaod_Current/1000;//计算显示电流
@@ -1023,7 +1023,7 @@ void Transformation_ADC(void)
 			var32 = var32 * CalPara.TestLC[4] + CalPara.OffsetTestLC[4];
 			Para.CLaod_Current = var32;
 		}
-		if(mainswitch == 0)
+		if(mainswitch == 0 && lockflag ==0)
 			Para.CLaod_Current=0;
 //		DISS_Current=Para.CLaod_Current;
 		DISS_Current=(float)Para.CLaod_Current/1000;//计算显示电流
@@ -1036,7 +1036,7 @@ void Transformation_ADC(void)
 		if(LOAD_MODE == 2)
 		{
 			Para.CSET_Current_Laod = (uint32_t)((((float)Para.LOAD_P/1000)/DISS_Voltage)*1000);
-			if(Para.CSET_Current_Laod > 20000)
+			if(Para.CSET_Current_Laod > 15000)
 			{
 				LOAD_I_SW = 1;
 			}else{

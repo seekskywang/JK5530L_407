@@ -99,7 +99,7 @@ unsigned short IsDigitChar(unsigned char a)             //Èç¹ûaµÄÖµÊÇÊý×ÖµÄ»°·µ»
   	}
   return b;
 }
-void SetPowerV(vu16 powv)
+void SetPowerV(vu32 powv)
 {
 	MasterSendbuf[0] = 0x01;
 	MasterSendbuf[1] = 0x06;
@@ -464,7 +464,7 @@ void MODE_PARASET(vu8 value)
 				Para.CSET_Current_Laod = Para.LOAD_C;
 			}
 			Para.CSET_Voltage_Laod = Para.LOAD_V;
-			if(Para.CSET_Current_Laod > 20000)
+			if(Para.CSET_Current_Laod > 15000)
 			{
 				LOAD_I_SW = 1;
 			}else{
@@ -617,7 +617,7 @@ void CalHandle(u8 mode,u8 range,u32 data)
 			GPIO_SetBits(GPIOB,GPIO_Pin_1);//µçÑ¹µµÎ»Îª¸ßµµ
 			x1 = data;
 			y1 = Contr_Laod;
-			Contr_Laod = 1500;
+			Contr_Laod = 20000;
 			OnOff_GPOI_ResetSet(2,1);
 		}else if(range == 12){//CV¿ØÖÆ¸ßµµ3
 			x2 = data;
@@ -633,7 +633,7 @@ void CalHandle(u8 mode,u8 range,u32 data)
 		if(range == 0)//¸ºÔØµçÁ÷µÍµµÎ»1
 		{		
 			LOAD_I_SW = 0;
-			Contr_Laod = 6000;
+			Contr_Laod = 3000;
 			calflag = 1;
 			OnOff_GPOI_ResetSet(2,1);
 		}
@@ -644,7 +644,7 @@ void CalHandle(u8 mode,u8 range,u32 data)
 			y1 = Contr_Laod;
 			x4 = Imon_Load_value;
 			y4 = data;
-			Contr_Laod = 23000;
+			Contr_Laod = 20000;
 		}else if(range == 2)//¸ºÔØµçÁ÷µÍµµÎ»3
 		{
 			LOAD_I_SW = 0;			
@@ -652,7 +652,7 @@ void CalHandle(u8 mode,u8 range,u32 data)
 			y2 = Contr_Laod;
 			x5 = Imon_Load_value;
 			y5 = data;
-			Contr_Laod = 56000;
+			Contr_Laod = 60000;
 		}else if(range == 3){//¸ºÔØµçÁ÷µÍµµÎ»4
 			
 			x3 = data;
@@ -1253,7 +1253,7 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 					
 					if(buf[currCharNum++] == ',')
 					{
-						for(i=0,temp1=0;i<5;i++)
+						for(i=0,temp1=0;i<6;i++)
 						{
 							temp1 = temp1*10+(buf[currCharNum++]-0x30);
 						}
@@ -1455,7 +1455,7 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 					{
 						if(buf[currCharNum++] == ',')
 						{
-							for(i=0,temp1=0;i<5;i++)
+							for(i=0,temp1=0;i<6;i++)
 							{
 								temp1 = temp1*10+(buf[currCharNum++]-0x30);
 							}
@@ -1474,7 +1474,7 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 						temp1 = 0;
 						
 	
-						if(Para.CSET_Current_Laod > 20000)
+						if(Para.CSET_Current_Laod > 15000)
 						{
 							LOAD_I_SW = 1;
 							GPIO_ResetBits(GPIOC,GPIO_Pin_11);//µçÁ÷²âÁ¿Îª¸ßµµÎ»
@@ -1498,7 +1498,7 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 					}else if(MODE == 1){
 						if(buf[currCharNum++] == ',')
 						{
-							for(i=0,temp1=0;i<5;i++)
+							for(i=0,temp1=0;i<6;i++)
 							{
 								temp1 = temp1*10+(buf[currCharNum++]-0x30);
 							}
@@ -1529,7 +1529,7 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 						GPIO_ResetBits(GPIOC,GPIO_Pin_11);//µçÁ÷²âÁ¿Îª¸ßµµÎ»
 						if(buf[currCharNum++] == ',')
 						{
-							for(i=0,temp1=0;i<5;i++)
+							for(i=0,temp1=0;i<6;i++)
 							{
 								temp1 = temp1*10+(buf[currCharNum++]-0x30);
 							}
@@ -1563,7 +1563,7 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 					}else if(MODE == 3){
 						if(buf[currCharNum++] == ',')
 						{
-							for(i=0,temp1=0;i<5;i++)
+							for(i=0,temp1=0;i<6;i++)
 							{
 								temp1 = temp1*10+(buf[currCharNum++]-0x30);
 							}
@@ -1595,7 +1595,7 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 					}else if(MODE == 4){
 						if(buf[currCharNum++] == ',')
 						{
-							for(i=0,temp1=0;i<5;i++)
+							for(i=0,temp1=0;i<6;i++)
 							{
 								temp1 = temp1*10+(buf[currCharNum++]-0x30);
 							}
@@ -1614,7 +1614,7 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 						temp1 = 0;
 						
 	
-						if(Para.CSET_Current_Laod > 20000)
+						if(Para.CSET_Current_Laod > 15000)
 						{
 							LOAD_I_SW = 1;
 							GPIO_ResetBits(GPIOC,GPIO_Pin_11);//µçÁ÷²âÁ¿Îª¸ßµµÎ»
@@ -1638,7 +1638,7 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 					}else if(MODE == 5){
 						if(buf[currCharNum++] == ',')
 						{
-							for(i=0,temp1=0;i<5;i++)
+							for(i=0,temp1=0;i<6;i++)
 							{
 								temp1 = temp1*10+(buf[currCharNum++]-0x30);
 							}
@@ -1669,7 +1669,7 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 					}else if(MODE == 6){
 						if(buf[currCharNum++] == ',')
 						{
-							for(i=0,temp1=0;i<5;i++)
+							for(i=0,temp1=0;i<6;i++)
 							{
 								temp1 = temp1*10+(buf[currCharNum++]-0x30);
 							}

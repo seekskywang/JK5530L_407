@@ -441,6 +441,7 @@ static uint8_t MODS_ReadRegValue(uint16_t reg_addr, uint8_t *reg_value)
 			Off_GPOI_ResetSet();
             Para.CSET_Current_Laod = 0;
 			Para.IR_Step_C = 10;
+			mainswitch=1;
 			MODE = 2;
 			MODE_ONOFF(1);
 //            while(usartocflag == 1);
