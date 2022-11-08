@@ -1284,69 +1284,71 @@
 ;;;683    //			shutcount2 = 0;
 ;;;684    //			shutcount3 = 0;
 ;;;685    //		}
-;;;686    		if(MODE != 2)
+;;;686    		if(HARDVER == 1)
+;;;687    		{
+;;;688    			if(MODE != 2)
 00060e  484b              LDR      r0,|L2.1852|
 000610  7800              LDRB     r0,[r0,#0]  ; MODE
-;;;687    		{
-;;;688    			if((PPower >= 600) || (LPower >= 1800) || (DISS_Current >= 100))
-000612  4a4b              LDR      r2,|L2.1856|
-000614  2802              CMP      r0,#2                 ;686
 ;;;689    			{
-;;;690    				shutcount3++;
-;;;691    				if(shutcount3 >= 500)
-;;;692    				{
-;;;693    					overflag = 1;
-;;;694    					Off_GPOI_ResetSet();
-;;;695    //					shutcount1 = 0;
-;;;696    //					shutcount2 = 0;
-;;;697    					shutcount3 = 0;
-;;;698    					mainswitch = 0;
-;;;699    				}
-;;;700    			}else{
-;;;701    //				shutcount1 = 0;
-;;;702    //				shutcount2 = 0;
-;;;703    				shutcount3 = 0;
-;;;704    			}
-;;;705    			if(DISS_Current > 60 && DISS_Current < 100)
-;;;706    			{
-;;;707    				shutcount4 ++;
-;;;708    				if(shutcount4 >= 20000)
-;;;709    				{
-;;;710    					overflag = 1;
-;;;711    					Off_GPOI_ResetSet();
-;;;712    					mainswitch = 0;
-;;;713    					shutcount1 = 0;
-;;;714    				}
-;;;715    			}else{
-;;;716    				shutcount4 = 0;
-;;;717    			}
-;;;718    		}else{
-;;;719    			if((PPower >= 600) || (LPower >= 3600) || DISS_Current >= 160)
+;;;690    				if((PPower >= 600) || (LPower >= 1800) || (DISS_Current >= 100))
+000612  4a4b              LDR      r2,|L2.1856|
+000614  2802              CMP      r0,#2                 ;688
+;;;691    				{
+;;;692    					shutcount3++;
+;;;693    					if(shutcount3 >= 500)
+;;;694    					{
+;;;695    						overflag = 1;
+;;;696    						Off_GPOI_ResetSet();
+;;;697    	//					shutcount1 = 0;
+;;;698    	//					shutcount2 = 0;
+;;;699    						shutcount3 = 0;
+;;;700    						mainswitch = 0;
+;;;701    					}
+;;;702    				}else{
+;;;703    	//				shutcount1 = 0;
+;;;704    	//				shutcount2 = 0;
+;;;705    					shutcount3 = 0;
+;;;706    				}
+;;;707    				if(DISS_Current > 60 && DISS_Current < 100)
+;;;708    				{
+;;;709    					shutcount4 ++;
+;;;710    					if(shutcount4 >= 20000)
+;;;711    					{
+;;;712    						overflag = 1;
+;;;713    						Off_GPOI_ResetSet();
+;;;714    						mainswitch = 0;
+;;;715    						shutcount1 = 0;
+;;;716    					}
+;;;717    				}else{
+;;;718    					shutcount4 = 0;
+;;;719    				}
+;;;720    			}else{
+;;;721    				if((PPower >= 600) || (LPower >= 3600) || DISS_Current >= 160)
 000616  ee180a10          VMOV     r0,s16
 00061a  4d4a              LDR      r5,|L2.1860|
-00061c  f44f71fa          MOV      r1,#0x1f4             ;691
+00061c  f44f71fa          MOV      r1,#0x1f4             ;693
 000620  d03e              BEQ      |L2.1696|
-000622  4290              CMP      r0,r2                 ;688
+000622  4290              CMP      r0,r2                 ;690
 000624  da09              BGE      |L2.1594|
-000626  ee180a90          VMOV     r0,s17                ;688
+000626  ee180a90          VMOV     r0,s17                ;690
 00062a  4a47              LDR      r2,|L2.1864|
-00062c  4290              CMP      r0,r2                 ;688
+00062c  4290              CMP      r0,r2                 ;690
 00062e  da04              BGE      |L2.1594|
 000630  4a46              LDR      r2,|L2.1868|
-000632  f8da0000          LDR      r0,[r10,#0]           ;688  ; DISS_Current
-000636  4290              CMP      r0,r2                 ;688
+000632  f8da0000          LDR      r0,[r10,#0]           ;690  ; DISS_Current
+000636  4290              CMP      r0,r2                 ;690
 000638  db1c              BLT      |L2.1652|
                   |L2.1594|
-00063a  69b0              LDR      r0,[r6,#0x18]         ;690  ; shutcount3
-00063c  1c40              ADDS     r0,r0,#1              ;690
-00063e  61b0              STR      r0,[r6,#0x18]         ;690  ; shutcount3
-000640  69b0              LDR      r0,[r6,#0x18]         ;691  ; shutcount3
-000642  4288              CMP      r0,r1                 ;691
+00063a  69b0              LDR      r0,[r6,#0x18]         ;692  ; shutcount3
+00063c  1c40              ADDS     r0,r0,#1              ;692
+00063e  61b0              STR      r0,[r6,#0x18]         ;692  ; shutcount3
+000640  69b0              LDR      r0,[r6,#0x18]         ;693  ; shutcount3
+000642  4288              CMP      r0,r1                 ;693
 000644  d317              BCC      |L2.1654|
-000646  7177              STRB     r7,[r6,#5]            ;693
+000646  7177              STRB     r7,[r6,#5]            ;695
 000648  f7fffffe          BL       Off_GPOI_ResetSet
-00064c  61b4              STR      r4,[r6,#0x18]         ;697  ; shutcount3
-00064e  f8884000          STRB     r4,[r8,#0]            ;698
+00064c  61b4              STR      r4,[r6,#0x18]         ;699  ; shutcount3
+00064e  f8884000          STRB     r4,[r8,#0]            ;700
 000652  e010              B        |L2.1654|
                   |L2.1620|
 000654  483e              LDR      r0,|L2.1872|
@@ -1360,24 +1362,24 @@
 00066e  ee608a20          VMUL.F32 s17,s0,s1             ;642
 000672  e7cc              B        |L2.1550|
                   |L2.1652|
-000674  61b4              STR      r4,[r6,#0x18]         ;703  ; shutcount3
+000674  61b4              STR      r4,[r6,#0x18]         ;705  ; shutcount3
                   |L2.1654|
-000676  f8da0000          LDR      r0,[r10,#0]           ;705  ; DISS_Current
+000676  f8da0000          LDR      r0,[r10,#0]           ;707  ; DISS_Current
 00067a  4938              LDR      r1,|L2.1884|
-00067c  4428              ADD      r0,r0,r5              ;705
-00067e  4288              CMP      r0,r1                 ;705
+00067c  4428              ADD      r0,r0,r5              ;707
+00067e  4288              CMP      r0,r1                 ;707
 000680  d23a              BCS      |L2.1784|
-000682  69f0              LDR      r0,[r6,#0x1c]         ;707  ; shutcount4
-000684  1c40              ADDS     r0,r0,#1              ;707
-000686  61f0              STR      r0,[r6,#0x1c]         ;707  ; shutcount4
-000688  69f0              LDR      r0,[r6,#0x1c]         ;708  ; shutcount4
-00068a  f6446120          MOV      r1,#0x4e20            ;708
-00068e  4288              CMP      r0,r1                 ;708
+000682  69f0              LDR      r0,[r6,#0x1c]         ;709  ; shutcount4
+000684  1c40              ADDS     r0,r0,#1              ;709
+000686  61f0              STR      r0,[r6,#0x1c]         ;709  ; shutcount4
+000688  69f0              LDR      r0,[r6,#0x1c]         ;710  ; shutcount4
+00068a  f6446120          MOV      r1,#0x4e20            ;710
+00068e  4288              CMP      r0,r1                 ;710
 000690  d333              BCC      |L2.1786|
-000692  7177              STRB     r7,[r6,#5]            ;710
+000692  7177              STRB     r7,[r6,#5]            ;712
 000694  f7fffffe          BL       Off_GPOI_ResetSet
-000698  f8884000          STRB     r4,[r8,#0]            ;712
-00069c  6174              STR      r4,[r6,#0x14]         ;713  ; shutcount1
+000698  f8884000          STRB     r4,[r8,#0]            ;714
+00069c  6174              STR      r4,[r6,#0x14]         ;715  ; shutcount1
 00069e  e02c              B        |L2.1786|
                   |L2.1696|
 0006a0  4290              CMP      r0,r2
@@ -1391,109 +1393,177 @@
 0006b4  4290              CMP      r0,r2
 0006b6  db0c              BLT      |L2.1746|
                   |L2.1720|
-;;;720    			{
-;;;721    				shutcount3++;
+;;;722    				{
+;;;723    					shutcount3++;
 0006b8  69b0              LDR      r0,[r6,#0x18]  ; shutcount3
 0006ba  1c40              ADDS     r0,r0,#1
 0006bc  61b0              STR      r0,[r6,#0x18]  ; shutcount3
-;;;722    				if(shutcount3 >= 500)
+;;;724    					if(shutcount3 >= 500)
 0006be  69b0              LDR      r0,[r6,#0x18]  ; shutcount3
 0006c0  4288              CMP      r0,r1
 0006c2  d307              BCC      |L2.1748|
-;;;723    				{
-;;;724    					overflag = 1;
+;;;725    					{
+;;;726    						overflag = 1;
 0006c4  7177              STRB     r7,[r6,#5]
-;;;725    					Off_GPOI_ResetSet();
+;;;727    						Off_GPOI_ResetSet();
 0006c6  f7fffffe          BL       Off_GPOI_ResetSet
-;;;726    //					shutcount1 = 0;
-;;;727    //					shutcount2 = 0;
-;;;728    					shutcount3 = 0;
+;;;728    	//					shutcount1 = 0;
+;;;729    	//					shutcount2 = 0;
+;;;730    						shutcount3 = 0;
 0006ca  61b4              STR      r4,[r6,#0x18]  ; shutcount3
-;;;729    					mainswitch = 0;
+;;;731    						mainswitch = 0;
 0006cc  f8884000          STRB     r4,[r8,#0]
 0006d0  e000              B        |L2.1748|
                   |L2.1746|
-;;;730    				}
-;;;731    			}else{
-;;;732    //				shutcount1 = 0;
-;;;733    //				shutcount2 = 0;
-;;;734    				shutcount3 = 0;
+;;;732    					}
+;;;733    				}else{
+;;;734    	//				shutcount1 = 0;
+;;;735    	//				shutcount2 = 0;
+;;;736    					shutcount3 = 0;
 0006d2  61b4              STR      r4,[r6,#0x18]  ; shutcount3
                   |L2.1748|
-;;;735    			}
-;;;736    			if(DISS_Current > 60 && DISS_Current < 160)
+;;;737    				}
+;;;738    				if(DISS_Current > 60 && DISS_Current < 160)
 0006d4  f8da0000          LDR      r0,[r10,#0]  ; DISS_Current
 0006d8  1941              ADDS     r1,r0,r5
 0006da  4823              LDR      r0,|L2.1896|
 0006dc  4281              CMP      r1,r0
 0006de  d20b              BCS      |L2.1784|
-;;;737    			{
-;;;738    				shutcount4 ++;
+;;;739    				{
+;;;740    					shutcount4 ++;
 0006e0  69f0              LDR      r0,[r6,#0x1c]  ; shutcount4
 0006e2  1c40              ADDS     r0,r0,#1
 0006e4  61f0              STR      r0,[r6,#0x1c]  ; shutcount4
-;;;739    				if(shutcount4 >= 2000)
+;;;741    					if(shutcount4 >= 2000)
 0006e6  69f0              LDR      r0,[r6,#0x1c]  ; shutcount4
 0006e8  f5b06ffa          CMP      r0,#0x7d0
 0006ec  d305              BCC      |L2.1786|
-;;;740    				{
-;;;741    					overflag = 1;
+;;;742    					{
+;;;743    						overflag = 1;
 0006ee  7177              STRB     r7,[r6,#5]
-;;;742    					Off_GPOI_ResetSet();
+;;;744    						Off_GPOI_ResetSet();
 0006f0  f7fffffe          BL       Off_GPOI_ResetSet
-;;;743    					mainswitch = 0;
+;;;745    						mainswitch = 0;
 0006f4  f8884000          STRB     r4,[r8,#0]
                   |L2.1784|
-;;;744    					shutcount4 = 0;
-;;;745    				}
-;;;746    			}else{
-;;;747    				shutcount4 = 0;
+;;;746    						shutcount4 = 0;
+;;;747    					}
+;;;748    				}else{
+;;;749    					shutcount4 = 0;
 0006f8  61f4              STR      r4,[r6,#0x1c]  ; shutcount4
                   |L2.1786|
-;;;748    //				shutcount2 = 0;
-;;;749    //				shutcount3 = 0;
-;;;750    			}
-;;;751    		}
-;;;752    //		else if((PPower > 100 && PPower < 200) || (LPower > 100 && LPower < 200)){
-;;;753    //			shutcount1 ++;
-;;;754    //			if(shutcount1 >= 180000)
-;;;755    //			{
-;;;756    //				Off_GPOI_ResetSet();
-;;;757    //				mainswitch = 0;
-;;;758    //				shutcount1 = 0;
-;;;759    //			}			
-;;;760    //		}else if((PPower >= 200 && PPower < 300) || (LPower >= 200 && LPower < 300)){
-;;;761    //			shutcount2 ++;
-;;;762    //			if(shutcount2 >= 10000)
-;;;763    //			{
-;;;764    //				Off_GPOI_ResetSet();
-;;;765    //				mainswitch = 0;
-;;;766    //				shutcount2 = 0;
-;;;767    //			}
-;;;768    //		}
-;;;769    		
-;;;770    		
-;;;771    //		if((PPower > 80) || (LPower > 80))
-;;;772    //		{
-;;;773    //			Off_GPOI_ResetSet();
-;;;774    //			shutcount1 = 0;
-;;;775    //			shutcount2 = 0;
-;;;776    //			mainswitch = 0;
-;;;777    //		}
-;;;778    		
-;;;779    		TIM_ClearITPendingBit(TIM3,TIM_IT_Update);
+;;;750    	//				shutcount2 = 0;
+;;;751    	//				shutcount3 = 0;
+;;;752    				}
+;;;753    			}
+;;;754    		}else if(HARDVER == 2){
+;;;755    			if(MODE != 2)
+;;;756    			{
+;;;757    				if((PPower >= 1200) || (LPower >= 1800) || (DISS_Current >= 120))
+;;;758    				{
+;;;759    					shutcount3++;
+;;;760    					if(shutcount3 >= 500)
+;;;761    					{
+;;;762    						overflag = 1;
+;;;763    						Off_GPOI_ResetSet();
+;;;764    	//					shutcount1 = 0;
+;;;765    	//					shutcount2 = 0;
+;;;766    						shutcount3 = 0;
+;;;767    						mainswitch = 0;
+;;;768    					}
+;;;769    				}else{
+;;;770    	//				shutcount1 = 0;
+;;;771    	//				shutcount2 = 0;
+;;;772    					shutcount3 = 0;
+;;;773    				}
+;;;774    				if(DISS_Current > 100 && DISS_Current < 120)
+;;;775    				{
+;;;776    					shutcount4 ++;
+;;;777    					if(shutcount4 >= 20000)
+;;;778    					{
+;;;779    						overflag = 1;
+;;;780    						Off_GPOI_ResetSet();
+;;;781    						mainswitch = 0;
+;;;782    						shutcount1 = 0;
+;;;783    					}
+;;;784    				}else{
+;;;785    					shutcount4 = 0;
+;;;786    				}
+;;;787    			}else{
+;;;788    				if((PPower >= 1200) || (LPower >= 3600) || DISS_Current >= 160)
+;;;789    				{
+;;;790    					shutcount3++;
+;;;791    					if(shutcount3 >= 500)
+;;;792    					{
+;;;793    						overflag = 1;
+;;;794    						Off_GPOI_ResetSet();
+;;;795    	//					shutcount1 = 0;
+;;;796    	//					shutcount2 = 0;
+;;;797    						shutcount3 = 0;
+;;;798    						mainswitch = 0;
+;;;799    					}
+;;;800    				}else{
+;;;801    	//				shutcount1 = 0;
+;;;802    	//				shutcount2 = 0;
+;;;803    					shutcount3 = 0;
+;;;804    				}
+;;;805    				if(DISS_Current > 60 && DISS_Current < 160)
+;;;806    				{
+;;;807    					shutcount4 ++;
+;;;808    					if(shutcount4 >= 2000)
+;;;809    					{
+;;;810    						overflag = 1;
+;;;811    						Off_GPOI_ResetSet();
+;;;812    						mainswitch = 0;
+;;;813    						shutcount4 = 0;
+;;;814    					}
+;;;815    				}else{
+;;;816    					shutcount4 = 0;
+;;;817    	//				shutcount2 = 0;
+;;;818    	//				shutcount3 = 0;
+;;;819    				}
+;;;820    			}
+;;;821    		}
+;;;822    //		else if((PPower > 100 && PPower < 200) || (LPower > 100 && LPower < 200)){
+;;;823    //			shutcount1 ++;
+;;;824    //			if(shutcount1 >= 180000)
+;;;825    //			{
+;;;826    //				Off_GPOI_ResetSet();
+;;;827    //				mainswitch = 0;
+;;;828    //				shutcount1 = 0;
+;;;829    //			}			
+;;;830    //		}else if((PPower >= 200 && PPower < 300) || (LPower >= 200 && LPower < 300)){
+;;;831    //			shutcount2 ++;
+;;;832    //			if(shutcount2 >= 10000)
+;;;833    //			{
+;;;834    //				Off_GPOI_ResetSet();
+;;;835    //				mainswitch = 0;
+;;;836    //				shutcount2 = 0;
+;;;837    //			}
+;;;838    //		}
+;;;839    		
+;;;840    		
+;;;841    //		if((PPower > 80) || (LPower > 80))
+;;;842    //		{
+;;;843    //			Off_GPOI_ResetSet();
+;;;844    //			shutcount1 = 0;
+;;;845    //			shutcount2 = 0;
+;;;846    //			mainswitch = 0;
+;;;847    //		}
+;;;848    		
+;;;849    		TIM_ClearITPendingBit(TIM3,TIM_IT_Update);
 0006fa  2101              MOVS     r1,#1
 0006fc  ecbd8b04          VPOP     {d8-d9}
 000700  e8bd5ff0          POP      {r4-r12,lr}
 000704  4819              LDR      r0,|L2.1900|
 000706  f7ffbffe          B.W      TIM_ClearITPendingBit
                   |L2.1802|
-;;;780    	}
-;;;781    	  
-;;;782    }
+;;;850    	}
+;;;851    	  
+;;;852    }
 00070a  ecbd8b04          VPOP     {d8-d9}
 00070e  e8bd9ff0          POP      {r4-r12,pc}
-;;;783    
+;;;853    
                           ENDP
 
 000712  0000              DCW      0x0000

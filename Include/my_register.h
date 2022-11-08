@@ -14,7 +14,7 @@
 
 //=============================================================================
 #define NOP   __nop();	  //空指令
-
+#define HARDVER				1//1-60A;2-100A
 //============================================================================
 extern struct bitDefine flagA,flagB,flagC,flagD,flagE,flagF,flagG;
 #define   Flag_ADC_Full             (flagA.bit1)//DMA传输完成标志位 

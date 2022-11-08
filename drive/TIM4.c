@@ -683,70 +683,140 @@ void TIM3_IRQHandler(void){
 //			shutcount2 = 0;
 //			shutcount3 = 0;
 //		}
-		if(MODE != 2)
+		if(HARDVER == 1)
 		{
-			if((PPower >= 600) || (LPower >= 1800) || (DISS_Current >= 100))
+			if(MODE != 2)
 			{
-				shutcount3++;
-				if(shutcount3 >= 500)
+				if((PPower >= 600) || (LPower >= 1800) || (DISS_Current >= 100))
 				{
-					overflag = 1;
-					Off_GPOI_ResetSet();
-//					shutcount1 = 0;
-//					shutcount2 = 0;
+					shutcount3++;
+					if(shutcount3 >= 500)
+					{
+						overflag = 1;
+						Off_GPOI_ResetSet();
+	//					shutcount1 = 0;
+	//					shutcount2 = 0;
+						shutcount3 = 0;
+						mainswitch = 0;
+					}
+				}else{
+	//				shutcount1 = 0;
+	//				shutcount2 = 0;
 					shutcount3 = 0;
-					mainswitch = 0;
 				}
-			}else{
-//				shutcount1 = 0;
-//				shutcount2 = 0;
-				shutcount3 = 0;
-			}
-			if(DISS_Current > 60 && DISS_Current < 100)
-			{
-				shutcount4 ++;
-				if(shutcount4 >= 20000)
+				if(DISS_Current > 60 && DISS_Current < 100)
 				{
-					overflag = 1;
-					Off_GPOI_ResetSet();
-					mainswitch = 0;
-					shutcount1 = 0;
-				}
-			}else{
-				shutcount4 = 0;
-			}
-		}else{
-			if((PPower >= 600) || (LPower >= 3600) || DISS_Current >= 160)
-			{
-				shutcount3++;
-				if(shutcount3 >= 500)
-				{
-					overflag = 1;
-					Off_GPOI_ResetSet();
-//					shutcount1 = 0;
-//					shutcount2 = 0;
-					shutcount3 = 0;
-					mainswitch = 0;
-				}
-			}else{
-//				shutcount1 = 0;
-//				shutcount2 = 0;
-				shutcount3 = 0;
-			}
-			if(DISS_Current > 60 && DISS_Current < 160)
-			{
-				shutcount4 ++;
-				if(shutcount4 >= 2000)
-				{
-					overflag = 1;
-					Off_GPOI_ResetSet();
-					mainswitch = 0;
+					shutcount4 ++;
+					if(shutcount4 >= 20000)
+					{
+						overflag = 1;
+						Off_GPOI_ResetSet();
+						mainswitch = 0;
+						shutcount1 = 0;
+					}
+				}else{
 					shutcount4 = 0;
 				}
 			}else{
-				shutcount4 = 0;
-//				shutcount2 = 0;
-//				shutcount3 = 0;
+				if((PPower >= 600) || (LPower >= 3600) || DISS_Current >= 160)
+				{
+					shutcount3++;
+					if(shutcount3 >= 500)
+					{
+						overflag = 1;
+						Off_GPOI_ResetSet();
+	//					shutcount1 = 0;
+	//					shutcount2 = 0;
+						shutcount3 = 0;
+						mainswitch = 0;
+					}
+				}else{
+	//				shutcount1 = 0;
+	//				shutcount2 = 0;
+					shutcount3 = 0;
+				}
+				if(DISS_Current > 60 && DISS_Current < 160)
+				{
+					shutcount4 ++;
+					if(shutcount4 >= 2000)
+					{
+						overflag = 1;
+						Off_GPOI_ResetSet();
+						mainswitch = 0;
+						shutcount4 = 0;
+					}
+				}else{
+					shutcount4 = 0;
+	//				shutcount2 = 0;
+	//				shutcount3 = 0;
+				}
+			}
+		}else if(HARDVER == 2){
+			if(MODE != 2)
+			{
+				if((PPower >= 1200) || (LPower >= 1800) || (DISS_Current >= 120))
+				{
+					shutcount3++;
+					if(shutcount3 >= 500)
+					{
+						overflag = 1;
+						Off_GPOI_ResetSet();
+	//					shutcount1 = 0;
+	//					shutcount2 = 0;
+						shutcount3 = 0;
+						mainswitch = 0;
+					}
+				}else{
+	//				shutcount1 = 0;
+	//				shutcount2 = 0;
+					shutcount3 = 0;
+				}
+				if(DISS_Current > 100 && DISS_Current < 120)
+				{
+					shutcount4 ++;
+					if(shutcount4 >= 20000)
+					{
+						overflag = 1;
+						Off_GPOI_ResetSet();
+						mainswitch = 0;
+						shutcount1 = 0;
+					}
+				}else{
+					shutcount4 = 0;
+				}
+			}else{
+				if((PPower >= 1200) || (LPower >= 3600) || DISS_Current >= 160)
+				{
+					shutcount3++;
+					if(shutcount3 >= 500)
+					{
+						overflag = 1;
+						Off_GPOI_ResetSet();
+	//					shutcount1 = 0;
+	//					shutcount2 = 0;
+						shutcount3 = 0;
+						mainswitch = 0;
+					}
+				}else{
+	//				shutcount1 = 0;
+	//				shutcount2 = 0;
+					shutcount3 = 0;
+				}
+				if(DISS_Current > 60 && DISS_Current < 160)
+				{
+					shutcount4 ++;
+					if(shutcount4 >= 2000)
+					{
+						overflag = 1;
+						Off_GPOI_ResetSet();
+						mainswitch = 0;
+						shutcount4 = 0;
+					}
+				}else{
+					shutcount4 = 0;
+	//				shutcount2 = 0;
+	//				shutcount3 = 0;
+				}
 			}
 		}
 //		else if((PPower > 100 && PPower < 200) || (LPower > 100 && LPower < 200)){
