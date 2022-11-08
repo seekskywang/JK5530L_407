@@ -59,6 +59,7 @@ float CDC_CsumMah;         //每秒累加的容量
 float CDC_DCsumMah;         //每秒累加的容量
 short Temperature=0;
 u8 tempflag;
+u8 jumpflag = 0;
 //根据页面
 void OnOff_GPOI_ResetSet( vu8 _type, vu8 _value ){
 	
@@ -434,6 +435,10 @@ int main(void)
 			memset(USART_RX_BUF,0,USART_REC_LEN);
 			
 			USART_RX_STA=0;			  //清零 虚拟寄存器		  为一下次采集做准备
+		}
+		if(jumpflag == 1)
+		{
+			JumpBoot(55);
 		}
 		if(USART3_Recive_flg == 1)
 		{

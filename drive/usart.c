@@ -61,6 +61,7 @@ u8    USART3_Recive_flg  = 0;                           //串口1数据接收完成标识
 u8 MasterSendbuf[MAXRxTxLen];
 u8 MasterRecbuf[MAXRxTxLen];
 u8 listocwatch,listpowwatch1,listpowwatch2;
+extern u8 jumpflag;
 char CmdStr[CmdNumb][CmdLen] =
 {
 	{"STATUS_\0"},        //状态读取
@@ -1914,12 +1915,14 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 						}
 	//					MODE=temp1;
 						
-						bootflag = 1;
+						jumpflag = temp1;
+						bootflag=1;
 						Write_Boot_Flag();
-						if(temp1 == 1)
-						{
-							JumpBoot(55);
-						}
+//						if(temp1 == 1)
+//						{
+//							JumpBoot(55);
+//						}
+						buf[currCharNum++] = ChrEndR;
 					}
 				}break;
 //				case 15:

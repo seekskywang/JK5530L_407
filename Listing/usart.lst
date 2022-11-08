@@ -34882,7 +34882,7 @@ N//=============================================================================
 N
 N//=============================================================================
 N#define NOP   __nop();	  //空指令
-N
+N#define HARDVER				1//1-60A;2-100A
 N//============================================================================
 Nextern struct bitDefine flagA,flagB,flagC,flagD,flagE,flagF,flagG;
 N#define   Flag_ADC_Full             (flagA.bit1)//DMA传输完成标志位 
@@ -37161,6 +37161,7 @@ Xu8 MasterSendbuf[128];
 Nu8 MasterRecbuf[MAXRxTxLen];
 Xu8 MasterRecbuf[128];
 Nu8 listocwatch,listpowwatch1,listpowwatch2;
+Nextern u8 jumpflag;
 Nchar CmdStr[CmdNumb][CmdLen] =
 Xchar CmdStr[19][9] =
 N{
@@ -39145,12 +39146,15 @@ X							return SetErr_ACK(buf, addr ,1);
 N						}
 N	//					MODE=temp1;
 N						
-N						bootflag = 1;
+N						jumpflag = temp1;
+N						bootflag=1;
 N						Write_Boot_Flag();
-N						if(temp1 == 1)
-N						{
-N							JumpBoot(55);
-N						}
+N//						if(temp1 == 1)
+N//						{
+N//							JumpBoot(55);
+N//						}
+N						buf[currCharNum++] = ChrEndR;
+X						buf[currCharNum++] = 0x0D;
 N					}
 N				}break;
 N//				case 15:
