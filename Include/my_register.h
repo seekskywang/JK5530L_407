@@ -14,7 +14,7 @@
 
 //=============================================================================
 #define NOP   __nop();	  //空指令
-#define HARDVER				1//1-60A;2-100A
+#define HARDVER				2//1-60A;2-100A
 //============================================================================
 extern struct bitDefine flagA,flagB,flagC,flagD,flagE,flagF,flagG;
 #define   Flag_ADC_Full             (flagA.bit1)//DMA传输完成标志位 
@@ -30,7 +30,7 @@ extern struct bitDefine flagA,flagB,flagC,flagD,flagE,flagF,flagG;
 #define   Flag_Long                 (flagB.bit2)//按键长按标志
 #define   Flag_DAC_OFF              (flagB.bit3)//鏄惁杞崲DAC鎺у埗鍊兼爣蹇?
 #define   Flag_SetA                 (flagB.bit5)//进入设置电流标志位
-#define   Flag_SetV                 (flagB.bit6)//进入设置电压标志位 
+#define   Fl  ag_SetV                 (flagB.bit6)//进入设置电压标志位 
 #define   Flag_DisSet               (flagB.bit7)//显示设置电压和电流标志位
 
 #define   Flag_Beep_OFF             (flagC.bit6)//蜂鸣器关闭标志
@@ -395,7 +395,7 @@ typedef struct {
 
 	/* 程控负载 */
 	vu32 LOAD_C;				//负载电流
-	vu16 LOAD_V;				//负载电压
+	vu32 LOAD_V;				//负载电压
 	vu32 LOAD_P;				//负载电压
 	vu16 LOAD_Cutoff_V;			//负载电压
 	

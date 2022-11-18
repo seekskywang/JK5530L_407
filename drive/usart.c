@@ -544,11 +544,11 @@ void CalHandle(u8 mode,u8 range,u32 data)
 			calflag = 1;
 			LOAD_V_SW = 1;
 			x1 = Vmon_Load_value;
-			y1 = data;
+			y1 = data/10;
 		}else if(range == 3){//高档位高段
 			
 			x2 = Vmon_Load_value;
-			y2 = data;
+			y2 = data/10;
 			CalPara.TestLV[1] = ((float)y2 - (float)y1)/((float)x2 - (float)x1);
 			CalPara.OffsetLV[1] = (float)y2 - CalPara.TestLV[1]*(float)x2;
 				//参数写进FLASH
@@ -616,12 +616,12 @@ void CalHandle(u8 mode,u8 range,u32 data)
 			LOAD_MODE = 1;
 			LOAD_V_SW=1;
 			GPIO_SetBits(GPIOB,GPIO_Pin_1);//电压档位为高档
-			x1 = data;
+			x1 = data/10;
 			y1 = Contr_Laod;
 			Contr_Laod = 20000;
 			OnOff_GPOI_ResetSet(2,1);
 		}else if(range == 12){//CV控制高档3
-			x2 = data;
+			x2 = data/10;
 			y2 = Contr_Laod;
 			CalPara.SetCV[1] = ((float)y2 - (float)y1)/((float)x2 - (float)x1);
 			CalPara.OffsetCV[1] = (float)y2 - CalPara.SetCV[1]*(float)x2;
@@ -634,7 +634,7 @@ void CalHandle(u8 mode,u8 range,u32 data)
 		if(range == 0)//负载电流低档位1
 		{		
 			LOAD_I_SW = 0;
-			Contr_Laod = 3000;
+			Contr_Laod = 6000;
 			calflag = 1;
 			OnOff_GPOI_ResetSet(2,1);
 		}
@@ -706,7 +706,7 @@ void CalHandle(u8 mode,u8 range,u32 data)
 			y3 = Contr_Laod;
 			x7 = Imon_Load_value;
 			y7 = data;
-			Contr_Laod = 27000;
+			Contr_Laod = 40000;
 		}else if(range == 8){//负载电流高档位5
 			
 			x4 = data;
@@ -1060,8 +1060,8 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 				{
 
 					
-					sprintf(&buf[currCharNum],"%05d",Para.CVoltage);
-					currCharNum+=pntlen;
+					sprintf(&buf[currCharNum],"%06d",Para.CVoltage);
+					currCharNum+=6;
 					
 					buf[currCharNum++]=(',');
 					sprintf(&buf[currCharNum],"%06d",Para.CLaod_Current);
@@ -1214,7 +1214,7 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 				{
 					if(currCharNum == 0x0b)
 					{						
-						for(i=0,temp1=0;i<5;i++)
+						for(i=0,temp1=0;i<6;i++)
 						{
 							temp1 = temp1*10+(buf[currCharNum++]-0x30);
 						}
@@ -1284,7 +1284,7 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 					
 					if(buf[currCharNum++] == ',')
 					{
-						for(i=0,temp1=0;i<5;i++)
+						for(i=0,temp1=0;i<6;i++)
 						{
 							temp1 = temp1*10+(buf[currCharNum++]-0x30);
 						}
@@ -1294,7 +1294,7 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 					
 					if(buf[currCharNum++] == ',')
 					{
-						for(i=0,temp1=0;i<5;i++)
+						for(i=0,temp1=0;i<6;i++)
 						{
 							temp1 = temp1*10+(buf[currCharNum++]-0x30);
 						}
@@ -1304,7 +1304,7 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 					
 					if(buf[currCharNum++] == ',')
 					{
-						for(i=0,temp1=0;i<5;i++)
+						for(i=0,temp1=0;i<6;i++)
 						{
 							temp1 = temp1*10+(buf[currCharNum++]-0x30);
 						}
@@ -1793,7 +1793,7 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 				break;
 				case 13://电流校准
 				{
-					pntlen = 8;
+					pntlen = 9;
 					if(buf[currCharNum]=='?')
 					{
 //						buf[currCharNum++]=(Lvl_Vale>=0?'+':'-');
@@ -1806,7 +1806,7 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 						tmpFg = 1;
 						for(i=0;i<pntlen;i++)
 						{
-						   if(i==0||i==4)
+						   if(i==0||i==5)
 							  continue;
 						   if(IsDigitChar(buf[currCharNum+i])==1)
 						   {
@@ -1827,17 +1827,36 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 						{
 						   if(i==0)
 						   {
-							   fsingal = buf[currCharNum++]-0x30;
+							   fsingal = 10*(buf[currCharNum++]-0x30);
 							   continue; 
+						   }else if(i==1)
+						   {
+							  fsingal = fsingal+(buf[currCharNum++]-0x30);
+							  continue; 
 						   } 
-						   else if(i==4)
+						   else if(i==5)
 						   {
 							   currCharNum++;
 							   continue; 
 						   }
 						   else									 
 						   temp1 = temp1*10+(buf[currCharNum++]-0x30);
-						}	
+						}
+//						for(i=0;i<pntlen;i++)
+//						{
+//						   if(i==0)
+//						   {
+//							   fsingal = buf[currCharNum++]-0x30;
+//							   continue; 
+//						   } 
+//						   else if(i==5)
+//						   {
+//							   currCharNum++;
+//							   continue; 
+//						   }
+//						   else									 
+//						   temp1 = temp1*10+(buf[currCharNum++]-0x30);
+//						}	
 						CalHandle(1,fsingal,temp1);
 						
 					}

@@ -36,7 +36,7 @@ float testv;
 vu8 finishflag;
 vu32 finishdelay;
 vu8 lockflag;
-vu8 version=19;
+vu8 version=20;
 vu32 battery_c;
 vu8 charge_step;
 vu8 loop;
@@ -683,80 +683,82 @@ void TIM3_IRQHandler(void){
 //			shutcount2 = 0;
 //			shutcount3 = 0;
 //		}
-		if(HARDVER == 1)
-		{
+//		if(HARDVER == 1)
+//		{
+//			if(MODE != 2)
+//			{
+//				if((PPower >= 600) || (LPower >= 1800) || (DISS_Current >= 100))
+//				{
+//					shutcount3++;
+//					if(shutcount3 >= 500)
+//					{
+//						overflag = 1;
+//						Off_GPOI_ResetSet();
+//	//					shutcount1 = 0;
+//	//					shutcount2 = 0;
+//						shutcount3 = 0;
+//						mainswitch = 0;
+//					}
+//				}else{
+//	//				shutcount1 = 0;
+//	//				shutcount2 = 0;
+//					shutcount3 = 0;
+//				}
+//				if(DISS_Current > 60 && DISS_Current < 100)
+//				{
+//					shutcount4 ++;
+//					if(shutcount4 >= 20000)
+//					{
+//						overflag = 1;
+//						Off_GPOI_ResetSet();
+//						mainswitch = 0;
+//						shutcount1 = 0;
+//					}
+//				}else{
+//					shutcount4 = 0;
+//				}
+//			}else{
+//				if((PPower >= 600) || (LPower >= 3600) || DISS_Current >= 160)
+//				{
+//					shutcount3++;
+//					if(shutcount3 >= 500)
+//					{
+//						overflag = 1;
+//						Off_GPOI_ResetSet();
+//	//					shutcount1 = 0;
+//	//					shutcount2 = 0;
+//						shutcount3 = 0;
+//						mainswitch = 0;
+//					}
+//				}else{
+//	//				shutcount1 = 0;
+//	//				shutcount2 = 0;
+//					shutcount3 = 0;
+//				}
+//				if(DISS_Current > 60 && DISS_Current < 160)
+//				{
+//					shutcount4 ++;
+//					if(shutcount4 >= 2000)
+//					{
+//						overflag = 1;
+//						Off_GPOI_ResetSet();
+//						mainswitch = 0;
+//						shutcount4 = 0;
+//					}
+//				}else{
+//					shutcount4 = 0;
+//	//				shutcount2 = 0;
+//	//				shutcount3 = 0;
+//				}
+//			}
+//		}else if(HARDVER == 2){
 			if(MODE != 2)
 			{
-				if((PPower >= 600) || (LPower >= 1800) || (DISS_Current >= 100))
-				{
-					shutcount3++;
-					if(shutcount3 >= 500)
-					{
-						overflag = 1;
-						Off_GPOI_ResetSet();
-	//					shutcount1 = 0;
-	//					shutcount2 = 0;
-						shutcount3 = 0;
-						mainswitch = 0;
-					}
-				}else{
-	//				shutcount1 = 0;
-	//				shutcount2 = 0;
-					shutcount3 = 0;
-				}
-				if(DISS_Current > 60 && DISS_Current < 100)
-				{
-					shutcount4 ++;
-					if(shutcount4 >= 20000)
-					{
-						overflag = 1;
-						Off_GPOI_ResetSet();
-						mainswitch = 0;
-						shutcount1 = 0;
-					}
-				}else{
-					shutcount4 = 0;
-				}
-			}else{
-				if((PPower >= 600) || (LPower >= 3600) || DISS_Current >= 160)
-				{
-					shutcount3++;
-					if(shutcount3 >= 500)
-					{
-						overflag = 1;
-						Off_GPOI_ResetSet();
-	//					shutcount1 = 0;
-	//					shutcount2 = 0;
-						shutcount3 = 0;
-						mainswitch = 0;
-					}
-				}else{
-	//				shutcount1 = 0;
-	//				shutcount2 = 0;
-					shutcount3 = 0;
-				}
-				if(DISS_Current > 60 && DISS_Current < 160)
-				{
-					shutcount4 ++;
-					if(shutcount4 >= 2000)
-					{
-						overflag = 1;
-						Off_GPOI_ResetSet();
-						mainswitch = 0;
-						shutcount4 = 0;
-					}
-				}else{
-					shutcount4 = 0;
-	//				shutcount2 = 0;
-	//				shutcount3 = 0;
-				}
-			}
-		}else if(HARDVER == 2){
-			if(MODE != 2)
-			{
+
 				if((PPower >= 1200) || (LPower >= 1800) || (DISS_Current >= 120))
 				{
 					shutcount3++;
+					shutcount2++;
 					if(shutcount3 >= 500)
 					{
 						overflag = 1;
@@ -764,46 +766,66 @@ void TIM3_IRQHandler(void){
 	//					shutcount1 = 0;
 	//					shutcount2 = 0;
 						shutcount3 = 0;
+						shutcount2 = 0;
 						mainswitch = 0;
 					}
 				}else{
 	//				shutcount1 = 0;
 	//				shutcount2 = 0;
-					shutcount3 = 0;
+						shutcount3 = 0;
 				}
-				if(DISS_Current > 100 && DISS_Current < 120)
+				if(DISS_Current >= 100 && DISS_Current < 120)
 				{
-					shutcount4 ++;
-					if(shutcount4 >= 20000)
+					shutcount2 ++;
+					if(shutcount2 >= 20000)
 					{
 						overflag = 1;
 						Off_GPOI_ResetSet();
 						mainswitch = 0;
-						shutcount1 = 0;
+						shutcount2 = 0;
 					}
 				}else{
-					shutcount4 = 0;
+					if(DISS_Current<100)
+						shutcount2 = 0;
 				}
 			}else{
 				if((PPower >= 1200) || (LPower >= 3600) || DISS_Current >= 160)
 				{
+					shutcount2++;
+					shutcount4 ++;
 					shutcount3++;
 					if(shutcount3 >= 500)
 					{
 						overflag = 1;
 						Off_GPOI_ResetSet();
 	//					shutcount1 = 0;
-	//					shutcount2 = 0;
+						shutcount2 = 0;
 						shutcount3 = 0;
+						shutcount4  =0;
 						mainswitch = 0;
 					}
 				}else{
 	//				shutcount1 = 0;
 	//				shutcount2 = 0;
-					shutcount3 = 0;
+						shutcount3 = 0;
 				}
-				if(DISS_Current > 60 && DISS_Current < 160)
+				if(DISS_Current > 100 && DISS_Current < 120)
 				{
+					shutcount2 ++;
+					if(shutcount2 >= 20000)
+					{
+						overflag = 1;
+						Off_GPOI_ResetSet();
+						mainswitch = 0;
+						shutcount2 = 0;
+					}
+				}else{
+					if(DISS_Current<100)
+						shutcount2 = 0;
+				}
+				if(DISS_Current >= 120 && DISS_Current < 160)
+				{
+					shutcount2++;
 					shutcount4 ++;
 					if(shutcount4 >= 2000)
 					{
@@ -811,14 +833,16 @@ void TIM3_IRQHandler(void){
 						Off_GPOI_ResetSet();
 						mainswitch = 0;
 						shutcount4 = 0;
+						shutcount2 = 0;
 					}
 				}else{
-					shutcount4 = 0;
+					if(DISS_Current<120)
+						shutcount4 = 0;
 	//				shutcount2 = 0;
 	//				shutcount3 = 0;
 				}
 			}
-		}
+//		}
 //		else if((PPower > 100 && PPower < 200) || (LPower > 100 && LPower < 200)){
 //			shutcount1 ++;
 //			if(shutcount1 >= 180000)

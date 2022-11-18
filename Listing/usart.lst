@@ -34882,7 +34882,7 @@ N//=============================================================================
 N
 N//=============================================================================
 N#define NOP   __nop();	  //空指令
-N#define HARDVER				1//1-60A;2-100A
+N#define HARDVER				2//1-60A;2-100A
 N//============================================================================
 Nextern struct bitDefine flagA,flagB,flagC,flagD,flagE,flagF,flagG;
 N#define   Flag_ADC_Full             (flagA.bit1)//DMA传输完成标志位 
@@ -34898,7 +34898,7 @@ N#define   Flag_5S      		        	(flagB.bit1)//退出设置状态标志
 N#define   Flag_Long                 (flagB.bit2)//按键长按标志
 N#define   Flag_DAC_OFF              (flagB.bit3)//鏄惁杞崲DAC鎺у埗鍊兼爣蹇?
 N#define   Flag_SetA                 (flagB.bit5)//进入设置电流标志位
-N#define   Flag_SetV                 (flagB.bit6)//进入设置电压标志位 
+N#define   Fl  ag_SetV                 (flagB.bit6)//进入设置电压标志位 
 N#define   Flag_DisSet               (flagB.bit7)//显示设置电压和电流标志位
 N
 N#define   Flag_Beep_OFF             (flagC.bit6)//蜂鸣器关闭标志
@@ -35263,7 +35263,7 @@ N	vu16 POWER_Cutoff_C;;		//充电截止电流
 N
 N	/* 程控负载 */
 N	vu32 LOAD_C;				//负载电流
-N	vu16 LOAD_V;				//负载电压
+N	vu32 LOAD_V;				//负载电压
 N	vu32 LOAD_P;				//负载电压
 N	vu16 LOAD_Cutoff_V;			//负载电压
 N	
@@ -37690,11 +37690,11 @@ N			calflag = 1;
 N			LOAD_V_SW = 1;
 X			Run_Control[7] = 1;
 N			x1 = Vmon_Load_value;
-N			y1 = data;
+N			y1 = data/10;
 N		}else if(range == 3){//高档位高段
 N			
 N			x2 = Vmon_Load_value;
-N			y2 = data;
+N			y2 = data/10;
 N			CalPara.TestLV[1] = ((float)y2 - (float)y1)/((float)x2 - (float)x1);
 N			CalPara.OffsetLV[1] = (float)y2 - CalPara.TestLV[1]*(float)x2;
 N				//参数写进FLASH
@@ -37777,12 +37777,12 @@ N			LOAD_V_SW=1;
 X			Run_Control[7]=1;
 N			GPIO_SetBits(GPIOB,GPIO_Pin_1);//电压档位为高档
 X			GPIO_SetBits(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x00020000) + 0x0400)),((uint16_t)0x0002));
-N			x1 = data;
+N			x1 = data/10;
 N			y1 = Contr_Laod;
 N			Contr_Laod = 20000;
 N			OnOff_GPOI_ResetSet(2,1);
 N		}else if(range == 12){//CV控制高档3
-N			x2 = data;
+N			x2 = data/10;
 N			y2 = Contr_Laod;
 N			CalPara.SetCV[1] = ((float)y2 - (float)y1)/((float)x2 - (float)x1);
 N			CalPara.OffsetCV[1] = (float)y2 - CalPara.SetCV[1]*(float)x2;
@@ -37797,7 +37797,7 @@ N		if(range == 0)//负载电流低档位1
 N		{		
 N			LOAD_I_SW = 0;
 X			Run_Control[8] = 0;
-N			Contr_Laod = 3000;
+N			Contr_Laod = 6000;
 N			calflag = 1;
 N			OnOff_GPOI_ResetSet(2,1);
 N		}
@@ -37880,7 +37880,7 @@ N			x3 = data;
 N			y3 = Contr_Laod;
 N			x7 = Imon_Load_value;
 N			y7 = data;
-N			Contr_Laod = 27000;
+N			Contr_Laod = 40000;
 N		}else if(range == 8){//负载电流高档位5
 N			
 N			x4 = data;
@@ -38253,8 +38253,8 @@ N				if(buf[currCharNum]=='?')
 N				{
 N
 N					
-N					sprintf(&buf[currCharNum],"%05d",Para.CVoltage);
-N					currCharNum+=pntlen;
+N					sprintf(&buf[currCharNum],"%06d",Para.CVoltage);
+N					currCharNum+=6;
 N					
 N					buf[currCharNum++]=(',');
 N					sprintf(&buf[currCharNum],"%06d",Para.CLaod_Current);
@@ -38416,7 +38416,7 @@ N				else
 N				{
 N					if(currCharNum == 0x0b)
 N					{						
-N						for(i=0,temp1=0;i<5;i++)
+N						for(i=0,temp1=0;i<6;i++)
 N						{
 N							temp1 = temp1*10+(buf[currCharNum++]-0x30);
 N						}
@@ -38486,7 +38486,7 @@ N					temp1 = 0;
 N					
 N					if(buf[currCharNum++] == ',')
 N					{
-N						for(i=0,temp1=0;i<5;i++)
+N						for(i=0,temp1=0;i<6;i++)
 N						{
 N							temp1 = temp1*10+(buf[currCharNum++]-0x30);
 N						}
@@ -38496,7 +38496,7 @@ N					temp1 = 0;
 N					
 N					if(buf[currCharNum++] == ',')
 N					{
-N						for(i=0,temp1=0;i<5;i++)
+N						for(i=0,temp1=0;i<6;i++)
 N						{
 N							temp1 = temp1*10+(buf[currCharNum++]-0x30);
 N						}
@@ -38506,7 +38506,7 @@ N					temp1 = 0;
 N					
 N					if(buf[currCharNum++] == ',')
 N					{
-N						for(i=0,temp1=0;i<5;i++)
+N						for(i=0,temp1=0;i<6;i++)
 N						{
 N							temp1 = temp1*10+(buf[currCharNum++]-0x30);
 N						}
@@ -39018,7 +39018,7 @@ N		        }
 N				break;
 N				case 13://电流校准
 N				{
-N					pntlen = 8;
+N					pntlen = 9;
 N					if(buf[currCharNum]=='?')
 N					{
 N//						buf[currCharNum++]=(Lvl_Vale>=0?'+':'-');
@@ -39031,7 +39031,7 @@ N					{
 N						tmpFg = 1;
 N						for(i=0;i<pntlen;i++)
 N						{
-N						   if(i==0||i==4)
+N						   if(i==0||i==5)
 N							  continue;
 N						   if(IsDigitChar(buf[currCharNum+i])==1)
 N						   {
@@ -39054,17 +39054,36 @@ N						for(i=0;i<pntlen;i++)
 N						{
 N						   if(i==0)
 N						   {
-N							   fsingal = buf[currCharNum++]-0x30;
+N							   fsingal = 10*(buf[currCharNum++]-0x30);
 N							   continue; 
+N						   }else if(i==1)
+N						   {
+N							  fsingal = fsingal+(buf[currCharNum++]-0x30);
+N							  continue; 
 N						   } 
-N						   else if(i==4)
+N						   else if(i==5)
 N						   {
 N							   currCharNum++;
 N							   continue; 
 N						   }
 N						   else									 
 N						   temp1 = temp1*10+(buf[currCharNum++]-0x30);
-N						}	
+N						}
+N//						for(i=0;i<pntlen;i++)
+N//						{
+N//						   if(i==0)
+N//						   {
+N//							   fsingal = buf[currCharNum++]-0x30;
+N//							   continue; 
+N//						   } 
+N//						   else if(i==5)
+N//						   {
+N//							   currCharNum++;
+N//							   continue; 
+N//						   }
+N//						   else									 
+N//						   temp1 = temp1*10+(buf[currCharNum++]-0x30);
+N//						}	
 N						CalHandle(1,fsingal,temp1);
 N						
 N					}

@@ -954,7 +954,7 @@ void Transformation_ADC(void)
 //		else var32 = var32 + CLists.CREG_LoadV_Offset_HIG;
 //		var32 = var32 >> 12;
 		if (var32 < 10) var32 = 0;				  //40mV以下清零
-		Para.CVoltage = var32;
+		Para.CVoltage = var32*10;
 //		DISS_Voltage=Para.CVoltage;
 		DISS_Voltage=(float)Para.CVoltage/1000;//计算显示电压
 // 		if( DISS_Voltage < 12 ){
@@ -992,6 +992,7 @@ void Transformation_ADC(void)
 		DISS_Current=(float)Para.CLaod_Current/1000;//计算显示电流
 		var32 = 0;	
 	}
+	
 	else//高档
 	{
 		var32 = Imon_Load_value;
@@ -1120,7 +1121,7 @@ void Transformation_ADC(void)
 		else//高档
 		{
 			var32 = Para.CSET_Voltage_Laod;
-			var32 = Para.CSET_Voltage_Laod * CalPara.SetCV[1] + CalPara.OffsetCV[1];  
+			var32 = Para.CSET_Voltage_Laod/10 * CalPara.SetCV[1] + CalPara.OffsetCV[1];  
 //			if ((CLists.CPolar2 & 0x04) == 0)			   
 //			{
 //				if (var32 < CLists.CSET_LoadV_Offset_HIG) var32 = 0;

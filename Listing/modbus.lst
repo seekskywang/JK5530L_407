@@ -34883,7 +34883,7 @@ N//=============================================================================
 N
 N//=============================================================================
 N#define NOP   __nop();	  //空指令
-N#define HARDVER				1//1-60A;2-100A
+N#define HARDVER				2//1-60A;2-100A
 N//============================================================================
 Nextern struct bitDefine flagA,flagB,flagC,flagD,flagE,flagF,flagG;
 N#define   Flag_ADC_Full             (flagA.bit1)//DMA传输完成标志位 
@@ -34899,7 +34899,7 @@ N#define   Flag_5S      		        	(flagB.bit1)//退出设置状态标志
 N#define   Flag_Long                 (flagB.bit2)//按键长按标志
 N#define   Flag_DAC_OFF              (flagB.bit3)//鏄惁杞崲DAC鎺у埗鍊兼爣蹇?
 N#define   Flag_SetA                 (flagB.bit5)//进入设置电流标志位
-N#define   Flag_SetV                 (flagB.bit6)//进入设置电压标志位 
+N#define   Fl  ag_SetV                 (flagB.bit6)//进入设置电压标志位 
 N#define   Flag_DisSet               (flagB.bit7)//显示设置电压和电流标志位
 N
 N#define   Flag_Beep_OFF             (flagC.bit6)//蜂鸣器关闭标志
@@ -35264,7 +35264,7 @@ N	vu16 POWER_Cutoff_C;;		//充电截止电流
 N
 N	/* 程控负载 */
 N	vu32 LOAD_C;				//负载电流
-N	vu16 LOAD_V;				//负载电压
+N	vu32 LOAD_V;				//负载电压
 N	vu32 LOAD_P;				//负载电压
 N	vu16 LOAD_Cutoff_V;			//负载电压
 N	
@@ -36602,7 +36602,7 @@ S//=============================================================================
 S
 S//=============================================================================
 S#define NOP   __nop();	  //空指令
-S#define HARDVER				1//1-60A;2-100A
+S#define HARDVER				2//1-60A;2-100A
 S//============================================================================
 Sextern struct bitDefine flagA,flagB,flagC,flagD,flagE,flagF,flagG;
 S#define   Flag_ADC_Full             (flagA.bit1)//DMA传输完成标志位 
@@ -36618,7 +36618,7 @@ S#define   Flag_5S      		        	(flagB.bit1)//退出设置状态标志
 S#define   Flag_Long                 (flagB.bit2)//按键长按标志
 S#define   Flag_DAC_OFF              (flagB.bit3)//鏄惁杞崲DAC鎺у埗鍊兼爣蹇?
 S#define   Flag_SetA                 (flagB.bit5)//进入设置电流标志位
-S#define   Flag_SetV                 (flagB.bit6)//进入设置电压标志位 
+S#define   Fl  ag_SetV                 (flagB.bit6)//进入设置电压标志位 
 S#define   Flag_DisSet               (flagB.bit7)//显示设置电压和电流标志位
 S
 S#define   Flag_Beep_OFF             (flagC.bit6)//蜂鸣器关闭标志
@@ -36983,7 +36983,7 @@ S	vu16 POWER_Cutoff_C;;		//充电截止电流
 S
 S	/* 程控负载 */
 S	vu32 LOAD_C;				//负载电流
-S	vu16 LOAD_V;				//负载电压
+S	vu32 LOAD_V;				//负载电压
 S	vu32 LOAD_P;				//负载电压
 S	vu16 LOAD_Cutoff_V;			//负载电压
 S	
@@ -38116,7 +38116,7 @@ N//		}
 N//		else var32 = var32 + CLists.CREG_LoadV_Offset_HIG;
 N//		var32 = var32 >> 12;
 N		if (var32 < 10) var32 = 0;				  //40mV以下清零
-N		Para.CVoltage = var32;
+N		Para.CVoltage = var32*10;
 N//		DISS_Voltage=Para.CVoltage;
 N		DISS_Voltage=(float)Para.CVoltage/1000;//计算显示电压
 N// 		if( DISS_Voltage < 12 ){
@@ -38155,6 +38155,7 @@ N//		DISS_Current=Para.CLaod_Current;
 N		DISS_Current=(float)Para.CLaod_Current/1000;//计算显示电流
 N		var32 = 0;	
 N	}
+N	
 N	else//高档
 N	{
 N		var32 = Imon_Load_value;
@@ -38290,7 +38291,7 @@ N		}
 N		else//高档
 N		{
 N			var32 = Para.CSET_Voltage_Laod;
-N			var32 = Para.CSET_Voltage_Laod * CalPara.SetCV[1] + CalPara.OffsetCV[1];  
+N			var32 = Para.CSET_Voltage_Laod/10 * CalPara.SetCV[1] + CalPara.OffsetCV[1];  
 N//			if ((CLists.CPolar2 & 0x04) == 0)			   
 N//			{
 N//				if (var32 < CLists.CSET_LoadV_Offset_HIG) var32 = 0;

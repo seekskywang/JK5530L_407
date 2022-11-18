@@ -34882,7 +34882,7 @@ N//=============================================================================
 N
 N//=============================================================================
 N#define NOP   __nop();	  //空指令
-N#define HARDVER				1//1-60A;2-100A
+N#define HARDVER				2//1-60A;2-100A
 N//============================================================================
 Nextern struct bitDefine flagA,flagB,flagC,flagD,flagE,flagF,flagG;
 N#define   Flag_ADC_Full             (flagA.bit1)//DMA传输完成标志位 
@@ -34898,7 +34898,7 @@ N#define   Flag_5S      		        	(flagB.bit1)//退出设置状态标志
 N#define   Flag_Long                 (flagB.bit2)//按键长按标志
 N#define   Flag_DAC_OFF              (flagB.bit3)//鏄惁杞崲DAC鎺у埗鍊兼爣蹇?
 N#define   Flag_SetA                 (flagB.bit5)//进入设置电流标志位
-N#define   Flag_SetV                 (flagB.bit6)//进入设置电压标志位 
+N#define   Fl  ag_SetV                 (flagB.bit6)//进入设置电压标志位 
 N#define   Flag_DisSet               (flagB.bit7)//显示设置电压和电流标志位
 N
 N#define   Flag_Beep_OFF             (flagC.bit6)//蜂鸣器关闭标志
@@ -35263,7 +35263,7 @@ N	vu16 POWER_Cutoff_C;;		//充电截止电流
 N
 N	/* 程控负载 */
 N	vu32 LOAD_C;				//负载电流
-N	vu16 LOAD_V;				//负载电压
+N	vu32 LOAD_V;				//负载电压
 N	vu32 LOAD_P;				//负载电压
 N	vu16 LOAD_Cutoff_V;			//负载电压
 N	
@@ -35434,7 +35434,7 @@ Nfloat testv;
 Nvu8 finishflag;
 Nvu32 finishdelay;
 Nvu8 lockflag;
-Nvu8 version=19;
+Nvu8 version=20;
 Nvu32 battery_c;
 Nvu8 charge_step;
 Nvu8 loop;
@@ -36128,82 +36128,82 @@ N//			shutcount1 = 0;
 N//			shutcount2 = 0;
 N//			shutcount3 = 0;
 N//		}
-N		if(HARDVER == 1)
-X		if(1 == 1)
-N		{
+N//		if(HARDVER == 1)
+N//		{
+N//			if(MODE != 2)
+N//			{
+N//				if((PPower >= 600) || (LPower >= 1800) || (DISS_Current >= 100))
+N//				{
+N//					shutcount3++;
+N//					if(shutcount3 >= 500)
+N//					{
+N//						overflag = 1;
+N//						Off_GPOI_ResetSet();
+N//	//					shutcount1 = 0;
+N//	//					shutcount2 = 0;
+N//						shutcount3 = 0;
+N//						mainswitch = 0;
+N//					}
+N//				}else{
+N//	//				shutcount1 = 0;
+N//	//				shutcount2 = 0;
+N//					shutcount3 = 0;
+N//				}
+N//				if(DISS_Current > 60 && DISS_Current < 100)
+N//				{
+N//					shutcount4 ++;
+N//					if(shutcount4 >= 20000)
+N//					{
+N//						overflag = 1;
+N//						Off_GPOI_ResetSet();
+N//						mainswitch = 0;
+N//						shutcount1 = 0;
+N//					}
+N//				}else{
+N//					shutcount4 = 0;
+N//				}
+N//			}else{
+N//				if((PPower >= 600) || (LPower >= 3600) || DISS_Current >= 160)
+N//				{
+N//					shutcount3++;
+N//					if(shutcount3 >= 500)
+N//					{
+N//						overflag = 1;
+N//						Off_GPOI_ResetSet();
+N//	//					shutcount1 = 0;
+N//	//					shutcount2 = 0;
+N//						shutcount3 = 0;
+N//						mainswitch = 0;
+N//					}
+N//				}else{
+N//	//				shutcount1 = 0;
+N//	//				shutcount2 = 0;
+N//					shutcount3 = 0;
+N//				}
+N//				if(DISS_Current > 60 && DISS_Current < 160)
+N//				{
+N//					shutcount4 ++;
+N//					if(shutcount4 >= 2000)
+N//					{
+N//						overflag = 1;
+N//						Off_GPOI_ResetSet();
+N//						mainswitch = 0;
+N//						shutcount4 = 0;
+N//					}
+N//				}else{
+N//					shutcount4 = 0;
+N//	//				shutcount2 = 0;
+N//	//				shutcount3 = 0;
+N//				}
+N//			}
+N//		}else if(HARDVER == 2){
 N			if(MODE != 2)
 N			{
-N				if((PPower >= 600) || (LPower >= 1800) || (DISS_Current >= 100))
-N				{
-N					shutcount3++;
-N					if(shutcount3 >= 500)
-N					{
-N						overflag = 1;
-N						Off_GPOI_ResetSet();
-N	//					shutcount1 = 0;
-N	//					shutcount2 = 0;
-N						shutcount3 = 0;
-N						mainswitch = 0;
-N					}
-N				}else{
-N	//				shutcount1 = 0;
-N	//				shutcount2 = 0;
-N					shutcount3 = 0;
-N				}
-N				if(DISS_Current > 60 && DISS_Current < 100)
-N				{
-N					shutcount4 ++;
-N					if(shutcount4 >= 20000)
-N					{
-N						overflag = 1;
-N						Off_GPOI_ResetSet();
-N						mainswitch = 0;
-N						shutcount1 = 0;
-N					}
-N				}else{
-N					shutcount4 = 0;
-N				}
-N			}else{
-N				if((PPower >= 600) || (LPower >= 3600) || DISS_Current >= 160)
-N				{
-N					shutcount3++;
-N					if(shutcount3 >= 500)
-N					{
-N						overflag = 1;
-N						Off_GPOI_ResetSet();
-N	//					shutcount1 = 0;
-N	//					shutcount2 = 0;
-N						shutcount3 = 0;
-N						mainswitch = 0;
-N					}
-N				}else{
-N	//				shutcount1 = 0;
-N	//				shutcount2 = 0;
-N					shutcount3 = 0;
-N				}
-N				if(DISS_Current > 60 && DISS_Current < 160)
-N				{
-N					shutcount4 ++;
-N					if(shutcount4 >= 2000)
-N					{
-N						overflag = 1;
-N						Off_GPOI_ResetSet();
-N						mainswitch = 0;
-N						shutcount4 = 0;
-N					}
-N				}else{
-N					shutcount4 = 0;
-N	//				shutcount2 = 0;
-N	//				shutcount3 = 0;
-N				}
-N			}
-N		}else if(HARDVER == 2){
-X		}else if(1 == 2){
-N			if(MODE != 2)
-N			{
+N
 N				if((PPower >= 1200) || (LPower >= 1800) || (DISS_Current >= 120))
 N				{
 N					shutcount3++;
+N					shutcount2++;
 N					if(shutcount3 >= 500)
 N					{
 N						overflag = 1;
@@ -36211,46 +36211,66 @@ N						Off_GPOI_ResetSet();
 N	//					shutcount1 = 0;
 N	//					shutcount2 = 0;
 N						shutcount3 = 0;
+N						shutcount2 = 0;
 N						mainswitch = 0;
 N					}
 N				}else{
 N	//				shutcount1 = 0;
 N	//				shutcount2 = 0;
-N					shutcount3 = 0;
+N						shutcount3 = 0;
 N				}
-N				if(DISS_Current > 100 && DISS_Current < 120)
+N				if(DISS_Current >= 100 && DISS_Current < 120)
 N				{
-N					shutcount4 ++;
-N					if(shutcount4 >= 20000)
+N					shutcount2 ++;
+N					if(shutcount2 >= 20000)
 N					{
 N						overflag = 1;
 N						Off_GPOI_ResetSet();
 N						mainswitch = 0;
-N						shutcount1 = 0;
+N						shutcount2 = 0;
 N					}
 N				}else{
-N					shutcount4 = 0;
+N					if(DISS_Current<100)
+N						shutcount2 = 0;
 N				}
 N			}else{
 N				if((PPower >= 1200) || (LPower >= 3600) || DISS_Current >= 160)
 N				{
+N					shutcount2++;
+N					shutcount4 ++;
 N					shutcount3++;
 N					if(shutcount3 >= 500)
 N					{
 N						overflag = 1;
 N						Off_GPOI_ResetSet();
 N	//					shutcount1 = 0;
-N	//					shutcount2 = 0;
+N						shutcount2 = 0;
 N						shutcount3 = 0;
+N						shutcount4  =0;
 N						mainswitch = 0;
 N					}
 N				}else{
 N	//				shutcount1 = 0;
 N	//				shutcount2 = 0;
-N					shutcount3 = 0;
+N						shutcount3 = 0;
 N				}
-N				if(DISS_Current > 60 && DISS_Current < 160)
+N				if(DISS_Current > 100 && DISS_Current < 120)
 N				{
+N					shutcount2 ++;
+N					if(shutcount2 >= 20000)
+N					{
+N						overflag = 1;
+N						Off_GPOI_ResetSet();
+N						mainswitch = 0;
+N						shutcount2 = 0;
+N					}
+N				}else{
+N					if(DISS_Current<100)
+N						shutcount2 = 0;
+N				}
+N				if(DISS_Current >= 120 && DISS_Current < 160)
+N				{
+N					shutcount2++;
 N					shutcount4 ++;
 N					if(shutcount4 >= 2000)
 N					{
@@ -36258,14 +36278,16 @@ N						overflag = 1;
 N						Off_GPOI_ResetSet();
 N						mainswitch = 0;
 N						shutcount4 = 0;
+N						shutcount2 = 0;
 N					}
 N				}else{
-N					shutcount4 = 0;
+N					if(DISS_Current<120)
+N						shutcount4 = 0;
 N	//				shutcount2 = 0;
 N	//				shutcount3 = 0;
 N				}
 N			}
-N		}
+N//		}
 N//		else if((PPower > 100 && PPower < 200) || (LPower > 100 && LPower < 200)){
 N//			shutcount1 ++;
 N//			if(shutcount1 >= 180000)
