@@ -5,15 +5,15 @@
                           AREA ||i.BEBufToUint16||, CODE, READONLY, ALIGN=1
 
                   BEBufToUint16 PROC
-;;;249    */
-;;;250    uint16_t BEBufToUint16(uint8_t *_pBuf)
+;;;251    */
+;;;252    uint16_t BEBufToUint16(uint8_t *_pBuf)
 000000  8800              LDRH     r0,[r0,#0]
-;;;251    {
-;;;252        return (((uint16_t)_pBuf[0] << 8) | _pBuf[1]);
+;;;253    {
+;;;254        return (((uint16_t)_pBuf[0] << 8) | _pBuf[1]);
 000002  ba40              REV16    r0,r0
-;;;253    }
+;;;255    }
 000004  4770              BX       lr
-;;;254    
+;;;256    
                           ENDP
 
 
@@ -21,57 +21,57 @@
 
                   BusFault_Handler PROC
                   |L2.0|
-;;;117      */
-;;;118    void BusFault_Handler(void)
+;;;119      */
+;;;120    void BusFault_Handler(void)
 000000  e7fe              B        |L2.0|
-;;;119    {
-;;;120      /* Go to infinite loop when Bus Fault exception occurs */
-;;;121      while (1)
-;;;122      {
-;;;123      }
-;;;124    }
-;;;125    
+;;;121    {
+;;;122      /* Go to infinite loop when Bus Fault exception occurs */
+;;;123      while (1)
+;;;124      {
+;;;125      }
+;;;126    }
+;;;127    
                           ENDP
 
 
                           AREA ||i.CRC16||, CODE, READONLY, ALIGN=2
 
                   CRC16 PROC
-;;;1086   
-;;;1087   uint16_t CRC16(uint8_t *_pBuf, uint16_t _usLen)
+;;;1099   
+;;;1100   uint16_t CRC16(uint8_t *_pBuf, uint16_t _usLen)
 000000  b570              PUSH     {r4-r6,lr}
-;;;1088   {    
-;;;1089       uint8_t ucCRCHi = 0xFF; /* 高CRC字节初始化 */
-;;;1090   	uint8_t ucCRCLo = 0xFF; /* 低CRC 字节初始化 */
-;;;1091   	uint16_t usIndex;  /* CRC循环中的索引 */
-;;;1092   
-;;;1093       while (_usLen--)
-;;;1094       {
-;;;1095   		usIndex = ucCRCHi ^ *_pBuf++; /* 计算CRC */
-;;;1096   		ucCRCHi = ucCRCLo ^ s_CRCHi[usIndex];
+;;;1101   {    
+;;;1102       uint8_t ucCRCHi = 0xFF; /* 高CRC字节初始化 */
+;;;1103   	uint8_t ucCRCLo = 0xFF; /* 低CRC 字节初始化 */
+;;;1104   	uint16_t usIndex;  /* CRC循环中的索引 */
+;;;1105   
+;;;1106       while (_usLen--)
+;;;1107       {
+;;;1108   		usIndex = ucCRCHi ^ *_pBuf++; /* 计算CRC */
+;;;1109   		ucCRCHi = ucCRCLo ^ s_CRCHi[usIndex];
 000002  4d09              LDR      r5,|L3.40|
-000004  22ff              MOVS     r2,#0xff              ;1089
-000006  4613              MOV      r3,r2                 ;1090
-;;;1097   		ucCRCLo = s_CRCLo[usIndex];
+000004  22ff              MOVS     r2,#0xff              ;1102
+000006  4613              MOV      r3,r2                 ;1103
+;;;1110   		ucCRCLo = s_CRCLo[usIndex];
 000008  f5057680          ADD      r6,r5,#0x100
 00000c  e006              B        |L3.28|
-00000e  bf00              NOP                            ;1095
+00000e  bf00              NOP                            ;1108
                   |L3.16|
-000010  f8104b01          LDRB     r4,[r0],#1            ;1095
-000014  4054              EORS     r4,r4,r2              ;1095
-000016  5d2a              LDRB     r2,[r5,r4]            ;1096
-000018  405a              EORS     r2,r2,r3              ;1096
+000010  f8104b01          LDRB     r4,[r0],#1            ;1108
+000014  4054              EORS     r4,r4,r2              ;1108
+000016  5d2a              LDRB     r2,[r5,r4]            ;1109
+000018  405a              EORS     r2,r2,r3              ;1109
 00001a  5d33              LDRB     r3,[r6,r4]
                   |L3.28|
-00001c  1e49              SUBS     r1,r1,#1              ;1093
-00001e  b289              UXTH     r1,r1                 ;1093
+00001c  1e49              SUBS     r1,r1,#1              ;1106
+00001e  b289              UXTH     r1,r1                 ;1106
 000020  d2f6              BCS      |L3.16|
-;;;1098       }
-;;;1099       return ((uint16_t)ucCRCHi << 8 | ucCRCLo);
+;;;1111       }
+;;;1112       return ((uint16_t)ucCRCHi << 8 | ucCRCLo);
 000022  ea432002          ORR      r0,r3,r2,LSL #8
-;;;1100   }
+;;;1113   }
 000026  bd70              POP      {r4-r6,pc}
-;;;1101   /******************************************************************************/
+;;;1114   /******************************************************************************/
                           ENDP
 
                   |L3.40|
@@ -80,22 +80,22 @@
                           AREA ||i.DMA2_Stream0_IRQHandler||, CODE, READONLY, ALIGN=2
 
                   DMA2_Stream0_IRQHandler PROC
-;;;337    
-;;;338    void  DMA2_Stream0_IRQHandler(void)
+;;;339    
+;;;340    void  DMA2_Stream0_IRQHandler(void)
 000000  b510              PUSH     {r4,lr}
-;;;339    {
-;;;340    	DMA_ClearITPendingBit(DMA2_Stream0,DMA_IT_TCIF0);
+;;;341    {
+;;;342    	DMA_ClearITPendingBit(DMA2_Stream0,DMA_IT_TCIF0);
 000002  4905              LDR      r1,|L4.24|
 000004  4805              LDR      r0,|L4.28|
 000006  f7fffffe          BL       DMA_ClearITPendingBit
-;;;341    	Flag_ADC_Full=1;
+;;;343    	Flag_ADC_Full=1;
 00000a  4805              LDR      r0,|L4.32|
 00000c  6801              LDR      r1,[r0,#0]  ; flagA
 00000e  f0410102          ORR      r1,r1,#2
 000012  6001              STR      r1,[r0,#0]  ; flagA
-;;;342    }
+;;;344    }
 000014  bd10              POP      {r4,pc}
-;;;343    
+;;;345    
                           ENDP
 
 000016  0000              DCW      0x0000
@@ -109,12 +109,12 @@
                           AREA ||i.DebugMon_Handler||, CODE, READONLY, ALIGN=1
 
                   DebugMon_Handler PROC
-;;;152      */
-;;;153    void DebugMon_Handler(void)
+;;;154      */
+;;;155    void DebugMon_Handler(void)
 000000  4770              BX       lr
-;;;154    {
-;;;155    }
-;;;156    
+;;;156    {
+;;;157    }
+;;;158    
                           ENDP
 
 
@@ -122,159 +122,159 @@
 
                   HardFault_Handler PROC
                   |L6.0|
-;;;91       */
-;;;92     void HardFault_Handler(void)
+;;;93       */
+;;;94     void HardFault_Handler(void)
 000000  e7fe              B        |L6.0|
-;;;93     {
-;;;94       /* Go to infinite loop when Hard Fault exception occurs */
-;;;95       while (1)
-;;;96       {
-;;;97       }
-;;;98     }
-;;;99     
+;;;95     {
+;;;96       /* Go to infinite loop when Hard Fault exception occurs */
+;;;97       while (1)
+;;;98       {
+;;;99       }
+;;;100    }
+;;;101    
                           ENDP
 
 
                           AREA ||i.MODS_03H||, CODE, READONLY, ALIGN=2
 
                   MODS_03H PROC
-;;;845    
-;;;846    static void MODS_03H(void)
+;;;858    
+;;;859    static void MODS_03H(void)
 000000  e92d4ff0          PUSH     {r4-r11,lr}
-;;;847    {
-;;;848        uint16_t reg;
-;;;849    	uint16_t num;
-;;;850    	uint16_t i;
-;;;851    	uint8_t reg_value[64];
-;;;852    
-;;;853        
-;;;854        g_tModS.RspCode = RSP_OK;
+;;;860    {
+;;;861        uint16_t reg;
+;;;862    	uint16_t num;
+;;;863    	uint16_t i;
+;;;864    	uint8_t reg_value[64];
+;;;865    
+;;;866        
+;;;867        g_tModS.RspCode = RSP_OK;
 000004  4c2d              LDR      r4,|L7.188|
-000006  b091              SUB      sp,sp,#0x44           ;847
+000006  b091              SUB      sp,sp,#0x44           ;860
 000008  f04f0a00          MOV      r10,#0
 00000c  f884a0a1          STRB     r10,[r4,#0xa1]
-;;;855    
-;;;856    	if (g_tModS.RxCount != 8)								/* 03H命令必须是8个字节 */
+;;;868    
+;;;869    	if (g_tModS.RxCount != 8)								/* 03H命令必须是8个字节 */
 000010  f894009e          LDRB     r0,[r4,#0x9e]  ; g_tModS
-;;;857    	{
-;;;858    		g_tModS.RspCode = RSP_ERR_VALUE;					/* 数据值域错误 */
+;;;870    	{
+;;;871    		g_tModS.RspCode = RSP_ERR_VALUE;					/* 数据值域错误 */
 000014  2603              MOVS     r6,#3
-000016  2808              CMP      r0,#8                 ;856
+000016  2808              CMP      r0,#8                 ;869
 000018  d106              BNE      |L7.40|
-;;;859    		goto err_ret;
-;;;860    	}
-;;;861    
-;;;862    	reg = BEBufToUint16(&g_tModS.RxBuf[2]); 				/* 寄存器号 */
+;;;872    		goto err_ret;
+;;;873    	}
+;;;874    
+;;;875    	reg = BEBufToUint16(&g_tModS.RxBuf[2]); 				/* 寄存器号 */
 00001a  8860              LDRH     r0,[r4,#2]  ; g_tModS
 00001c  fa90f890          REV16    r8,r0
-;;;863    	num = BEBufToUint16(&g_tModS.RxBuf[4]);					/* 寄存器个数 */
+;;;876    	num = BEBufToUint16(&g_tModS.RxBuf[4]);					/* 寄存器个数 */
 000020  88a0              LDRH     r0,[r4,#4]  ; g_tModS
 000022  ba45              REV16    r5,r0
-;;;864    	if (num > sizeof(reg_value) / 2)
+;;;877    	if (num > sizeof(reg_value) / 2)
 000024  2d20              CMP      r5,#0x20
 000026  d904              BLS      |L7.50|
                   |L7.40|
-;;;865    	{
-;;;866    		g_tModS.RspCode = RSP_ERR_VALUE;					/* 数据值域错误 */
+;;;878    	{
+;;;879    		g_tModS.RspCode = RSP_ERR_VALUE;					/* 数据值域错误 */
 000028  f88460a1          STRB     r6,[r4,#0xa1]
                   |L7.44|
-;;;867    		goto err_ret;
-;;;868    	}
-;;;869    
-;;;870    	for (i = 0; i < num; i++)
-;;;871    	{
-;;;872    		if (MODS_ReadRegValue(reg, &reg_value[2 * i]) == 0)	/* 读出寄存器值放入reg_value */
-;;;873    		{
-;;;874    			g_tModS.RspCode = RSP_ERR_REG_ADDR;				/* 寄存器地址错误 */
-;;;875    			break;
-;;;876    		}
-;;;877    		reg++;
-;;;878    	}
-;;;879    
-;;;880    err_ret:
-;;;881    	if (g_tModS.RspCode == RSP_OK)							/* 正确应答 */
-;;;882    	{
-;;;883    		g_tModS.TxCount = 0;
-;;;884    		g_tModS.TxBuf[g_tModS.TxCount++] = g_tModS.RxBuf[0];
-;;;885    		g_tModS.TxBuf[g_tModS.TxCount++] = g_tModS.RxBuf[1];
-;;;886    		g_tModS.TxBuf[g_tModS.TxCount++] = num * 2;			/* 返回字节数 */
-;;;887    
-;;;888    		for (i = 0; i < num; i++)
-;;;889    		{
-;;;890    			g_tModS.TxBuf[g_tModS.TxCount++] = reg_value[2*i];
-;;;891    			g_tModS.TxBuf[g_tModS.TxCount++] = reg_value[2*i+1];
-;;;892    		}
-;;;893    //         if(usartocflag == 0)
-;;;894    //         {
-;;;895    //             MODS_SendWithCRC(g_tModS.TxBuf, g_tModS.TxCount);	/* 发送正确应答 */
-;;;896    //         }
-;;;897    	}
-;;;898    	else
-;;;899    	{
-;;;900    //		MODS_SendAckErr(g_tModS.RspCode);					/* 发送错误应答 */
-;;;901    	}
-;;;902        
-;;;903    }
+;;;880    		goto err_ret;
+;;;881    	}
+;;;882    
+;;;883    	for (i = 0; i < num; i++)
+;;;884    	{
+;;;885    		if (MODS_ReadRegValue(reg, &reg_value[2 * i]) == 0)	/* 读出寄存器值放入reg_value */
+;;;886    		{
+;;;887    			g_tModS.RspCode = RSP_ERR_REG_ADDR;				/* 寄存器地址错误 */
+;;;888    			break;
+;;;889    		}
+;;;890    		reg++;
+;;;891    	}
+;;;892    
+;;;893    err_ret:
+;;;894    	if (g_tModS.RspCode == RSP_OK)							/* 正确应答 */
+;;;895    	{
+;;;896    		g_tModS.TxCount = 0;
+;;;897    		g_tModS.TxBuf[g_tModS.TxCount++] = g_tModS.RxBuf[0];
+;;;898    		g_tModS.TxBuf[g_tModS.TxCount++] = g_tModS.RxBuf[1];
+;;;899    		g_tModS.TxBuf[g_tModS.TxCount++] = num * 2;			/* 返回字节数 */
+;;;900    
+;;;901    		for (i = 0; i < num; i++)
+;;;902    		{
+;;;903    			g_tModS.TxBuf[g_tModS.TxCount++] = reg_value[2*i];
+;;;904    			g_tModS.TxBuf[g_tModS.TxCount++] = reg_value[2*i+1];
+;;;905    		}
+;;;906    //         if(usartocflag == 0)
+;;;907    //         {
+;;;908    //             MODS_SendWithCRC(g_tModS.TxBuf, g_tModS.TxCount);	/* 发送正确应答 */
+;;;909    //         }
+;;;910    	}
+;;;911    	else
+;;;912    	{
+;;;913    //		MODS_SendAckErr(g_tModS.RspCode);					/* 发送错误应答 */
+;;;914    	}
+;;;915        
+;;;916    }
 00002c  b011              ADD      sp,sp,#0x44
 00002e  e8bd8ff0          POP      {r4-r11,pc}
                   |L7.50|
-000032  2700              MOVS     r7,#0                 ;870
-000034  f04f0b02          MOV      r11,#2                ;874
-000038  46e9              MOV      r9,sp                 ;851
+000032  2700              MOVS     r7,#0                 ;883
+000034  f04f0b02          MOV      r11,#2                ;887
+000038  46e9              MOV      r9,sp                 ;864
 00003a  e00b              B        |L7.84|
                   |L7.60|
-00003c  eb090147          ADD      r1,r9,r7,LSL #1       ;872
-000040  4640              MOV      r0,r8                 ;872
+00003c  eb090147          ADD      r1,r9,r7,LSL #1       ;885
+000040  4640              MOV      r0,r8                 ;885
 000042  f7fffffe          BL       MODS_ReadRegValue
 000046  b1d8              CBZ      r0,|L7.128|
-000048  f1080001          ADD      r0,r8,#1              ;877
-00004c  1c7f              ADDS     r7,r7,#1              ;877
-00004e  fa1ff880          UXTH     r8,r0                 ;877
-000052  b2bf              UXTH     r7,r7                 ;870
+000048  f1080001          ADD      r0,r8,#1              ;890
+00004c  1c7f              ADDS     r7,r7,#1              ;890
+00004e  fa1ff880          UXTH     r8,r0                 ;890
+000052  b2bf              UXTH     r7,r7                 ;883
                   |L7.84|
-000054  42af              CMP      r7,r5                 ;870
+000054  42af              CMP      r7,r5                 ;883
 000056  d3f1              BCC      |L7.60|
-000058  f89400a1          LDRB     r0,[r4,#0xa1]         ;881  ; g_tModS
-00005c  2800              CMP      r0,#0                 ;881
+000058  f89400a1          LDRB     r0,[r4,#0xa1]         ;894  ; g_tModS
+00005c  2800              CMP      r0,#0                 ;894
 00005e  d1e5              BNE      |L7.44|
 000060  4916              LDR      r1,|L7.188|
-000062  7822              LDRB     r2,[r4,#0]            ;884  ; g_tModS
-000064  311e              ADDS     r1,r1,#0x1e           ;884
-000066  2001              MOVS     r0,#1                 ;884
-000068  f80a2001          STRB     r2,[r10,r1]           ;884
-00006c  7862              LDRB     r2,[r4,#1]            ;885  ; g_tModS
-00006e  5442              STRB     r2,[r0,r1]            ;885
-000070  006a              LSLS     r2,r5,#1              ;886
-000072  f80b2001          STRB     r2,[r11,r1]           ;886
-000076  f88460a2          STRB     r6,[r4,#0xa2]         ;886
-00007a  2000              MOVS     r0,#0                 ;888
-00007c  464a              MOV      r2,r9                 ;851
+000062  7822              LDRB     r2,[r4,#0]            ;897  ; g_tModS
+000064  311e              ADDS     r1,r1,#0x1e           ;897
+000066  2001              MOVS     r0,#1                 ;897
+000068  f80a2001          STRB     r2,[r10,r1]           ;897
+00006c  7862              LDRB     r2,[r4,#1]            ;898  ; g_tModS
+00006e  5442              STRB     r2,[r0,r1]            ;898
+000070  006a              LSLS     r2,r5,#1              ;899
+000072  f80b2001          STRB     r2,[r11,r1]           ;899
+000076  f88460a2          STRB     r6,[r4,#0xa2]         ;899
+00007a  2000              MOVS     r0,#0                 ;901
+00007c  464a              MOV      r2,r9                 ;864
 00007e  e019              B        |L7.180|
                   |L7.128|
-000080  f884b0a1          STRB     r11,[r4,#0xa1]        ;874
+000080  f884b0a1          STRB     r11,[r4,#0xa1]        ;887
 000084  e7d2              B        |L7.44|
-000086  bf00              NOP                            ;890
+000086  bf00              NOP                            ;903
                   |L7.136|
-000088  f89460a2          LDRB     r6,[r4,#0xa2]         ;890  ; g_tModS
-00008c  f8123010          LDRB     r3,[r2,r0,LSL #1]     ;890
-000090  5473              STRB     r3,[r6,r1]            ;890
-000092  f89430a2          LDRB     r3,[r4,#0xa2]         ;890  ; g_tModS
-000096  eb020640          ADD      r6,r2,r0,LSL #1       ;891
-00009a  1c5b              ADDS     r3,r3,#1              ;890
-00009c  b2db              UXTB     r3,r3                 ;890
-00009e  f88430a2          STRB     r3,[r4,#0xa2]         ;890
-0000a2  7876              LDRB     r6,[r6,#1]            ;891
-0000a4  545e              STRB     r6,[r3,r1]            ;891
-0000a6  f89430a2          LDRB     r3,[r4,#0xa2]         ;891  ; g_tModS
-0000aa  1c5b              ADDS     r3,r3,#1              ;891
-0000ac  1c40              ADDS     r0,r0,#1              ;891
-0000ae  f88430a2          STRB     r3,[r4,#0xa2]         ;891
-0000b2  b280              UXTH     r0,r0                 ;888
+000088  f89460a2          LDRB     r6,[r4,#0xa2]         ;903  ; g_tModS
+00008c  f8123010          LDRB     r3,[r2,r0,LSL #1]     ;903
+000090  5473              STRB     r3,[r6,r1]            ;903
+000092  f89430a2          LDRB     r3,[r4,#0xa2]         ;903  ; g_tModS
+000096  eb020640          ADD      r6,r2,r0,LSL #1       ;904
+00009a  1c5b              ADDS     r3,r3,#1              ;903
+00009c  b2db              UXTB     r3,r3                 ;903
+00009e  f88430a2          STRB     r3,[r4,#0xa2]         ;903
+0000a2  7876              LDRB     r6,[r6,#1]            ;904
+0000a4  545e              STRB     r6,[r3,r1]            ;904
+0000a6  f89430a2          LDRB     r3,[r4,#0xa2]         ;904  ; g_tModS
+0000aa  1c5b              ADDS     r3,r3,#1              ;904
+0000ac  1c40              ADDS     r0,r0,#1              ;904
+0000ae  f88430a2          STRB     r3,[r4,#0xa2]         ;904
+0000b2  b280              UXTH     r0,r0                 ;901
                   |L7.180|
-0000b4  42a8              CMP      r0,r5                 ;888
+0000b4  42a8              CMP      r0,r5                 ;901
 0000b6  d3e7              BCC      |L7.136|
 0000b8  e7b8              B        |L7.44|
-;;;904    
+;;;917    
                           ENDP
 
 0000ba  0000              DCW      0x0000
@@ -284,85 +284,85 @@
                           AREA ||i.MODS_06H||, CODE, READONLY, ALIGN=2
 
                   MODS_06H PROC
-;;;928    
-;;;929    static void MODS_06H(void)
+;;;941    
+;;;942    static void MODS_06H(void)
 000000  b510              PUSH     {r4,lr}
-;;;930    {
-;;;931        uint16_t reg;
-;;;932    	uint16_t value;
-;;;933    
-;;;934    	g_tModS.RspCode = RSP_OK;
+;;;943    {
+;;;944        uint16_t reg;
+;;;945    	uint16_t value;
+;;;946    
+;;;947    	g_tModS.RspCode = RSP_OK;
 000002  4c10              LDR      r4,|L8.68|
 000004  2000              MOVS     r0,#0
 000006  f88400a1          STRB     r0,[r4,#0xa1]
-;;;935    
-;;;936    	if (g_tModS.RxCount != 8)
+;;;948    
+;;;949    	if (g_tModS.RxCount != 8)
 00000a  f894009e          LDRB     r0,[r4,#0x9e]  ; g_tModS
 00000e  2808              CMP      r0,#8
 000010  d001              BEQ      |L8.22|
-;;;937    	{
-;;;938    		g_tModS.RspCode = RSP_ERR_VALUE;		/* 数据值域错误 */
+;;;950    	{
+;;;951    		g_tModS.RspCode = RSP_ERR_VALUE;		/* 数据值域错误 */
 000012  2003              MOVS     r0,#3
-;;;939    		goto err_ret;
+;;;952    		goto err_ret;
 000014  e008              B        |L8.40|
                   |L8.22|
-;;;940    	}
-;;;941    
-;;;942    	reg = BEBufToUint16(&g_tModS.RxBuf[2]); 	/* 寄存器号 */
+;;;953    	}
+;;;954    
+;;;955    	reg = BEBufToUint16(&g_tModS.RxBuf[2]); 	/* 寄存器号 */
 000016  8860              LDRH     r0,[r4,#2]  ; g_tModS
-;;;943    	value = BEBufToUint16(&g_tModS.RxBuf[4]);	/* 寄存器值 */
+;;;956    	value = BEBufToUint16(&g_tModS.RxBuf[4]);	/* 寄存器值 */
 000018  88a1              LDRH     r1,[r4,#4]  ; g_tModS
-00001a  ba40              REV16    r0,r0                 ;942
+00001a  ba40              REV16    r0,r0                 ;955
 00001c  ba49              REV16    r1,r1
-;;;944        
-;;;945    //    if(reg == 0x0E)
-;;;946    //    {
-;;;947    //        if(value == 00)
-;;;948    //        {
-;;;949    //            GPIO_SetBits(GPIOC,GPIO_Pin_10);//CC
-;;;950    //            flag_Load_CC = 1;
-;;;951    //        }else if(value == 01){
-;;;952    //            GPIO_ResetBits(GPIOC,GPIO_Pin_10);//CV
-;;;953    //            flag_Load_CC = 0;
-;;;954    //        }
-;;;955    //    }
-;;;956     	if (MODS_WriteRegValue(reg, value) == 1)	/* 该函数会把写入的值存入寄存器 */
+;;;957        
+;;;958    //    if(reg == 0x0E)
+;;;959    //    {
+;;;960    //        if(value == 00)
+;;;961    //        {
+;;;962    //            GPIO_SetBits(GPIOC,GPIO_Pin_10);//CC
+;;;963    //            flag_Load_CC = 1;
+;;;964    //        }else if(value == 01){
+;;;965    //            GPIO_ResetBits(GPIOC,GPIO_Pin_10);//CV
+;;;966    //            flag_Load_CC = 0;
+;;;967    //        }
+;;;968    //    }
+;;;969     	if (MODS_WriteRegValue(reg, value) == 1)	/* 该函数会把写入的值存入寄存器 */
 00001e  f7fffffe          BL       MODS_WriteRegValue
 000022  2801              CMP      r0,#1
 000024  d003              BEQ      |L8.46|
-;;;957     	{
-;;;958     		;
-;;;959     	}
-;;;960     	else
-;;;961     	{
-;;;962     		g_tModS.RspCode = RSP_ERR_REG_ADDR;		/* 寄存器地址错误 */
+;;;970     	{
+;;;971     		;
+;;;972     	}
+;;;973     	else
+;;;974     	{
+;;;975     		g_tModS.RspCode = RSP_ERR_REG_ADDR;		/* 寄存器地址错误 */
 000026  2002              MOVS     r0,#2
                   |L8.40|
-000028  f88400a1          STRB     r0,[r4,#0xa1]         ;938
+000028  f88400a1          STRB     r0,[r4,#0xa1]         ;951
 00002c  e003              B        |L8.54|
                   |L8.46|
-;;;963     	}
-;;;964    
-;;;965    err_ret:
-;;;966    	if (g_tModS.RspCode == RSP_OK)				/* 正确应答 */
+;;;976     	}
+;;;977    
+;;;978    err_ret:
+;;;979    	if (g_tModS.RspCode == RSP_OK)				/* 正确应答 */
 00002e  f89400a1          LDRB     r0,[r4,#0xa1]  ; g_tModS
 000032  2800              CMP      r0,#0
 000034  d004              BEQ      |L8.64|
                   |L8.54|
-;;;967    	{
-;;;968    		
-;;;969    	}
-;;;970    	else
-;;;971    	{
-;;;972    		MODS_SendAckErr(g_tModS.RspCode);		/* 告诉主机命令错误 */
+;;;980    	{
+;;;981    		
+;;;982    	}
+;;;983    	else
+;;;984    	{
+;;;985    		MODS_SendAckErr(g_tModS.RspCode);		/* 告诉主机命令错误 */
 000036  e8bd4010          POP      {r4,lr}
 00003a  b2c0              UXTB     r0,r0
 00003c  f7ffbffe          B.W      MODS_SendAckErr
                   |L8.64|
-;;;973    	}
-;;;974    }
+;;;986    	}
+;;;987    }
 000040  bd10              POP      {r4,pc}
-;;;975    
+;;;988    
                           ENDP
 
 000042  0000              DCW      0x0000
@@ -372,75 +372,75 @@
                           AREA ||i.MODS_50H||, CODE, READONLY, ALIGN=2
 
                   MODS_50H PROC
-;;;975    
-;;;976    static void MODS_50H(void)
+;;;988    
+;;;989    static void MODS_50H(void)
 000000  b510              PUSH     {r4,lr}
-;;;977    {
-;;;978        uint16_t reg;
-;;;979    	uint16_t value;
-;;;980    
-;;;981    	g_tModS.RspCode = RSP_OK;
+;;;990    {
+;;;991        uint16_t reg;
+;;;992    	uint16_t value;
+;;;993    
+;;;994    	g_tModS.RspCode = RSP_OK;
 000002  4c11              LDR      r4,|L9.72|
 000004  2000              MOVS     r0,#0
 000006  f88400a1          STRB     r0,[r4,#0xa1]
-;;;982    
-;;;983    	if (g_tModS.RxCount != 8)
+;;;995    
+;;;996    	if (g_tModS.RxCount != 8)
 00000a  f894009e          LDRB     r0,[r4,#0x9e]  ; g_tModS
 00000e  2808              CMP      r0,#8
 000010  d001              BEQ      |L9.22|
-;;;984    	{
-;;;985    		g_tModS.RspCode = RSP_ERR_VALUE;		
+;;;997    	{
+;;;998    		g_tModS.RspCode = RSP_ERR_VALUE;		
 000012  2003              MOVS     r0,#3
-;;;986    		goto err_ret;
+;;;999    		goto err_ret;
 000014  e008              B        |L9.40|
                   |L9.22|
-;;;987    	}
-;;;988    
-;;;989    	reg = BEBufToUint16(&g_tModS.RxBuf[2]);
+;;;1000   	}
+;;;1001   
+;;;1002   	reg = BEBufToUint16(&g_tModS.RxBuf[2]);
 000016  8860              LDRH     r0,[r4,#2]  ; g_tModS
-;;;990    	value = BEBufToUint16(&g_tModS.RxBuf[4]);
+;;;1003   	value = BEBufToUint16(&g_tModS.RxBuf[4]);
 000018  88a1              LDRH     r1,[r4,#4]  ; g_tModS
-00001a  ba40              REV16    r0,r0                 ;989
+00001a  ba40              REV16    r0,r0                 ;1002
 00001c  ba49              REV16    r1,r1
-;;;991        
-;;;992    
-;;;993     	if (MODS_Load(reg, value) == 1)
+;;;1004       
+;;;1005   
+;;;1006    	if (MODS_Load(reg, value) == 1)
 00001e  f7fffffe          BL       MODS_Load
 000022  2801              CMP      r0,#1
 000024  d003              BEQ      |L9.46|
-;;;994     	{
-;;;995     		;
-;;;996     	}
-;;;997     	else
-;;;998     	{
-;;;999     		g_tModS.RspCode = RSP_ERR_REG_ADDR;
+;;;1007    	{
+;;;1008    		;
+;;;1009    	}
+;;;1010    	else
+;;;1011    	{
+;;;1012    		g_tModS.RspCode = RSP_ERR_REG_ADDR;
 000026  2002              MOVS     r0,#2
                   |L9.40|
-000028  f88400a1          STRB     r0,[r4,#0xa1]         ;985
+000028  f88400a1          STRB     r0,[r4,#0xa1]         ;998
 00002c  e002              B        |L9.52|
                   |L9.46|
-;;;1000    	}
-;;;1001   
-;;;1002   err_ret:
-;;;1003   	if (g_tModS.RspCode == RSP_OK)
+;;;1013    	}
+;;;1014   
+;;;1015   err_ret:
+;;;1016   	if (g_tModS.RspCode == RSP_OK)
 00002e  f89400a1          LDRB     r0,[r4,#0xa1]  ; g_tModS
 000032  b120              CBZ      r0,|L9.62|
                   |L9.52|
-;;;1004   	{
-;;;1005   		MODS_SendAckOk();
-;;;1006   	}
-;;;1007   	else
-;;;1008   	{
-;;;1009   		MODS_SendAckErr(g_tModS.RspCode);
+;;;1017   	{
+;;;1018   		MODS_SendAckOk();
+;;;1019   	}
+;;;1020   	else
+;;;1021   	{
+;;;1022   		MODS_SendAckErr(g_tModS.RspCode);
 000034  e8bd4010          POP      {r4,lr}
 000038  b2c0              UXTB     r0,r0
 00003a  f7ffbffe          B.W      MODS_SendAckErr
                   |L9.62|
-00003e  e8bd4010          POP      {r4,lr}               ;1005
+00003e  e8bd4010          POP      {r4,lr}               ;1018
 000042  f7ffbffe          B.W      MODS_SendAckOk
-;;;1010   	}
-;;;1011   }
-;;;1012   
+;;;1023   	}
+;;;1024   }
+;;;1025   
                           ENDP
 
 000046  0000              DCW      0x0000
@@ -450,75 +450,75 @@
                           AREA ||i.MODS_51H||, CODE, READONLY, ALIGN=2
 
                   MODS_51H PROC
-;;;1012   
-;;;1013   static void MODS_51H(void)
+;;;1025   
+;;;1026   static void MODS_51H(void)
 000000  b510              PUSH     {r4,lr}
-;;;1014   {
-;;;1015       uint16_t reg;
-;;;1016   	uint16_t value;
-;;;1017   
-;;;1018   	g_tModS.RspCode = RSP_OK;
+;;;1027   {
+;;;1028       uint16_t reg;
+;;;1029   	uint16_t value;
+;;;1030   
+;;;1031   	g_tModS.RspCode = RSP_OK;
 000002  4c11              LDR      r4,|L10.72|
 000004  2000              MOVS     r0,#0
 000006  f88400a1          STRB     r0,[r4,#0xa1]
-;;;1019   
-;;;1020   	if (g_tModS.RxCount != 8)
+;;;1032   
+;;;1033   	if (g_tModS.RxCount != 8)
 00000a  f894009e          LDRB     r0,[r4,#0x9e]  ; g_tModS
 00000e  2808              CMP      r0,#8
 000010  d001              BEQ      |L10.22|
-;;;1021   	{
-;;;1022   		g_tModS.RspCode = RSP_ERR_VALUE;		
+;;;1034   	{
+;;;1035   		g_tModS.RspCode = RSP_ERR_VALUE;		
 000012  2003              MOVS     r0,#3
-;;;1023   		goto err_ret;
+;;;1036   		goto err_ret;
 000014  e008              B        |L10.40|
                   |L10.22|
-;;;1024   	}
-;;;1025   
-;;;1026   	reg = BEBufToUint16(&g_tModS.RxBuf[2]);
+;;;1037   	}
+;;;1038   
+;;;1039   	reg = BEBufToUint16(&g_tModS.RxBuf[2]);
 000016  8860              LDRH     r0,[r4,#2]  ; g_tModS
-;;;1027   	value = BEBufToUint16(&g_tModS.RxBuf[4]);
+;;;1040   	value = BEBufToUint16(&g_tModS.RxBuf[4]);
 000018  88a1              LDRH     r1,[r4,#4]  ; g_tModS
-00001a  ba40              REV16    r0,r0                 ;1026
+00001a  ba40              REV16    r0,r0                 ;1039
 00001c  ba49              REV16    r1,r1
-;;;1028       
-;;;1029   
-;;;1030    	if (MODS_Pow(reg, value) == 1)
+;;;1041       
+;;;1042   
+;;;1043    	if (MODS_Pow(reg, value) == 1)
 00001e  f7fffffe          BL       MODS_Pow
 000022  2801              CMP      r0,#1
 000024  d003              BEQ      |L10.46|
-;;;1031    	{
-;;;1032    		;
-;;;1033    	}
-;;;1034    	else
-;;;1035    	{
-;;;1036    		g_tModS.RspCode = RSP_ERR_REG_ADDR;
+;;;1044    	{
+;;;1045    		;
+;;;1046    	}
+;;;1047    	else
+;;;1048    	{
+;;;1049    		g_tModS.RspCode = RSP_ERR_REG_ADDR;
 000026  2002              MOVS     r0,#2
                   |L10.40|
-000028  f88400a1          STRB     r0,[r4,#0xa1]         ;1022
+000028  f88400a1          STRB     r0,[r4,#0xa1]         ;1035
 00002c  e002              B        |L10.52|
                   |L10.46|
-;;;1037    	}
-;;;1038   
-;;;1039   err_ret:
-;;;1040   	if (g_tModS.RspCode == RSP_OK)
+;;;1050    	}
+;;;1051   
+;;;1052   err_ret:
+;;;1053   	if (g_tModS.RspCode == RSP_OK)
 00002e  f89400a1          LDRB     r0,[r4,#0xa1]  ; g_tModS
 000032  b120              CBZ      r0,|L10.62|
                   |L10.52|
-;;;1041   	{
-;;;1042   		MODS_SendAckOk();
-;;;1043   	}
-;;;1044   	else
-;;;1045   	{
-;;;1046   		MODS_SendAckErr(g_tModS.RspCode);
+;;;1054   	{
+;;;1055   		MODS_SendAckOk();
+;;;1056   	}
+;;;1057   	else
+;;;1058   	{
+;;;1059   		MODS_SendAckErr(g_tModS.RspCode);
 000034  e8bd4010          POP      {r4,lr}
 000038  b2c0              UXTB     r0,r0
 00003a  f7ffbffe          B.W      MODS_SendAckErr
                   |L10.62|
-00003e  e8bd4010          POP      {r4,lr}               ;1042
+00003e  e8bd4010          POP      {r4,lr}               ;1055
 000042  f7ffbffe          B.W      MODS_SendAckOk
-;;;1047   	}
-;;;1048   }
-;;;1049   
+;;;1060   	}
+;;;1061   }
+;;;1062   
                           ENDP
 
 000046  0000              DCW      0x0000
@@ -528,75 +528,75 @@
                           AREA ||i.MODS_52H||, CODE, READONLY, ALIGN=2
 
                   MODS_52H PROC
-;;;1049   
-;;;1050   static void MODS_52H(void)
+;;;1062   
+;;;1063   static void MODS_52H(void)
 000000  b510              PUSH     {r4,lr}
-;;;1051   {
-;;;1052       uint16_t reg;
-;;;1053   	uint16_t value;
-;;;1054   
-;;;1055   	g_tModS.RspCode = RSP_OK;
+;;;1064   {
+;;;1065       uint16_t reg;
+;;;1066   	uint16_t value;
+;;;1067   
+;;;1068   	g_tModS.RspCode = RSP_OK;
 000002  4c11              LDR      r4,|L11.72|
 000004  2000              MOVS     r0,#0
 000006  f88400a1          STRB     r0,[r4,#0xa1]
-;;;1056   
-;;;1057   	if (g_tModS.RxCount != 8)
+;;;1069   
+;;;1070   	if (g_tModS.RxCount != 8)
 00000a  f894009e          LDRB     r0,[r4,#0x9e]  ; g_tModS
 00000e  2808              CMP      r0,#8
 000010  d001              BEQ      |L11.22|
-;;;1058   	{
-;;;1059   		g_tModS.RspCode = RSP_ERR_VALUE;		
+;;;1071   	{
+;;;1072   		g_tModS.RspCode = RSP_ERR_VALUE;		
 000012  2003              MOVS     r0,#3
-;;;1060   		goto err_ret;
+;;;1073   		goto err_ret;
 000014  e008              B        |L11.40|
                   |L11.22|
-;;;1061   	}
-;;;1062   
-;;;1063   	reg = BEBufToUint16(&g_tModS.RxBuf[2]);
+;;;1074   	}
+;;;1075   
+;;;1076   	reg = BEBufToUint16(&g_tModS.RxBuf[2]);
 000016  8860              LDRH     r0,[r4,#2]  ; g_tModS
-;;;1064   	value = BEBufToUint16(&g_tModS.RxBuf[4]);
+;;;1077   	value = BEBufToUint16(&g_tModS.RxBuf[4]);
 000018  88a1              LDRH     r1,[r4,#4]  ; g_tModS
-00001a  ba40              REV16    r0,r0                 ;1063
+00001a  ba40              REV16    r0,r0                 ;1076
 00001c  ba49              REV16    r1,r1
-;;;1065       
-;;;1066   
-;;;1067    	if (MODS_CDC(reg, value) == 1)
+;;;1078       
+;;;1079   
+;;;1080    	if (MODS_CDC(reg, value) == 1)
 00001e  f7fffffe          BL       MODS_CDC
 000022  2801              CMP      r0,#1
 000024  d003              BEQ      |L11.46|
-;;;1068    	{
-;;;1069   		
-;;;1070    	}
-;;;1071    	else
-;;;1072    	{
-;;;1073    		g_tModS.RspCode = RSP_ERR_REG_ADDR;
+;;;1081    	{
+;;;1082   		
+;;;1083    	}
+;;;1084    	else
+;;;1085    	{
+;;;1086    		g_tModS.RspCode = RSP_ERR_REG_ADDR;
 000026  2002              MOVS     r0,#2
                   |L11.40|
-000028  f88400a1          STRB     r0,[r4,#0xa1]         ;1059
+000028  f88400a1          STRB     r0,[r4,#0xa1]         ;1072
 00002c  e002              B        |L11.52|
                   |L11.46|
-;;;1074    	}
-;;;1075   
-;;;1076   err_ret:
-;;;1077   	if (g_tModS.RspCode == RSP_OK)
+;;;1087    	}
+;;;1088   
+;;;1089   err_ret:
+;;;1090   	if (g_tModS.RspCode == RSP_OK)
 00002e  f89400a1          LDRB     r0,[r4,#0xa1]  ; g_tModS
 000032  b120              CBZ      r0,|L11.62|
                   |L11.52|
-;;;1078   	{
-;;;1079   		MODS_SendAckOk();
-;;;1080   	}
-;;;1081   	else
-;;;1082   	{
-;;;1083   		MODS_SendAckErr(g_tModS.RspCode);
+;;;1091   	{
+;;;1092   		MODS_SendAckOk();
+;;;1093   	}
+;;;1094   	else
+;;;1095   	{
+;;;1096   		MODS_SendAckErr(g_tModS.RspCode);
 000034  e8bd4010          POP      {r4,lr}
 000038  b2c0              UXTB     r0,r0
 00003a  f7ffbffe          B.W      MODS_SendAckErr
                   |L11.62|
-00003e  e8bd4010          POP      {r4,lr}               ;1079
+00003e  e8bd4010          POP      {r4,lr}               ;1092
 000042  f7ffbffe          B.W      MODS_SendAckOk
-;;;1084   	}
-;;;1085   }
-;;;1086   
+;;;1097   	}
+;;;1098   }
+;;;1099   
                           ENDP
 
 000046  0000              DCW      0x0000
@@ -606,193 +606,207 @@
                           AREA ||i.MODS_CDC||, CODE, READONLY, ALIGN=2
 
                   MODS_CDC PROC
-;;;755    
-;;;756    static uint8_t MODS_CDC(uint16_t reg_addr, uint16_t reg_value)
-000000  e92d41f0          PUSH     {r4-r8,lr}
-;;;757    {
-;;;758    
-;;;759    	switch (reg_addr)							
+;;;764    
+;;;765    static uint8_t MODS_CDC(uint16_t reg_addr, uint16_t reg_value)
+000000  e92d47f0          PUSH     {r4-r10,lr}
+;;;766    {
+;;;767    
+;;;768    	switch (reg_addr)							
 000004  2812              CMP      r0,#0x12
-000006  d242              BCS      |L12.142|
+000006  d24e              BCS      |L12.166|
 000008  e8dff000          TBB      [pc,r0]
-00000c  093e3e3e          DCB      0x09,0x3e,0x3e,0x3e
-000010  3e3e3e3e          DCB      0x3e,0x3e,0x3e,0x3e
-000014  3e3e3e3e          DCB      0x3e,0x3e,0x3e,0x3e
-000018  3e3e3e3e          DCB      0x3e,0x3e,0x3e,0x3e
-00001c  3e3e              DCB      0x3e,0x3e
-00001e  2500              MOVS     r5,#0
-000020  2401              MOVS     r4,#1                 ;757
-;;;760    	{	
-;;;761    		case SLAVE_REG_P00://寮�濮嬪仠姝㈢數婧?
-;;;762    			if(reg_value == 1)//寮�濮嬬數婧?
-;;;763    			{
-;;;764    				MODE = 5;
-;;;765    //				GPIO_SetBits(GPIOE,GPIO_Pin_2);
-;;;766    				Para.CSET_Voltage = Para.CDC_OutPut_V;
-;;;767    				Para.CSET_Current = Para.CDC_Limit_C;
-;;;768    				Para.CSET_Current_Laod = Para.CDC_Load_C;
-;;;769    				mainswitch = 1;
-000022  4e1c              LDR      r6,|L12.148|
-;;;770    				listsend = 1;
-000024  4f1c              LDR      r7,|L12.152|
-;;;771    //			    GPIO_SetBits(GPIOC,GPIO_Pin_1);
-;;;772    				rmtrig[2] = 1;
-000026  f8df8074          LDR      r8,|L12.156|
-00002a  2901              CMP      r1,#1                 ;762
-00002c  d002              BEQ      |L12.52|
-;;;773    				mode_sw = 0;
-;;;774    				sendmodeflag = 1;
-;;;775    				charge_step = 1;
-;;;776    				loop = 1;
-;;;777    				cdcswdelay = 5000;
-;;;778    			}else if(reg_value == 4){//鍋滄鐢垫簮
-00002e  2904              CMP      r1,#4
-000030  d01c              BEQ      |L12.108|
-000032  e029              B        |L12.136|
-                  |L12.52|
-000034  491a              LDR      r1,|L12.160|
-000036  2005              MOVS     r0,#5                 ;764
-000038  7008              STRB     r0,[r1,#0]            ;764
-00003a  481a              LDR      r0,|L12.164|
-00003c  6ec1              LDR      r1,[r0,#0x6c]         ;766  ; Para
-00003e  6081              STR      r1,[r0,#8]            ;766  ; Para
-000040  f8b01070          LDRH     r1,[r0,#0x70]         ;767  ; Para
-000044  60c1              STR      r1,[r0,#0xc]          ;767  ; Para
-000046  6fc1              LDR      r1,[r0,#0x7c]         ;768  ; Para
-000048  6141              STR      r1,[r0,#0x14]         ;768  ; Para
-00004a  7034              STRB     r4,[r6,#0]            ;769
-00004c  703c              STRB     r4,[r7,#0]            ;770
-00004e  4813              LDR      r0,|L12.156|
-000050  f8884002          STRB     r4,[r8,#2]            ;772
-000054  1ec0              SUBS     r0,r0,#3              ;773
-000056  7085              STRB     r5,[r0,#2]            ;773
-000058  7044              STRB     r4,[r0,#1]            ;774
-00005a  4813              LDR      r0,|L12.168|
-00005c  7004              STRB     r4,[r0,#0]            ;775
-00005e  4813              LDR      r0,|L12.172|
-000060  7004              STRB     r4,[r0,#0]            ;776
-000062  4913              LDR      r1,|L12.176|
-000064  f2413088          MOV      r0,#0x1388            ;777
-000068  8008              STRH     r0,[r1,#0]            ;777
-00006a  e00d              B        |L12.136|
-                  |L12.108|
-;;;779    				Off_GPOI_ResetSet();
-00006c  f7fffffe          BL       Off_GPOI_ResetSet
-;;;780    				mainswitch = 0;
-000070  7035              STRB     r5,[r6,#0]
-;;;781    				listsend = 1;
-000072  703c              STRB     r4,[r7,#0]
-;;;782    			    rmtrig[2] = 0;
-;;;783    				CDC_CsumMah = 0;
-000074  4810              LDR      r0,|L12.184|
-000076  ed9f0a0f          VLDR     s0,|L12.180|
-00007a  f8885002          STRB     r5,[r8,#2]            ;782
-00007e  ed800a00          VSTR     s0,[r0,#0]
-;;;784    				CDC_DCsumMah = 0;
-000082  480e              LDR      r0,|L12.188|
-000084  ed800a00          VSTR     s0,[r0,#0]
-                  |L12.136|
-;;;785    			}
-;;;786    			break;
-;;;787    		case SLAVE_REG_P01://
-;;;788    
-;;;789    			break;
-;;;790    		
-;;;791    		case SLAVE_REG_P02://
-;;;792    
-;;;793    			break;
-;;;794    		case SLAVE_REG_P03://
-;;;795    
-;;;796    			break;
-;;;797    
-;;;798    		case SLAVE_REG_P04://
-;;;799    
-;;;800    			break;
-;;;801    		case SLAVE_REG_P05://
-;;;802    
-;;;803    			break;
-;;;804    
-;;;805    		case SLAVE_REG_P06://
-;;;806    
-;;;807    			break;
-;;;808    		case SLAVE_REG_P07://
-;;;809    
-;;;810    			break;
-;;;811    		case SLAVE_REG_P08://
+00000c  094a4a4a          DCB      0x09,0x4a,0x4a,0x4a
+000010  4a4a4a4a          DCB      0x4a,0x4a,0x4a,0x4a
+000014  4a4a4a4a          DCB      0x4a,0x4a,0x4a,0x4a
+000018  4a4a4a4a          DCB      0x4a,0x4a,0x4a,0x4a
+00001c  4a4a              DCB      0x4a,0x4a
+00001e  2400              MOVS     r4,#0
+000020  2501              MOVS     r5,#1                 ;766
+;;;769    	{	
+;;;770    		case SLAVE_REG_P00://寮�濮嬪仠姝㈢數婧?
+;;;771    			if(reg_value == 1)//寮�濮嬬數婧?
+;;;772    			{
+;;;773    				MODE = 5;
+;;;774    //				GPIO_SetBits(GPIOE,GPIO_Pin_2);
+;;;775    				Para.CSET_Voltage = Para.CDC_OutPut_V;
+;;;776    				Para.CSET_Current = Para.CDC_Limit_C;
+;;;777    				Para.CSET_Current_Laod = Para.CDC_Load_C;
+;;;778    				mainswitch = 1;
+000022  4e22              LDR      r6,|L12.172|
+;;;779    				listsend = 1;
+000024  4f22              LDR      r7,|L12.176|
+;;;780    //			    GPIO_SetBits(GPIOC,GPIO_Pin_1);
+;;;781    				rmtrig[2] = 1;
+000026  f8df808c          LDR      r8,|L12.180|
+;;;782    				mode_sw = 0;
+;;;783    				sendmodeflag = 1;
+;;;784    				charge_step = 1;
+;;;785    				loop = 1;
+;;;786    				ctime = 0;
+00002a  f8df908c          LDR      r9,|L12.184|
+;;;787    				dctime = 0;
+00002e  f8dfa08c          LDR      r10,|L12.188|
+000032  2901              CMP      r1,#1                 ;771
+000034  d002              BEQ      |L12.60|
+;;;788    				cdcswdelay = 5000;
+;;;789    			}else if(reg_value == 4){//鍋滄鐢垫簮
+000036  2904              CMP      r1,#4
+000038  d020              BEQ      |L12.124|
+00003a  e031              B        |L12.160|
+                  |L12.60|
+00003c  4920              LDR      r1,|L12.192|
+00003e  2005              MOVS     r0,#5                 ;773
+000040  7008              STRB     r0,[r1,#0]            ;773
+000042  4820              LDR      r0,|L12.196|
+000044  6ec1              LDR      r1,[r0,#0x6c]         ;775  ; Para
+000046  6081              STR      r1,[r0,#8]            ;775  ; Para
+000048  f8b01070          LDRH     r1,[r0,#0x70]         ;776  ; Para
+00004c  60c1              STR      r1,[r0,#0xc]          ;776  ; Para
+00004e  6fc1              LDR      r1,[r0,#0x7c]         ;777  ; Para
+000050  6141              STR      r1,[r0,#0x14]         ;777  ; Para
+000052  7035              STRB     r5,[r6,#0]            ;778
+000054  703d              STRB     r5,[r7,#0]            ;779
+000056  4817              LDR      r0,|L12.180|
+000058  f8885002          STRB     r5,[r8,#2]            ;781
+00005c  1ec0              SUBS     r0,r0,#3              ;782
+00005e  7084              STRB     r4,[r0,#2]            ;782
+000060  7045              STRB     r5,[r0,#1]            ;783
+000062  4819              LDR      r0,|L12.200|
+000064  7005              STRB     r5,[r0,#0]            ;784
+000066  4819              LDR      r0,|L12.204|
+000068  7005              STRB     r5,[r0,#0]            ;785
+00006a  f8c94000          STR      r4,[r9,#0]            ;786  ; ctime
+00006e  f8ca4000          STR      r4,[r10,#0]           ;787  ; dctime
+000072  4917              LDR      r1,|L12.208|
+000074  f2413088          MOV      r0,#0x1388            ;788
+000078  8008              STRH     r0,[r1,#0]            ;788
+00007a  e011              B        |L12.160|
+                  |L12.124|
+;;;790    				Off_GPOI_ResetSet();
+00007c  f7fffffe          BL       Off_GPOI_ResetSet
+;;;791    				mainswitch = 0;
+000080  7034              STRB     r4,[r6,#0]
+;;;792    				listsend = 1;
+000082  703d              STRB     r5,[r7,#0]
+;;;793    			    rmtrig[2] = 0;
+;;;794    				CDC_CsumMah = 0;
+000084  4814              LDR      r0,|L12.216|
+000086  ed9f0a13          VLDR     s0,|L12.212|
+00008a  f8884002          STRB     r4,[r8,#2]            ;793
+00008e  ed800a00          VSTR     s0,[r0,#0]
+;;;795    				CDC_DCsumMah = 0;
+000092  4812              LDR      r0,|L12.220|
+000094  ed800a00          VSTR     s0,[r0,#0]
+;;;796    				ctime = 0;
+000098  f8c94000          STR      r4,[r9,#0]  ; ctime
+;;;797    				dctime = 0;
+00009c  f8ca4000          STR      r4,[r10,#0]  ; dctime
+                  |L12.160|
+;;;798    			}
+;;;799    			break;
+;;;800    		case SLAVE_REG_P01://
+;;;801    
+;;;802    			break;
+;;;803    		
+;;;804    		case SLAVE_REG_P02://
+;;;805    
+;;;806    			break;
+;;;807    		case SLAVE_REG_P03://
+;;;808    
+;;;809    			break;
+;;;810    
+;;;811    		case SLAVE_REG_P04://
 ;;;812    
 ;;;813    			break;
-;;;814    		case SLAVE_REG_P09:	//
+;;;814    		case SLAVE_REG_P05://
 ;;;815    
 ;;;816    			break;
-;;;817    		case SLAVE_REG_P10:	//
-;;;818    
-;;;819    			break;
-;;;820    
-;;;821    		case SLAVE_REG_P11://
+;;;817    
+;;;818    		case SLAVE_REG_P06://
+;;;819    
+;;;820    			break;
+;;;821    		case SLAVE_REG_P07://
 ;;;822    
 ;;;823    			break;
-;;;824    		case SLAVE_REG_P12:
-;;;825    			break;
-;;;826    
-;;;827    		case SLAVE_REG_P13:
-;;;828    			break;
-;;;829    		case SLAVE_REG_P14:
-;;;830    			break;
+;;;824    		case SLAVE_REG_P08://
+;;;825    
+;;;826    			break;
+;;;827    		case SLAVE_REG_P09:	//
+;;;828    
+;;;829    			break;
+;;;830    		case SLAVE_REG_P10:	//
 ;;;831    
-;;;832    		case SLAVE_REG_P15:
-;;;833    			break;
-;;;834    		case SLAVE_REG_P16:
-;;;835    			break;
-;;;836    
-;;;837    		case SLAVE_REG_P17:
+;;;832    			break;
+;;;833    
+;;;834    		case SLAVE_REG_P11://
+;;;835    
+;;;836    			break;
+;;;837    		case SLAVE_REG_P12:
 ;;;838    			break;
-;;;839    		default:
-;;;840    			return 0;
-;;;841    	}
-;;;842    
-;;;843    	return 1;
-000088  2001              MOVS     r0,#1
-                  |L12.138|
-;;;844    }
-00008a  e8bd81f0          POP      {r4-r8,pc}
-                  |L12.142|
-00008e  2000              MOVS     r0,#0                 ;840
-000090  e7fb              B        |L12.138|
-;;;845    
+;;;839    
+;;;840    		case SLAVE_REG_P13:
+;;;841    			break;
+;;;842    		case SLAVE_REG_P14:
+;;;843    			break;
+;;;844    
+;;;845    		case SLAVE_REG_P15:
+;;;846    			break;
+;;;847    		case SLAVE_REG_P16:
+;;;848    			break;
+;;;849    
+;;;850    		case SLAVE_REG_P17:
+;;;851    			break;
+;;;852    		default:
+;;;853    			return 0;
+;;;854    	}
+;;;855    
+;;;856    	return 1;
+0000a0  2001              MOVS     r0,#1
+                  |L12.162|
+;;;857    }
+0000a2  e8bd87f0          POP      {r4-r10,pc}
+                  |L12.166|
+0000a6  2000              MOVS     r0,#0                 ;853
+0000a8  e7fb              B        |L12.162|
+;;;858    
                           ENDP
 
-000092  0000              DCW      0x0000
-                  |L12.148|
-                          DCD      mainswitch
-                  |L12.152|
-                          DCD      listsend
-                  |L12.156|
-                          DCD      ||.data||+0x3
-                  |L12.160|
-                          DCD      MODE
-                  |L12.164|
-                          DCD      Para
-                  |L12.168|
-                          DCD      charge_step
+0000aa  0000              DCW      0x0000
                   |L12.172|
-                          DCD      loop
+                          DCD      mainswitch
                   |L12.176|
-                          DCD      cdcswdelay
+                          DCD      listsend
                   |L12.180|
-0000b4  00000000          DCFS     0x00000000 ; 0
+                          DCD      ||.data||+0x3
                   |L12.184|
-                          DCD      CDC_CsumMah
+                          DCD      ctime
                   |L12.188|
+                          DCD      dctime
+                  |L12.192|
+                          DCD      MODE
+                  |L12.196|
+                          DCD      Para
+                  |L12.200|
+                          DCD      charge_step
+                  |L12.204|
+                          DCD      loop
+                  |L12.208|
+                          DCD      cdcswdelay
+                  |L12.212|
+0000d4  00000000          DCFS     0x00000000 ; 0
+                  |L12.216|
+                          DCD      CDC_CsumMah
+                  |L12.220|
                           DCD      CDC_DCsumMah
 
                           AREA ||i.MODS_Load||, CODE, READONLY, ALIGN=2
 
                   MODS_Load PROC
-;;;598    
-;;;599    static uint8_t MODS_Load(uint16_t reg_addr, uint16_t reg_value)
+;;;607    
+;;;608    static uint8_t MODS_Load(uint16_t reg_addr, uint16_t reg_value)
 000000  b570              PUSH     {r4-r6,lr}
-;;;600    {
-;;;601    	switch (reg_addr)							
+;;;609    {
+;;;610    	switch (reg_addr)							
 000002  2812              CMP      r0,#0x12
 000004  d223              BCS      |L13.78|
 000006  e8dff000          TBB      [pc,r0]
@@ -802,106 +816,106 @@
 000014  20202020          DCB      0x20,0x20,0x20,0x20
 000018  20202020          DCB      0x20,0x20,0x20,0x20
 00001c  2400              MOVS     r4,#0
-;;;602    	{	
-;;;603    		case SLAVE_REG_P00://寮�濮嬪仠姝㈣礋杞?
-;;;604    			if(reg_value == 1)//寮�濮嬭礋杞?
-;;;605    			{
-;;;606    				MODE = 0;
+;;;611    	{	
+;;;612    		case SLAVE_REG_P00://寮�濮嬪仠姝㈣礋杞?
+;;;613    			if(reg_value == 1)//寮�濮嬭礋杞?
+;;;614    			{
+;;;615    				MODE = 0;
 00001e  480d              LDR      r0,|L13.84|
-;;;607    				MODE_PARASET(MODE);
-;;;608    				MODE_ONOFF(1);
-;;;609    				rmtrig[0] = 1;
+;;;616    				MODE_PARASET(MODE);
+;;;617    				MODE_ONOFF(1);
+;;;618    				rmtrig[0] = 1;
 000020  4d0d              LDR      r5,|L13.88|
-000022  2901              CMP      r1,#1                 ;604
+000022  2901              CMP      r1,#1                 ;613
 000024  d002              BEQ      |L13.44|
-;;;610    			}else if(reg_value == 4){//鍋滄璐熻浇
+;;;619    			}else if(reg_value == 4){//鍋滄璐熻浇
 000026  2904              CMP      r1,#4
 000028  d00a              BEQ      |L13.64|
 00002a  e00e              B        |L13.74|
                   |L13.44|
-00002c  7004              STRB     r4,[r0,#0]            ;606
-00002e  7800              LDRB     r0,[r0,#0]            ;607  ; MODE
+00002c  7004              STRB     r4,[r0,#0]            ;615
+00002e  7800              LDRB     r0,[r0,#0]            ;616  ; MODE
 000030  f7fffffe          BL       MODE_PARASET
-000034  2001              MOVS     r0,#1                 ;608
+000034  2001              MOVS     r0,#1                 ;617
 000036  f7fffffe          BL       MODE_ONOFF
-00003a  2001              MOVS     r0,#1                 ;609
-00003c  7028              STRB     r0,[r5,#0]            ;609
+00003a  2001              MOVS     r0,#1                 ;618
+00003c  7028              STRB     r0,[r5,#0]            ;618
 00003e  e004              B        |L13.74|
                   |L13.64|
-;;;611    				MODE = 0;
+;;;620    				MODE = 0;
 000040  7004              STRB     r4,[r0,#0]
-;;;612    				MODE_ONOFF(0);
+;;;621    				MODE_ONOFF(0);
 000042  2000              MOVS     r0,#0
 000044  f7fffffe          BL       MODE_ONOFF
-;;;613    				rmtrig[0] = 0;
+;;;622    				rmtrig[0] = 0;
 000048  702c              STRB     r4,[r5,#0]
                   |L13.74|
-;;;614    			}
-;;;615    			break;
-;;;616    		case SLAVE_REG_P01://
-;;;617    
-;;;618    			break;
-;;;619    		
-;;;620    		case SLAVE_REG_P02://
-;;;621    
-;;;622    			break;
-;;;623    		case SLAVE_REG_P03://
-;;;624    
-;;;625    			break;
+;;;623    			}
+;;;624    			break;
+;;;625    		case SLAVE_REG_P01://
 ;;;626    
-;;;627    		case SLAVE_REG_P04://
-;;;628    
-;;;629    			break;
-;;;630    		case SLAVE_REG_P05://
-;;;631    
-;;;632    			break;
+;;;627    			break;
+;;;628    		
+;;;629    		case SLAVE_REG_P02://
+;;;630    
+;;;631    			break;
+;;;632    		case SLAVE_REG_P03://
 ;;;633    
-;;;634    		case SLAVE_REG_P06://
+;;;634    			break;
 ;;;635    
-;;;636    			break;
-;;;637    		case SLAVE_REG_P07://
-;;;638    
-;;;639    			break;
-;;;640    		case SLAVE_REG_P08://
-;;;641    
-;;;642    			break;
-;;;643    		case SLAVE_REG_P09:	//
+;;;636    		case SLAVE_REG_P04://
+;;;637    
+;;;638    			break;
+;;;639    		case SLAVE_REG_P05://
+;;;640    
+;;;641    			break;
+;;;642    
+;;;643    		case SLAVE_REG_P06://
 ;;;644    
 ;;;645    			break;
-;;;646    		case SLAVE_REG_P10:	//
+;;;646    		case SLAVE_REG_P07://
 ;;;647    
 ;;;648    			break;
-;;;649    
-;;;650    		case SLAVE_REG_P11://
-;;;651    
-;;;652    			break;
-;;;653    		case SLAVE_REG_P12:
+;;;649    		case SLAVE_REG_P08://
+;;;650    
+;;;651    			break;
+;;;652    		case SLAVE_REG_P09:	//
+;;;653    
 ;;;654    			break;
-;;;655    
-;;;656    		case SLAVE_REG_P13:
+;;;655    		case SLAVE_REG_P10:	//
+;;;656    
 ;;;657    			break;
-;;;658    		case SLAVE_REG_P14:
-;;;659    			break;
+;;;658    
+;;;659    		case SLAVE_REG_P11://
 ;;;660    
-;;;661    		case SLAVE_REG_P15:
-;;;662    			break;
-;;;663    		case SLAVE_REG_P16:
-;;;664    			break;
-;;;665    
-;;;666    		case SLAVE_REG_P17:
-;;;667    			break;
-;;;668    		default:
-;;;669    			return 0;
-;;;670    	}
-;;;671    
-;;;672    	return 1;
+;;;661    			break;
+;;;662    		case SLAVE_REG_P12:
+;;;663    			break;
+;;;664    
+;;;665    		case SLAVE_REG_P13:
+;;;666    			break;
+;;;667    		case SLAVE_REG_P14:
+;;;668    			break;
+;;;669    
+;;;670    		case SLAVE_REG_P15:
+;;;671    			break;
+;;;672    		case SLAVE_REG_P16:
+;;;673    			break;
+;;;674    
+;;;675    		case SLAVE_REG_P17:
+;;;676    			break;
+;;;677    		default:
+;;;678    			return 0;
+;;;679    	}
+;;;680    
+;;;681    	return 1;
 00004a  2001              MOVS     r0,#1
-;;;673    }
+;;;682    }
 00004c  bd70              POP      {r4-r6,pc}
                   |L13.78|
-00004e  2000              MOVS     r0,#0                 ;669
+00004e  2000              MOVS     r0,#0                 ;678
 000050  bd70              POP      {r4-r6,pc}
-;;;674    
+;;;683    
                           ENDP
 
 000052  0000              DCW      0x0000
@@ -913,12 +927,12 @@
                           AREA ||i.MODS_Pow||, CODE, READONLY, ALIGN=2
 
                   MODS_Pow PROC
-;;;674    
-;;;675    static uint8_t MODS_Pow(uint16_t reg_addr, uint16_t reg_value)
+;;;683    
+;;;684    static uint8_t MODS_Pow(uint16_t reg_addr, uint16_t reg_value)
 000000  b570              PUSH     {r4-r6,lr}
-;;;676    {
-;;;677    
-;;;678    	switch (reg_addr)							
+;;;685    {
+;;;686    
+;;;687    	switch (reg_addr)							
 000002  2812              CMP      r0,#0x12
 000004  d224              BCS      |L14.80|
 000006  e8dff000          TBB      [pc,r0]
@@ -927,114 +941,114 @@
 000010  21212121          DCB      0x21,0x21,0x21,0x21
 000014  21212121          DCB      0x21,0x21,0x21,0x21
 000018  21212121          DCB      0x21,0x21,0x21,0x21
-00001c  2401              MOVS     r4,#1                 ;676
-;;;679    	{	
-;;;680    		case SLAVE_REG_P00://寮�濮嬪仠姝㈢數婧?
-;;;681    			if(reg_value == 1)//寮�濮嬬數婧?
-;;;682    			{
-;;;683    				MODE = 1;
+00001c  2401              MOVS     r4,#1                 ;685
+;;;688    	{	
+;;;689    		case SLAVE_REG_P00://寮�濮嬪仠姝㈢數婧?
+;;;690    			if(reg_value == 1)//寮�濮嬬數婧?
+;;;691    			{
+;;;692    				MODE = 1;
 00001e  480d              LDR      r0,|L14.84|
-;;;684    				Para.CSET_Voltage = Para.POWER_OutPut_V;
-;;;685    				Para.CSET_Current = Para.POWER_Limit_C;
-;;;686    				mainswitch = 1;
+;;;693    				Para.CSET_Voltage = Para.POWER_OutPut_V;
+;;;694    				Para.CSET_Current = Para.POWER_Limit_C;
+;;;695    				mainswitch = 1;
 000020  4a0d              LDR      r2,|L14.88|
-;;;687    				MODE_ONOFF(1);
-;;;688    				rmtrig[1] = 1;
+;;;696    				MODE_ONOFF(1);
+;;;697    				rmtrig[1] = 1;
 000022  4d0e              LDR      r5,|L14.92|
-000024  2901              CMP      r1,#1                 ;681
+000024  2901              CMP      r1,#1                 ;690
 000026  d002              BEQ      |L14.46|
-;;;689    					
-;;;690    			}else if(reg_value == 4){//鍋滄鐢垫簮
+;;;698    					
+;;;699    			}else if(reg_value == 4){//鍋滄鐢垫簮
 000028  2904              CMP      r1,#4
 00002a  d008              BEQ      |L14.62|
 00002c  e00e              B        |L14.76|
                   |L14.46|
-00002e  7004              STRB     r4,[r0,#0]            ;683
+00002e  7004              STRB     r4,[r0,#0]            ;692
 000030  480b              LDR      r0,|L14.96|
-000032  6d41              LDR      r1,[r0,#0x54]         ;684  ; Para
-000034  6081              STR      r1,[r0,#8]            ;684  ; Para
-000036  f8b01058          LDRH     r1,[r0,#0x58]         ;685  ; Para
-00003a  60c1              STR      r1,[r0,#0xc]          ;685  ; Para
+000032  6d41              LDR      r1,[r0,#0x54]         ;693  ; Para
+000034  6081              STR      r1,[r0,#8]            ;693  ; Para
+000036  f8b01058          LDRH     r1,[r0,#0x58]         ;694  ; Para
+00003a  60c1              STR      r1,[r0,#0xc]          ;694  ; Para
 00003c  e001              B        |L14.66|
                   |L14.62|
-;;;691    				MODE = 1;
+;;;700    				MODE = 1;
 00003e  7004              STRB     r4,[r0,#0]
-;;;692    				mainswitch = 0;
+;;;701    				mainswitch = 0;
 000040  2400              MOVS     r4,#0
                   |L14.66|
 000042  7014              STRB     r4,[r2,#0]
-;;;693    				MODE_ONOFF(1);
+;;;702    				MODE_ONOFF(1);
 000044  2001              MOVS     r0,#1
 000046  f7fffffe          BL       MODE_ONOFF
-;;;694    				rmtrig[1] = 0;
+;;;703    				rmtrig[1] = 0;
 00004a  706c              STRB     r4,[r5,#1]
                   |L14.76|
-;;;695    			}
-;;;696    			break;
-;;;697    		case SLAVE_REG_P01://
-;;;698    
-;;;699    			break;
-;;;700    		
-;;;701    		case SLAVE_REG_P02://
-;;;702    
-;;;703    			break;
-;;;704    		case SLAVE_REG_P03://
-;;;705    
-;;;706    			break;
+;;;704    			}
+;;;705    			break;
+;;;706    		case SLAVE_REG_P01://
 ;;;707    
-;;;708    		case SLAVE_REG_P04://
-;;;709    
-;;;710    			break;
-;;;711    		case SLAVE_REG_P05://
-;;;712    
-;;;713    			break;
+;;;708    			break;
+;;;709    		
+;;;710    		case SLAVE_REG_P02://
+;;;711    
+;;;712    			break;
+;;;713    		case SLAVE_REG_P03://
 ;;;714    
-;;;715    		case SLAVE_REG_P06://
+;;;715    			break;
 ;;;716    
-;;;717    			break;
-;;;718    		case SLAVE_REG_P07://
-;;;719    
-;;;720    			break;
-;;;721    		case SLAVE_REG_P08://
-;;;722    
-;;;723    			break;
-;;;724    		case SLAVE_REG_P09:	//
+;;;717    		case SLAVE_REG_P04://
+;;;718    
+;;;719    			break;
+;;;720    		case SLAVE_REG_P05://
+;;;721    
+;;;722    			break;
+;;;723    
+;;;724    		case SLAVE_REG_P06://
 ;;;725    
 ;;;726    			break;
-;;;727    		case SLAVE_REG_P10:	//
+;;;727    		case SLAVE_REG_P07://
 ;;;728    
 ;;;729    			break;
-;;;730    
-;;;731    		case SLAVE_REG_P11://
-;;;732    
-;;;733    			break;
-;;;734    		case SLAVE_REG_P12:
+;;;730    		case SLAVE_REG_P08://
+;;;731    
+;;;732    			break;
+;;;733    		case SLAVE_REG_P09:	//
+;;;734    
 ;;;735    			break;
-;;;736    
-;;;737    		case SLAVE_REG_P13:
+;;;736    		case SLAVE_REG_P10:	//
+;;;737    
 ;;;738    			break;
-;;;739    		case SLAVE_REG_P14:
-;;;740    			break;
+;;;739    
+;;;740    		case SLAVE_REG_P11://
 ;;;741    
-;;;742    		case SLAVE_REG_P15:
-;;;743    			break;
-;;;744    		case SLAVE_REG_P16:
-;;;745    			break;
-;;;746    
-;;;747    		case SLAVE_REG_P17:
-;;;748    			break;
-;;;749    		default:
-;;;750    			return 0;
-;;;751    	}
-;;;752    
-;;;753    	return 1;
+;;;742    			break;
+;;;743    		case SLAVE_REG_P12:
+;;;744    			break;
+;;;745    
+;;;746    		case SLAVE_REG_P13:
+;;;747    			break;
+;;;748    		case SLAVE_REG_P14:
+;;;749    			break;
+;;;750    
+;;;751    		case SLAVE_REG_P15:
+;;;752    			break;
+;;;753    		case SLAVE_REG_P16:
+;;;754    			break;
+;;;755    
+;;;756    		case SLAVE_REG_P17:
+;;;757    			break;
+;;;758    		default:
+;;;759    			return 0;
+;;;760    	}
+;;;761    
+;;;762    	return 1;
 00004c  2001              MOVS     r0,#1
-;;;754    }
+;;;763    }
 00004e  bd70              POP      {r4-r6,pc}
                   |L14.80|
-000050  2000              MOVS     r0,#0                 ;750
+000050  2000              MOVS     r0,#0                 ;759
 000052  bd70              POP      {r4-r6,pc}
-;;;755    
+;;;764    
                           ENDP
 
                   |L14.84|
@@ -1049,88 +1063,88 @@
                           AREA ||i.MODS_ReadRegValue||, CODE, READONLY, ALIGN=2
 
                   MODS_ReadRegValue PROC
-;;;414    */
-;;;415    static uint8_t MODS_ReadRegValue(uint16_t reg_addr, uint8_t *reg_value)
+;;;416    */
+;;;417    static uint8_t MODS_ReadRegValue(uint16_t reg_addr, uint8_t *reg_value)
 000000  b570              PUSH     {r4-r6,lr}
-;;;416    {
-;;;417        uint16_t value;
-;;;418    	switch (reg_addr)									/* 判断寄存器地址 */
-;;;419    	{
-;;;420            case SLAVE_REG_P00:
-;;;421    //			C_SW(1);
-;;;422    			v= DISS_Voltage;
+;;;418    {
+;;;419        uint16_t value;
+;;;420    	switch (reg_addr)									/* 判断寄存器地址 */
+;;;421    	{
+;;;422            case SLAVE_REG_P00:
+;;;423    //			C_SW(1);
+;;;424    			v= DISS_Voltage;
 000002  4a33              LDR      r2,|L15.208|
-000004  460d              MOV      r5,r1                 ;416
-000006  ed2d8b02          VPUSH    {d8}                  ;416
-00000a  2813              CMP      r0,#0x13              ;418
+000004  460d              MOV      r5,r1                 ;418
+000006  ed2d8b02          VPUSH    {d8}                  ;418
+00000a  2813              CMP      r0,#0x13              ;420
 00000c  4931              LDR      r1,|L15.212|
-;;;423    			value =	Para.CR_VLUE;	
+;;;425    			value =	Para.CR_VLUE;	
 00000e  4c32              LDR      r4,|L15.216|
-;;;424    			break;
-;;;425    		case SLAVE_REG_P01:
-;;;426                shortv = DISS_Voltage;
-;;;427    			value =	Para.CVoltage;	
-;;;428    			break;
-;;;429    
-;;;430    		case SLAVE_REG_P02:
-;;;431    			value =	(int)(DISS_Current*1000);       /* 将寄存器值读出 */
+;;;426    			break;
+;;;427    		case SLAVE_REG_P01:
+;;;428                shortv = DISS_Voltage;
+;;;429    			value =	Para.CVoltage;	
+;;;430    			break;
+;;;431    
+;;;432    		case SLAVE_REG_P02:
+;;;433    			value =	(int)(DISS_Current*1000);       /* 将寄存器值读出 */
 000010  ed9f8a32          VLDR     s16,|L15.220|
-000014  ed920a00          VLDR     s0,[r2,#0]            ;422
+000014  ed920a00          VLDR     s0,[r2,#0]            ;424
 000018  d257              BCS      |L15.202|
-00001a  e8dff000          TBB      [pc,r0]               ;418
+00001a  e8dff000          TBB      [pc,r0]               ;420
 00001e  0a0e              DCB      0x0a,0x0e
 000020  13151d1f          DCB      0x13,0x15,0x1d,0x1f
 000024  393b3d3f          DCB      0x39,0x3b,0x3d,0x3f
 000028  3d393939          DCB      0x3d,0x39,0x39,0x39
 00002c  4147494b          DCB      0x41,0x47,0x49,0x4b
 000030  4d00              DCB      0x4d,0x00
-000032  ed810a02          VSTR     s0,[r1,#8]            ;422
-000036  6ba0              LDR      r0,[r4,#0x38]         ;423  ; Para
+000032  ed810a02          VSTR     s0,[r1,#8]            ;424
+000036  6ba0              LDR      r0,[r4,#0x38]         ;425  ; Para
 000038  e002              B        |L15.64|
-00003a  ed810a03          VSTR     s0,[r1,#0xc]          ;426
-00003e  6ae0              LDR      r0,[r4,#0x2c]         ;427  ; Para
+00003a  ed810a03          VSTR     s0,[r1,#0xc]          ;428
+00003e  6ae0              LDR      r0,[r4,#0x2c]         ;429  ; Para
                   |L15.64|
-000040  b280              UXTH     r0,r0                 ;423
+000040  b280              UXTH     r0,r0                 ;425
 000042  e03b              B        |L15.188|
 000044  4826              LDR      r0,|L15.224|
-;;;432    			break;
+;;;434    			break;
 000046  e01a              B        |L15.126|
-;;;433    		case SLAVE_REG_P03: 
-;;;434    			value =	(int)(DISS_POW_Voltage*100);
+;;;435    		case SLAVE_REG_P03: 
+;;;436    			value =	(int)(DISS_POW_Voltage*100);
 000048  4826              LDR      r0,|L15.228|
 00004a  eddf0a27          VLDR     s1,|L15.232|
 00004e  ed900a00          VLDR     s0,[r0,#0]
 000052  ee200a20          VMUL.F32 s0,s0,s1
-;;;435    			break;
+;;;437    			break;
 000056  e016              B        |L15.134|
-;;;436    
-;;;437    		case SLAVE_REG_P04:
-;;;438    			value =	(int)(DISS_POW_Current*1000);		/* 将寄存器值读出 */
+;;;438    
+;;;439    		case SLAVE_REG_P04:
+;;;440    			value =	(int)(DISS_POW_Current*1000);		/* 将寄存器值读出 */
 000058  4824              LDR      r0,|L15.236|
-;;;439    			break;
+;;;441    			break;
 00005a  e010              B        |L15.126|
-;;;440    		case SLAVE_REG_P05:
-;;;441    			Off_GPOI_ResetSet();
+;;;442    		case SLAVE_REG_P05:
+;;;443    			Off_GPOI_ResetSet();
 00005c  f7fffffe          BL       Off_GPOI_ResetSet
-;;;442                Para.CSET_Current_Laod = 0;
+;;;444                Para.CSET_Current_Laod = 0;
 000060  2000              MOVS     r0,#0
 000062  6160              STR      r0,[r4,#0x14]  ; Para
-;;;443    			Para.IR_Step_C = 10;
+;;;445    			Para.IR_Step_C = 10;
 000064  200a              MOVS     r0,#0xa
 000066  f8a40048          STRH     r0,[r4,#0x48]
-;;;444    			mainswitch=1;
+;;;446    			mainswitch=1;
 00006a  4921              LDR      r1,|L15.240|
 00006c  2001              MOVS     r0,#1
 00006e  7008              STRB     r0,[r1,#0]
-;;;445    			MODE = 2;
+;;;447    			MODE = 2;
 000070  4920              LDR      r1,|L15.244|
 000072  2002              MOVS     r0,#2
 000074  7008              STRB     r0,[r1,#0]
-;;;446    			MODE_ONOFF(1);
+;;;448    			MODE_ONOFF(1);
 000076  2001              MOVS     r0,#1
 000078  f7fffffe          BL       MODE_ONOFF
-;;;447    //            while(usartocflag == 1);
-;;;448                value = (int)(max_discahrgeNum*1000);
+;;;449    //            while(usartocflag == 1);
+;;;450                value = (int)(max_discahrgeNum*1000);
 00007c  481e              LDR      r0,|L15.248|
                   |L15.126|
 00007e  ed900a00          VLDR     s0,[r0,#0]
@@ -1139,91 +1153,91 @@
 000086  eebd0ac0          VCVT.S32.F32 s0,s0
 00008a  ee100a10          VMOV     r0,s0
 00008e  e7d7              B        |L15.64|
-;;;449    			break;
-;;;450    		case SLAVE_REG_P06:
-;;;451    			value = 0;							/* 将寄存器值读出 */
+;;;451    			break;
+;;;452    		case SLAVE_REG_P06:
+;;;453    			value = 0;							/* 将寄存器值读出 */
 000090  2000              MOVS     r0,#0
-;;;452    			break;
+;;;454    			break;
 000092  e013              B        |L15.188|
-;;;453    		case SLAVE_REG_P07:
-;;;454    			value =	Para.CR1_VLUE;							/* 将寄存器值读出 */
+;;;455    		case SLAVE_REG_P07:
+;;;456    			value =	Para.CR1_VLUE;							/* 将寄存器值读出 */
 000094  6be0              LDR      r0,[r4,#0x3c]  ; Para
-;;;455    			break;
+;;;457    			break;
 000096  e7d3              B        |L15.64|
-;;;456    		case SLAVE_REG_P08:
-;;;457    			value =	8;	
+;;;458    		case SLAVE_REG_P08:
+;;;459    			value =	8;	
 000098  2008              MOVS     r0,#8
-;;;458    			break;
+;;;460    			break;
 00009a  e00f              B        |L15.188|
-;;;459    
-;;;460    		case SLAVE_REG_P09:
-;;;461    			value =	Para.CR2_VLUE;							/* 将寄存器值读出 */
+;;;461    
+;;;462    		case SLAVE_REG_P09:
+;;;463    			value =	Para.CR2_VLUE;							/* 将寄存器值读出 */
 00009c  6c20              LDR      r0,[r4,#0x40]  ; Para
-;;;462    			break;
+;;;464    			break;
 00009e  e7cf              B        |L15.64|
-;;;463    		case SLAVE_REG_P10:
-;;;464    			value =	8;	
-;;;465    			break;
-;;;466    
-;;;467    		case SLAVE_REG_P11:
-;;;468    			value =	0;							/* 将寄存器值读出 */
-;;;469    			break;
-;;;470    		case SLAVE_REG_P12:
-;;;471    			value =	0;	
-;;;472    			break;
-;;;473    
-;;;474    		case SLAVE_REG_P13:
-;;;475    			value =	0;							/* 将寄存器值读出 */
-;;;476    			break;
-;;;477    		case SLAVE_REG_P14:
-;;;478    			value =	!flag_Load_CC;	
+;;;465    		case SLAVE_REG_P10:
+;;;466    			value =	8;	
+;;;467    			break;
+;;;468    
+;;;469    		case SLAVE_REG_P11:
+;;;470    			value =	0;							/* 将寄存器值读出 */
+;;;471    			break;
+;;;472    		case SLAVE_REG_P12:
+;;;473    			value =	0;	
+;;;474    			break;
+;;;475    
+;;;476    		case SLAVE_REG_P13:
+;;;477    			value =	0;							/* 将寄存器值读出 */
+;;;478    			break;
+;;;479    		case SLAVE_REG_P14:
+;;;480    			value =	!flag_Load_CC;	
 0000a0  4816              LDR      r0,|L15.252|
 0000a2  7800              LDRB     r0,[r0,#0]  ; flagD
 0000a4  f34010c0          SBFX     r0,r0,#7,#1
 0000a8  1c40              ADDS     r0,r0,#1
-;;;479    			break;
+;;;481    			break;
 0000aa  e007              B        |L15.188|
-;;;480    
-;;;481    		case SLAVE_REG_P15:
-;;;482    			value =	Para.LOAD_V;							/* 将寄存器值读出 */
+;;;482    
+;;;483    		case SLAVE_REG_P15:
+;;;484    			value =	Para.LOAD_V;							/* 将寄存器值读出 */
 0000ac  6e20              LDR      r0,[r4,#0x60]  ; Para
-;;;483    			break;
+;;;485    			break;
 0000ae  e7c7              B        |L15.64|
-;;;484    		case SLAVE_REG_P16:
-;;;485    			value =	Para.LOAD_C;
+;;;486    		case SLAVE_REG_P16:
+;;;487    			value =	Para.LOAD_C;
 0000b0  6de0              LDR      r0,[r4,#0x5c]  ; Para
-;;;486    			break;
+;;;488    			break;
 0000b2  e7c5              B        |L15.64|
-;;;487    
-;;;488    		case SLAVE_REG_P17:
-;;;489    			value =	Para.POWER_OutPut_V;							/* 将寄存器值读出 */
+;;;489    
+;;;490    		case SLAVE_REG_P17:
+;;;491    			value =	Para.POWER_OutPut_V;							/* 将寄存器值读出 */
 0000b4  6d60              LDR      r0,[r4,#0x54]  ; Para
-;;;490    			break;
+;;;492    			break;
 0000b6  e7c3              B        |L15.64|
-;;;491    		case SLAVE_REG_P18:
-;;;492    			value =	Para.POWER_Limit_C;							/* 将寄存器值读出 */
+;;;493    		case SLAVE_REG_P18:
+;;;494    			value =	Para.POWER_Limit_C;							/* 将寄存器值读出 */
 0000b8  f8b40058          LDRH     r0,[r4,#0x58]  ; Para
                   |L15.188|
-;;;493    			break;	
-;;;494    		default:
-;;;495    			return 0;
-;;;496        }
-;;;497    	reg_value[0] = value >> 8;
+;;;495    			break;	
+;;;496    		default:
+;;;497    			return 0;
+;;;498        }
+;;;499    	reg_value[0] = value >> 8;
 0000bc  0a01              LSRS     r1,r0,#8
 0000be  7029              STRB     r1,[r5,#0]
-;;;498    	reg_value[1] = value;
+;;;500    	reg_value[1] = value;
 0000c0  7068              STRB     r0,[r5,#1]
-;;;499    
-;;;500    	return 1;											/* 读取成功 */
+;;;501    
+;;;502    	return 1;											/* 读取成功 */
 0000c2  2001              MOVS     r0,#1
                   |L15.196|
-;;;501    }
+;;;503    }
 0000c4  ecbd8b02          VPOP     {d8}
 0000c8  bd70              POP      {r4-r6,pc}
                   |L15.202|
-0000ca  2000              MOVS     r0,#0                 ;495
+0000ca  2000              MOVS     r0,#0                 ;497
 0000cc  e7fa              B        |L15.196|
-;;;502    
+;;;504    
                           ENDP
 
 0000ce  0000              DCW      0x0000
@@ -1255,30 +1269,30 @@
                           AREA ||i.MODS_SendAckErr||, CODE, READONLY, ALIGN=2
 
                   MODS_SendAckErr PROC
-;;;207    */
-;;;208    static void MODS_SendAckErr(uint8_t _ucErrCode)
+;;;209    */
+;;;210    static void MODS_SendAckErr(uint8_t _ucErrCode)
 000000  4908              LDR      r1,|L16.36|
-;;;209    {
+;;;211    {
 000002  b508              PUSH     {r3,lr}
-;;;210    	uint8_t txbuf[3];
-;;;211    
-;;;212    	txbuf[0] = g_tModS.RxBuf[0];					/* 485地址 */
+;;;212    	uint8_t txbuf[3];
+;;;213    
+;;;214    	txbuf[0] = g_tModS.RxBuf[0];					/* 485地址 */
 000004  780a              LDRB     r2,[r1,#0]  ; g_tModS
 000006  f88d2000          STRB     r2,[sp,#0]
-;;;213    	txbuf[1] = g_tModS.RxBuf[1] | 0x80;				/* 异常的功能码 */
+;;;215    	txbuf[1] = g_tModS.RxBuf[1] | 0x80;				/* 异常的功能码 */
 00000a  7849              LDRB     r1,[r1,#1]  ; g_tModS
 00000c  f0410180          ORR      r1,r1,#0x80
 000010  f88d1001          STRB     r1,[sp,#1]
-;;;214    	txbuf[2] = _ucErrCode;							/* 错误代码(01,02,03,04) */
+;;;216    	txbuf[2] = _ucErrCode;							/* 错误代码(01,02,03,04) */
 000014  f88d0002          STRB     r0,[sp,#2]
-;;;215    
-;;;216    	MODS_SendWithCRC(txbuf, 3);
+;;;217    
+;;;218    	MODS_SendWithCRC(txbuf, 3);
 000018  2103              MOVS     r1,#3
 00001a  4668              MOV      r0,sp
 00001c  f7fffffe          BL       MODS_SendWithCRC
-;;;217    }
+;;;219    }
 000020  bd08              POP      {r3,pc}
-;;;218    
+;;;220    
                           ENDP
 
 000022  0000              DCW      0x0000
@@ -1288,34 +1302,34 @@
                           AREA ||i.MODS_SendAckOk||, CODE, READONLY, ALIGN=2
 
                   MODS_SendAckOk PROC
-;;;227    */
-;;;228    static void MODS_SendAckOk(void)
+;;;229    */
+;;;230    static void MODS_SendAckOk(void)
 000000  b51c              PUSH     {r2-r4,lr}
-;;;229    {
-;;;230    	uint8_t txbuf[6];
-;;;231    	uint8_t i;
-;;;232    
-;;;233    	for (i = 0; i < 6; i++)
-;;;234    	{
-;;;235    		txbuf[i] = g_tModS.RxBuf[i];
+;;;231    {
+;;;232    	uint8_t txbuf[6];
+;;;233    	uint8_t i;
+;;;234    
+;;;235    	for (i = 0; i < 6; i++)
+;;;236    	{
+;;;237    		txbuf[i] = g_tModS.RxBuf[i];
 000002  4a07              LDR      r2,|L17.32|
-000004  2000              MOVS     r0,#0                 ;233
-000006  4669              MOV      r1,sp                 ;230
+000004  2000              MOVS     r0,#0                 ;235
+000006  4669              MOV      r1,sp                 ;232
                   |L17.8|
 000008  5c13              LDRB     r3,[r2,r0]
 00000a  540b              STRB     r3,[r1,r0]
 00000c  1c40              ADDS     r0,r0,#1
-00000e  b2c0              UXTB     r0,r0                 ;233
-000010  2806              CMP      r0,#6                 ;233
+00000e  b2c0              UXTB     r0,r0                 ;235
+000010  2806              CMP      r0,#6                 ;235
 000012  d3f9              BCC      |L17.8|
-;;;236    	}
-;;;237    	MODS_SendWithCRC(txbuf, 6);
+;;;238    	}
+;;;239    	MODS_SendWithCRC(txbuf, 6);
 000014  2106              MOVS     r1,#6
 000016  4668              MOV      r0,sp
 000018  f7fffffe          BL       MODS_SendWithCRC
-;;;238    }
+;;;240    }
 00001c  bd1c              POP      {r2-r4,pc}
-;;;239    
+;;;241    
                           ENDP
 
 00001e  0000              DCW      0x0000
@@ -1325,41 +1339,41 @@
                           AREA ||i.MODS_SendWithCRC||, CODE, READONLY, ALIGN=2
 
                   MODS_SendWithCRC PROC
-;;;905    
-;;;906    void MODS_SendWithCRC(uint8_t *_pBuf, uint8_t _ucLen)
+;;;918    
+;;;919    void MODS_SendWithCRC(uint8_t *_pBuf, uint8_t _ucLen)
 000000  b5f0              PUSH     {r4-r7,lr}
-;;;907    {
+;;;920    {
 000002  460c              MOV      r4,r1
-;;;908    	uint16_t crc;
-;;;909    	uint8_t i;
-;;;910    	uint8_t buf[S_TX_BUF_SIZE];
-;;;911    	memcpy(buf, _pBuf, _ucLen);
+;;;921    	uint16_t crc;
+;;;922    	uint8_t i;
+;;;923    	uint8_t buf[S_TX_BUF_SIZE];
+;;;924    	memcpy(buf, _pBuf, _ucLen);
 000004  460a              MOV      r2,r1
-000006  b0a1              SUB      sp,sp,#0x84           ;907
-000008  4605              MOV      r5,r0                 ;907
+000006  b0a1              SUB      sp,sp,#0x84           ;920
+000008  4605              MOV      r5,r0                 ;920
 00000a  4601              MOV      r1,r0
 00000c  4668              MOV      r0,sp
 00000e  f7fffffe          BL       __aeabi_memcpy
-;;;912    	crc = CRC16(_pBuf, _ucLen);
+;;;925    	crc = CRC16(_pBuf, _ucLen);
 000012  4621              MOV      r1,r4
 000014  4628              MOV      r0,r5
 000016  f7fffffe          BL       CRC16
-;;;913    	buf[_ucLen++] = crc >> 8;
+;;;926    	buf[_ucLen++] = crc >> 8;
 00001a  0a01              LSRS     r1,r0,#8
 00001c  f80d1004          STRB     r1,[sp,r4]
 000020  1c64              ADDS     r4,r4,#1
 000022  b2e1              UXTB     r1,r4
 000024  466d              MOV      r5,sp
-;;;914    	buf[_ucLen++] = crc;
+;;;927    	buf[_ucLen++] = crc;
 000026  f80d0001          STRB     r0,[sp,r1]
 00002a  1c49              ADDS     r1,r1,#1
 00002c  b2ce              UXTB     r6,r1
-;;;915    //通过485发数据
-;;;916    //	RS485_SendBuf(buf, _ucLen);
-;;;917    	for(i=0;i<_ucLen;i++)
+;;;928    //通过485发数据
+;;;929    //	RS485_SendBuf(buf, _ucLen);
+;;;930    	for(i=0;i<_ucLen;i++)
 00002e  2400              MOVS     r4,#0
-;;;918    	{
-;;;919    		Usart_SendByte(USART1,buf[i]);
+;;;931    	{
+;;;932    		Usart_SendByte(USART1,buf[i]);
 000030  4f05              LDR      r7,|L18.72|
 000032  e005              B        |L18.64|
                   |L18.52|
@@ -1367,21 +1381,21 @@
 000036  4638              MOV      r0,r7
 000038  f7fffffe          BL       Usart_SendByte
 00003c  1c64              ADDS     r4,r4,#1
-00003e  b2e4              UXTB     r4,r4                 ;917
+00003e  b2e4              UXTB     r4,r4                 ;930
                   |L18.64|
-000040  42b4              CMP      r4,r6                 ;917
+000040  42b4              CMP      r4,r6                 ;930
 000042  d3f7              BCC      |L18.52|
-;;;920    	}
-;;;921    //	uart1SendChars(buf, _ucLen);
-;;;922    	
-;;;923    // #if 1									/* 此部分为了串口打印结果,实际运用中可不要 */
-;;;924    // 	g_tPrint.Txlen = _ucLen;
-;;;925    // 	memcpy(g_tPrint.TxBuf, buf, _ucLen);
-;;;926    // #endif
-;;;927    }
+;;;933    	}
+;;;934    //	uart1SendChars(buf, _ucLen);
+;;;935    	
+;;;936    // #if 1									/* 此部分为了串口打印结果,实际运用中可不要 */
+;;;937    // 	g_tPrint.Txlen = _ucLen;
+;;;938    // 	memcpy(g_tPrint.TxBuf, buf, _ucLen);
+;;;939    // #endif
+;;;940    }
 000044  b021              ADD      sp,sp,#0x84
 000046  bdf0              POP      {r4-r7,pc}
-;;;928    
+;;;941    
                           ENDP
 
                   |L18.72|
@@ -1390,203 +1404,217 @@
                           AREA ||i.MODS_WriteRegValue||, CODE, READONLY, ALIGN=2
 
                   MODS_WriteRegValue PROC
-;;;511    */
-;;;512    static uint8_t MODS_WriteRegValue(uint16_t reg_addr, uint16_t reg_value)
-000000  eb010381          ADD      r3,r1,r1,LSL #2
-;;;513    {
-000004  b510              PUSH     {r4,lr}
-;;;514    
-;;;515    	switch (reg_addr)							/* 判断寄存器地址 */
-;;;516    	{	
-;;;517    		case SLAVE_REG_P00://璐熻浇妯″紡
-;;;518    //			if(reg_value == 0)
-;;;519    //			{
-;;;520    //				LOAD_MODE = 0;
-;;;521    //			}else if(reg_value == 1){
-;;;522    //				LOAD_MODE = 1;
-;;;523    //			}else if(reg_value == 2){
-;;;524    //				LOAD_MODE = 2;
-;;;525    //			}
-;;;526    			Para.CLOAD_MODE=reg_value;
-000006  4a19              LDR      r2,|L19.108|
-;;;527    			break;
-;;;528    		case SLAVE_REG_P01://璐熻浇鐢靛帇
-;;;529    			Para.LOAD_V = reg_value;
-;;;530    
-;;;531    			break;
-;;;532    		
-;;;533    		case SLAVE_REG_P02://璐熻浇鐢垫祦
-;;;534    			Para.LOAD_C = reg_value;
-;;;535    			break;
-;;;536    		case SLAVE_REG_P03://杈撳嚭鐢靛帇
-;;;537    			Para.POWER_OutPut_V = reg_value*10;
-000008  005b              LSLS     r3,r3,#1
-00000a  2813              CMP      r0,#0x13              ;515
-00000c  d22b              BCS      |L19.102|
-00000e  e8dff000          TBB      [pc,r0]               ;515
-000012  0a0c              DCB      0x0a,0x0c
-000014  0e101215          DCB      0x0e,0x10,0x12,0x15
-000018  171a1c1f          DCB      0x17,0x1a,0x1c,0x1f
-00001c  21242828          DCB      0x21,0x24,0x28,0x28
-000020  28282828          DCB      0x28,0x28,0x28,0x28
-000024  2700              DCB      0x27,0x00
-000026  6191              STR      r1,[r2,#0x18]         ;526  ; Para
-000028  e01b              B        |L19.98|
-00002a  6611              STR      r1,[r2,#0x60]         ;529  ; Para
-00002c  e019              B        |L19.98|
-00002e  65d1              STR      r1,[r2,#0x5c]         ;534  ; Para
-000030  e017              B        |L19.98|
-000032  6553              STR      r3,[r2,#0x54]  ; Para
-;;;538    			break;
-000034  e015              B        |L19.98|
-;;;539    
-;;;540    		case SLAVE_REG_P04://闄愬埗鐢垫祦
-;;;541    			Para.POWER_Limit_C = reg_value;
-000036  f8a21058          STRH     r1,[r2,#0x58]
-;;;542    
-;;;543    			break;
-00003a  e012              B        |L19.98|
-;;;544    		case SLAVE_REG_P05://鍏呮斁鐢佃緭鍑虹數鍘?
-;;;545    			Para.CDC_OutPut_V = reg_value*10;
-00003c  66d3              STR      r3,[r2,#0x6c]  ; Para
-;;;546    
-;;;547    			break;
-00003e  e010              B        |L19.98|
+;;;513    */
+;;;514    static uint8_t MODS_WriteRegValue(uint16_t reg_addr, uint16_t reg_value)
+000000  b530              PUSH     {r4,r5,lr}
+;;;515    {
+;;;516    
+;;;517    	switch (reg_addr)							/* 判断寄存器地址 */
+;;;518    	{	
+;;;519    		case SLAVE_REG_P00://璐熻浇妯″紡
+;;;520    //			if(reg_value == 0)
+;;;521    //			{
+;;;522    //				LOAD_MODE = 0;
+;;;523    //			}else if(reg_value == 1){
+;;;524    //				LOAD_MODE = 1;
+;;;525    //			}else if(reg_value == 2){
+;;;526    //				LOAD_MODE = 2;
+;;;527    //			}
+;;;528    			Para.CLOAD_MODE=reg_value;
+;;;529    			break;
+;;;530    		case SLAVE_REG_P01://璐熻浇鐢靛帇
+;;;531    			Para.LOAD_V = reg_value;
+;;;532    
+;;;533    			break;
+;;;534    		
+;;;535    		case SLAVE_REG_P02://璐熻浇鐢垫祦
+;;;536    			Para.LOAD_C = reg_value;
+;;;537    			break;
+;;;538    		case SLAVE_REG_P03://杈撳嚭鐢靛帇
+;;;539    			Para.POWER_OutPut_V = reg_value*10;
+000002  eb010381          ADD      r3,r1,r1,LSL #2
+;;;540    			break;
+;;;541    
+;;;542    		case SLAVE_REG_P04://闄愬埗鐢垫祦
+;;;543    			Para.POWER_Limit_C = reg_value;
+;;;544    
+;;;545    			break;
+;;;546    		case SLAVE_REG_P05://鍏呮斁鐢佃緭鍑虹數鍘?
+;;;547    			Para.CDC_OutPut_V = reg_value*10;
 ;;;548    
-;;;549    		case SLAVE_REG_P06://鍏呮斁闄愬埗鐢垫祦
-;;;550    			Para.CDC_Limit_C = reg_value;
-000040  f8a21070          STRH     r1,[r2,#0x70]
-;;;551    
-;;;552    			break;
-000044  e00d              B        |L19.98|
-;;;553    		case SLAVE_REG_P07://鍏呯數鎴鐢靛帇
-;;;554    			Para.CDC_Ccutoff_V = reg_value*10;
-000046  6753              STR      r3,[r2,#0x74]  ; Para
-;;;555    			break;
-000048  e00b              B        |L19.98|
-;;;556    		case SLAVE_REG_P08://鍏呯數鎴鐢垫祦
-;;;557    			Para.CDC_Ccutoff_C = reg_value;
-00004a  f8a21078          STRH     r1,[r2,#0x78]
-;;;558    
-;;;559    			break;
-00004e  e008              B        |L19.98|
-;;;560    		case SLAVE_REG_P09:	//鍏呮斁鐢佃礋杞界數娴?
-;;;561    			Para.CDC_Load_C = reg_value;
-000050  67d1              STR      r1,[r2,#0x7c]  ; Para
-;;;562    
-;;;563    			break;
-000052  e006              B        |L19.98|
-;;;564    		case SLAVE_REG_P10:	//鏀剧數鎴鐢靛帇
-;;;565    			Para.CDC_Dcutoff_V = reg_value;
-000054  f8c21080          STR      r1,[r2,#0x80]  ; Para
-;;;566    
-;;;567    			break;
-000058  e003              B        |L19.98|
+;;;549    			break;
+;;;550    
+;;;551    		case SLAVE_REG_P06://鍏呮斁闄愬埗鐢垫祦
+;;;552    			Para.CDC_Limit_C = reg_value;
+;;;553    
+;;;554    			break;
+;;;555    		case SLAVE_REG_P07://鍏呯數鎴鐢靛帇
+;;;556    			Para.CDC_Ccutoff_V = reg_value*10;
+;;;557    			break;
+;;;558    		case SLAVE_REG_P08://鍏呯數鎴鐢垫祦
+;;;559    			Para.CDC_Ccutoff_C = reg_value;
+;;;560    
+;;;561    			break;
+;;;562    		case SLAVE_REG_P09:	//鍏呮斁鐢佃礋杞界數娴?
+;;;563    			Para.CDC_Load_C = reg_value;
+;;;564    
+;;;565    			break;
+;;;566    		case SLAVE_REG_P10:	//鏀剧數鎴鐢靛帇
+;;;567    			Para.CDC_Dcutoff_V = reg_value;
 ;;;568    
-;;;569    		case SLAVE_REG_P11://寰幆娆℃暟
-;;;570    			Para.CDC_Cycle_Time = reg_value;
-00005a  f8821084          STRB     r1,[r2,#0x84]
-;;;571    
-;;;572    			break;
-00005e  e000              B        |L19.98|
-;;;573    		case SLAVE_REG_P12:
-;;;574    //			Para.LOAD_P = reg_value * 10;
-;;;575    			break;
-;;;576    
-;;;577    		case SLAVE_REG_P13:
-;;;578    			break;
-;;;579    		case SLAVE_REG_P14:
+;;;569    			break;
+;;;570    
+;;;571    		case SLAVE_REG_P11://寰幆娆℃暟
+;;;572    			Para.CDC_Cycle_Time = reg_value;
+;;;573    
+;;;574    			break;
+;;;575    		case SLAVE_REG_P12:
+;;;576    //			Para.LOAD_P = reg_value * 10;
+;;;577    			break;
+;;;578    
+;;;579    		case SLAVE_REG_P13:
 ;;;580    			break;
-;;;581    
-;;;582    		case SLAVE_REG_P15:
+;;;581    		case SLAVE_REG_P14://搁置时间
+;;;582    			Para.CDC_Gap_Time = reg_value;
 ;;;583    			break;
-;;;584    		case SLAVE_REG_P16:
-;;;585    			break;
-;;;586    
-;;;587    		case SLAVE_REG_P17:
+;;;584    
+;;;585    		case SLAVE_REG_P15:
+;;;586    			break;
+;;;587    		case SLAVE_REG_P16:
 ;;;588    			break;
-;;;589    		case SLAVE_REG_P18:
-;;;590    			Para.LOAD_P = reg_value * 10;
-000060  6653              STR      r3,[r2,#0x64]  ; Para
-                  |L19.98|
+;;;589    
+;;;590    		case SLAVE_REG_P17:
 ;;;591    			break;
-;;;592    		default:
-;;;593    			return 0;
-;;;594    	}
-;;;595    
-;;;596    	return 1;
-000062  2001              MOVS     r0,#1
-;;;597    }
-000064  bd10              POP      {r4,pc}
-                  |L19.102|
-000066  2000              MOVS     r0,#0                 ;593
-000068  bd10              POP      {r4,pc}
-;;;598    
+;;;592    		case SLAVE_REG_P18:
+;;;593    			Para.LOAD_P = reg_value * 10;
+;;;594    			break;
+;;;595    		case SLAVE_REG_P19:
+;;;596    			Para.CaPCTIME = reg_value*6;//转换为s
+000006  eb010441          ADD      r4,r1,r1,LSL #1
+00000a  4a1e              LDR      r2,|L19.132|
+00000c  005b              LSLS     r3,r3,#1              ;539
+00000e  0064              LSLS     r4,r4,#1
+000010  2815              CMP      r0,#0x15              ;517
+000012  d235              BCS      |L19.128|
+000014  e8dff000          TBB      [pc,r0]               ;517
+000018  0b0d0f11          DCB      0x0b,0x0d,0x0f,0x11
+00001c  1316181b          DCB      0x13,0x16,0x18,0x1b
+000020  1d202225          DCB      0x1d,0x20,0x22,0x25
+000024  32322832          DCB      0x32,0x32,0x28,0x32
+000028  32322b2d          DCB      0x32,0x32,0x2b,0x2d
+00002c  3000              DCB      0x30,0x00
+00002e  6191              STR      r1,[r2,#0x18]         ;528  ; Para
+000030  e024              B        |L19.124|
+000032  6611              STR      r1,[r2,#0x60]         ;531  ; Para
+000034  e022              B        |L19.124|
+000036  65d1              STR      r1,[r2,#0x5c]         ;536  ; Para
+000038  e020              B        |L19.124|
+00003a  6553              STR      r3,[r2,#0x54]         ;539  ; Para
+00003c  e01e              B        |L19.124|
+00003e  f8a21058          STRH     r1,[r2,#0x58]         ;543
+000042  e01b              B        |L19.124|
+000044  66d3              STR      r3,[r2,#0x6c]         ;547  ; Para
+000046  e019              B        |L19.124|
+000048  f8a21070          STRH     r1,[r2,#0x70]         ;552
+00004c  e016              B        |L19.124|
+00004e  6753              STR      r3,[r2,#0x74]         ;556  ; Para
+000050  e014              B        |L19.124|
+000052  f8a21078          STRH     r1,[r2,#0x78]         ;559
+000056  e011              B        |L19.124|
+000058  67d1              STR      r1,[r2,#0x7c]         ;563  ; Para
+00005a  e00f              B        |L19.124|
+00005c  f8c21080          STR      r1,[r2,#0x80]         ;567  ; Para
+000060  e00c              B        |L19.124|
+000062  f8821084          STRB     r1,[r2,#0x84]         ;572
+000066  e009              B        |L19.124|
+000068  f8a21086          STRH     r1,[r2,#0x86]         ;582
+00006c  e006              B        |L19.124|
+00006e  6653              STR      r3,[r2,#0x64]         ;593  ; Para
+000070  e004              B        |L19.124|
+000072  f8c240a8          STR      r4,[r2,#0xa8]  ; Para
+;;;597    			break;
+000076  e001              B        |L19.124|
+;;;598    		case SLAVE_REG_P20:
+;;;599    			Para.CaPDCTIME = reg_value*6;//转换为s
+000078  f8c240ac          STR      r4,[r2,#0xac]  ; Para
+                  |L19.124|
+;;;600    			break;
+;;;601    		default:
+;;;602    			return 0;
+;;;603    	}
+;;;604    
+;;;605    	return 1;
+00007c  2001              MOVS     r0,#1
+;;;606    }
+00007e  bd30              POP      {r4,r5,pc}
+                  |L19.128|
+000080  2000              MOVS     r0,#0                 ;602
+000082  bd30              POP      {r4,r5,pc}
+;;;607    
                           ENDP
 
-00006a  0000              DCW      0x0000
-                  |L19.108|
+                  |L19.132|
                           DCD      Para
 
                           AREA ||i.MemManage_Handler||, CODE, READONLY, ALIGN=1
 
                   MemManage_Handler PROC
                   |L20.0|
-;;;104      */
-;;;105    void MemManage_Handler(void)
+;;;106      */
+;;;107    void MemManage_Handler(void)
 000000  e7fe              B        |L20.0|
-;;;106    {
-;;;107      /* Go to infinite loop when Memory Manage exception occurs */
-;;;108      while (1)
-;;;109      {
-;;;110      }
-;;;111    }
-;;;112    
+;;;108    {
+;;;109      /* Go to infinite loop when Memory Manage exception occurs */
+;;;110      while (1)
+;;;111      {
+;;;112      }
+;;;113    }
+;;;114    
                           ENDP
 
 
                           AREA ||i.NMI_Handler||, CODE, READONLY, ALIGN=1
 
                   NMI_Handler PROC
-;;;82       */
-;;;83     void NMI_Handler(void)
+;;;84       */
+;;;85     void NMI_Handler(void)
 000000  4770              BX       lr
-;;;84     {
-;;;85     }
-;;;86     
+;;;86     {
+;;;87     }
+;;;88     
                           ENDP
 
 
                           AREA ||i.PendSV_Handler||, CODE, READONLY, ALIGN=1
 
                   PendSV_Handler PROC
-;;;161      */
-;;;162    void PendSV_Handler(void)
+;;;163      */
+;;;164    void PendSV_Handler(void)
 000000  4770              BX       lr
-;;;163    {
-;;;164    }
-;;;165    
+;;;165    {
+;;;166    }
+;;;167    
                           ENDP
 
 
                           AREA ||i.RecHandle||, CODE, READONLY, ALIGN=2
 
                   RecHandle PROC
-;;;369    
-;;;370    void RecHandle(void)
+;;;371    
+;;;372    void RecHandle(void)
 000000  490d              LDR      r1,|L23.56|
-;;;371    {
-;;;372        u8 crec[6];
-;;;373        u8 *csend;
-;;;374        static u8 *sendbuf;
-;;;375        u8 sendlen;
-;;;376        static u16 recrc;
-;;;377        static u16 scrc;
-;;;378        u8 i;
-;;;379        lockflag = 1;
+;;;373    {
+;;;374        u8 crec[6];
+;;;375        u8 *csend;
+;;;376        static u8 *sendbuf;
+;;;377        u8 sendlen;
+;;;378        static u16 recrc;
+;;;379        static u16 scrc;
+;;;380        u8 i;
+;;;381        lockflag = 1;
 000002  2001              MOVS     r0,#1
 000004  7008              STRB     r0,[r1,#0]
-;;;380        switch(g_tModS.RxBuf[1])
+;;;382        switch(g_tModS.RxBuf[1])
 000006  480d              LDR      r0,|L23.60|
 000008  7840              LDRB     r0,[r0,#1]  ; g_tModS
 00000a  2850              CMP      r0,#0x50
@@ -1596,32 +1624,32 @@
 000012  d009              BEQ      |L23.40|
 000014  2806              CMP      r0,#6
 000016  d10d              BNE      |L23.52|
-;;;381        {
-;;;382            case 0x03:
-;;;383            {
-;;;384                MODS_03H();
-;;;385            }break;
-;;;386            case 0x06:
-;;;387            {
-;;;388                MODS_06H();
+;;;383        {
+;;;384            case 0x03:
+;;;385            {
+;;;386                MODS_03H();
+;;;387            }break;
+;;;388            case 0x06:
+;;;389            {
+;;;390                MODS_06H();
 000018  f7ffbffe          B.W      MODS_06H
                   |L23.28|
-00001c  2851              CMP      r0,#0x51              ;380
+00001c  2851              CMP      r0,#0x51              ;382
 00001e  d007              BEQ      |L23.48|
-000020  2852              CMP      r0,#0x52              ;380
+000020  2852              CMP      r0,#0x52              ;382
 000022  d107              BNE      |L23.52|
-;;;389            }break;
-;;;390    		case 0x50:
-;;;391            {
-;;;392                MODS_50H();
-;;;393            }break;
-;;;394    		case 0x51:
-;;;395            {
-;;;396                MODS_51H();
-;;;397            }break;
-;;;398    		case 0x52:
-;;;399            {
-;;;400                MODS_52H();
+;;;391            }break;
+;;;392    		case 0x50:
+;;;393            {
+;;;394                MODS_50H();
+;;;395            }break;
+;;;396    		case 0x51:
+;;;397            {
+;;;398                MODS_51H();
+;;;399            }break;
+;;;400    		case 0x52:
+;;;401            {
+;;;402                MODS_52H();
 000024  f7ffbffe          B.W      MODS_52H
                   |L23.40|
 000028  f7ffbffe          B.W      MODS_03H
@@ -1630,12 +1658,12 @@
                   |L23.48|
 000030  f7ffbffe          B.W      MODS_51H
                   |L23.52|
-;;;401            }break;
-;;;402            default:break;
-;;;403        }
-;;;404    }
+;;;403            }break;
+;;;404            default:break;
+;;;405        }
+;;;406    }
 000034  4770              BX       lr
-;;;405    
+;;;407    
                           ENDP
 
 000036  0000              DCW      0x0000
@@ -1647,87 +1675,87 @@
                           AREA ||i.SVC_Handler||, CODE, READONLY, ALIGN=1
 
                   SVC_Handler PROC
-;;;143      */
-;;;144    void SVC_Handler(void)
+;;;145      */
+;;;146    void SVC_Handler(void)
 000000  4770              BX       lr
-;;;145    {
-;;;146    }
-;;;147    
+;;;147    {
+;;;148    }
+;;;149    
                           ENDP
 
 
                           AREA ||i.SysTick_Handler||, CODE, READONLY, ALIGN=2
 
                   SysTick_Handler PROC
-;;;170      */
-;;;171    void SysTick_Handler(void)
+;;;172      */
+;;;173    void SysTick_Handler(void)
 000000  b510              PUSH     {r4,lr}
-;;;172    {
-;;;173    	TimingDelay_Decrement();
+;;;174    {
+;;;175    	TimingDelay_Decrement();
 000002  f7fffffe          BL       TimingDelay_Decrement
-;;;174    	OS_TimeMS++;
+;;;176    	OS_TimeMS++;
 000006  4812              LDR      r0,|L25.80|
 000008  6801              LDR      r1,[r0,#0]  ; OS_TimeMS
 00000a  1c49              ADDS     r1,r1,#1
 00000c  6001              STR      r1,[r0,#0]  ; OS_TimeMS
-;;;175    //	t_KeyScan++;
-;;;176    //	if(t_KeyScan>10)
-;;;177    //	{
-;;;178    //		t_KeyScan=0;
-;;;179    //		Flag_Key_Scan=1;//按键消抖标志
-;;;180    //	}
-;;;181    	t_0_5S++;
+;;;177    //	t_KeyScan++;
+;;;178    //	if(t_KeyScan>10)
+;;;179    //	{
+;;;180    //		t_KeyScan=0;
+;;;181    //		Flag_Key_Scan=1;//按键消抖标志
+;;;182    //	}
+;;;183    	t_0_5S++;
 00000e  4811              LDR      r0,|L25.84|
 000010  8801              LDRH     r1,[r0,#0]  ; t_0_5S
 000012  1c49              ADDS     r1,r1,#1
 000014  8001              STRH     r1,[r0,#0]
-;;;182    	if(t_0_5S>20)
+;;;184    	if(t_0_5S>20)
 000016  8802              LDRH     r2,[r0,#0]  ; t_0_5S
 000018  2100              MOVS     r1,#0
 00001a  2a14              CMP      r2,#0x14
 00001c  d905              BLS      |L25.42|
-;;;183    	{
-;;;184    		t_0_5S=0;
+;;;185    	{
+;;;186    		t_0_5S=0;
 00001e  8001              STRH     r1,[r0,#0]
-;;;185    		Flag_0_5S =1;//蜂鸣器响一声标志
+;;;187    		Flag_0_5S =1;//蜂鸣器响一声标志
 000020  480d              LDR      r0,|L25.88|
 000022  6802              LDR      r2,[r0,#0]  ; flagA
 000024  f0420280          ORR      r2,r2,#0x80
 000028  6002              STR      r2,[r0,#0]  ; flagA
                   |L25.42|
-;;;186    	}
-;;;187    //--------------------------------------------
-;;;188    	if(flag_Tim_USART==1)//串口清零计数
+;;;188    	}
+;;;189    //--------------------------------------------
+;;;190    	if(flag_Tim_USART==1)//串口清零计数
 00002a  480c              LDR      r0,|L25.92|
-;;;189    	{
-;;;190    		t_USART++;
+;;;191    	{
+;;;192    		t_USART++;
 00002c  4a0c              LDR      r2,|L25.96|
-00002e  6803              LDR      r3,[r0,#0]            ;188  ; flagD
-000030  07dc              LSLS     r4,r3,#31             ;188
+00002e  6803              LDR      r3,[r0,#0]            ;190  ; flagD
+000030  07dc              LSLS     r4,r3,#31             ;190
 000032  d002              BEQ      |L25.58|
 000034  7814              LDRB     r4,[r2,#0]  ; t_USART
 000036  1c64              ADDS     r4,r4,#1
 000038  7014              STRB     r4,[r2,#0]
                   |L25.58|
-;;;191    	}
-;;;192    	if(t_USART>40)//大约2.6ms
+;;;193    	}
+;;;194    	if(t_USART>40)//大约2.6ms
 00003a  7814              LDRB     r4,[r2,#0]  ; t_USART
 00003c  2c28              CMP      r4,#0x28
 00003e  d905              BLS      |L25.76|
-;;;193    	{
-;;;194    		t_USART=0;
+;;;195    	{
+;;;196    		t_USART=0;
 000040  7011              STRB     r1,[r2,#0]
-;;;195    		flag_Tim_USART=0;
+;;;197    		flag_Tim_USART=0;
 000042  f0230201          BIC      r2,r3,#1
-;;;196    		UART_Buffer_Size=0;	
+;;;198    		UART_Buffer_Size=0;	
 000046  6002              STR      r2,[r0,#0]  ; flagD
 000048  4806              LDR      r0,|L25.100|
 00004a  7001              STRB     r1,[r0,#0]
                   |L25.76|
-;;;197    	}
-;;;198    }
+;;;199    	}
+;;;200    }
 00004c  bd10              POP      {r4,pc}
-;;;199    
+;;;201    
                           ENDP
 
 00004e  0000              DCW      0x0000
@@ -1747,15 +1775,15 @@
                           AREA ||i.TIM6_DAC_IRQHandler||, CODE, READONLY, ALIGN=2
 
                   TIM6_DAC_IRQHandler PROC
-;;;343    
-;;;344    void  TIM6_DAC_IRQHandler (void)
+;;;345    
+;;;346    void  TIM6_DAC_IRQHandler (void)
 000000  2101              MOVS     r1,#1
-;;;345    {
-;;;346    	TIM_ClearITPendingBit(TIM6,TIM_IT_Update);//?????λ
+;;;347    {
+;;;348    	TIM_ClearITPendingBit(TIM6,TIM_IT_Update);//?????λ
 000002  4801              LDR      r0,|L26.8|
 000004  f7ffbffe          B.W      TIM_ClearITPendingBit
-;;;347    }
-;;;348    
+;;;349    }
+;;;350    
                           ENDP
 
                   |L26.8|
@@ -1764,32 +1792,32 @@
                           AREA ||i.USART1_IRQHandler||, CODE, READONLY, ALIGN=2
 
                   USART1_IRQHandler PROC
-;;;348    
-;;;349    void USART1_IRQHandler(void)
+;;;350    
+;;;351    void USART1_IRQHandler(void)
 000000  b570              PUSH     {r4-r6,lr}
-;;;350    {
-;;;351    //	flag_Tim_USART=1;
-;;;352        
-;;;353     	if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)
+;;;352    {
+;;;353    //	flag_Tim_USART=1;
+;;;354        
+;;;355     	if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)
 000002  4d13              LDR      r5,|L27.80|
 000004  f2405125          MOV      r1,#0x525
 000008  4628              MOV      r0,r5
 00000a  f7fffffe          BL       USART_GetITStatus
 00000e  2800              CMP      r0,#0
 000010  d01c              BEQ      |L27.76|
-;;;354    	{
-;;;355    		
-;;;356            g_mods_timeout = 2;
+;;;356    	{
+;;;357    		
+;;;358            g_mods_timeout = 2;
 000012  4910              LDR      r1,|L27.84|
-;;;357            if (g_tModS.RxCount < S_RX_BUF_SIZE)
+;;;359            if (g_tModS.RxCount < S_RX_BUF_SIZE)
 000014  4c10              LDR      r4,|L27.88|
-000016  2002              MOVS     r0,#2                 ;356
-000018  7008              STRB     r0,[r1,#0]            ;356
+000016  2002              MOVS     r0,#2                 ;358
+000018  7008              STRB     r0,[r1,#0]            ;358
 00001a  f894009e          LDRB     r0,[r4,#0x9e]  ; g_tModS
 00001e  281e              CMP      r0,#0x1e
 000020  d20a              BCS      |L27.56|
-;;;358            {
-;;;359                g_tModS.RxBuf[g_tModS.RxCount++] = USART_ReceiveData(USART1);
+;;;360            {
+;;;361                g_tModS.RxBuf[g_tModS.RxCount++] = USART_ReceiveData(USART1);
 000022  4628              MOV      r0,r5
 000024  f7fffffe          BL       USART_ReceiveData
 000028  f894109e          LDRB     r1,[r4,#0x9e]  ; g_tModS
@@ -1798,24 +1826,24 @@
 000032  1c40              ADDS     r0,r0,#1
 000034  f884009e          STRB     r0,[r4,#0x9e]
                   |L27.56|
-;;;360            }
-;;;361    		if(g_tModS.RxCount > 7 && g_tModS.RxBuf[1] == 6)
+;;;362            }
+;;;363    		if(g_tModS.RxCount > 7 && g_tModS.RxBuf[1] == 6)
 000038  b2c0              UXTB     r0,r0
 00003a  2807              CMP      r0,#7
 00003c  d906              BLS      |L27.76|
 00003e  7860              LDRB     r0,[r4,#1]  ; g_tModS
 000040  2806              CMP      r0,#6
 000042  d103              BNE      |L27.76|
-;;;362    		{
-;;;363    			MODS_SendAckOk();
+;;;364    		{
+;;;365    			MODS_SendAckOk();
 000044  e8bd4070          POP      {r4-r6,lr}
 000048  f7ffbffe          B.W      MODS_SendAckOk
                   |L27.76|
-;;;364    		}
-;;;365    	}
-;;;366    }
+;;;366    		}
+;;;367    	}
+;;;368    }
 00004c  bd70              POP      {r4-r6,pc}
-;;;367    
+;;;369    
                           ENDP
 
 00004e  0000              DCW      0x0000
@@ -1830,80 +1858,80 @@
 
                   UsageFault_Handler PROC
                   |L28.0|
-;;;130      */
-;;;131    void UsageFault_Handler(void)
+;;;132      */
+;;;133    void UsageFault_Handler(void)
 000000  e7fe              B        |L28.0|
-;;;132    {
-;;;133      /* Go to infinite loop when Usage Fault exception occurs */
-;;;134      while (1)
-;;;135      {
-;;;136      }
-;;;137    }
-;;;138    
+;;;134    {
+;;;135      /* Go to infinite loop when Usage Fault exception occurs */
+;;;136      while (1)
+;;;137      {
+;;;138      }
+;;;139    }
+;;;140    
                           ENDP
 
 
                           AREA ||i.Usart_SendByte||, CODE, READONLY, ALIGN=1
 
                   Usart_SendByte PROC
-;;;255    /*****************  发送一个字符 **********************/
-;;;256    void Usart_SendByte( USART_TypeDef * pUSARTx, uint8_t ch)
+;;;257    /*****************  发送一个字符 **********************/
+;;;258    void Usart_SendByte( USART_TypeDef * pUSARTx, uint8_t ch)
 000000  b510              PUSH     {r4,lr}
-;;;257    {
+;;;259    {
 000002  4604              MOV      r4,r0
-;;;258    	/* 发送一个字节数据到USART */
-;;;259    	USART_SendData(pUSARTx,ch);
+;;;260    	/* 发送一个字节数据到USART */
+;;;261    	USART_SendData(pUSARTx,ch);
 000004  f7fffffe          BL       USART_SendData
                   |L29.8|
-;;;260    		
-;;;261    	/* 等待发送数据寄存器为空 */
-;;;262    	while (USART_GetFlagStatus(pUSARTx, USART_FLAG_TXE) == RESET);	
+;;;262    		
+;;;263    	/* 等待发送数据寄存器为空 */
+;;;264    	while (USART_GetFlagStatus(pUSARTx, USART_FLAG_TXE) == RESET);	
 000008  2180              MOVS     r1,#0x80
 00000a  4620              MOV      r0,r4
 00000c  f7fffffe          BL       USART_GetFlagStatus
 000010  2800              CMP      r0,#0
 000012  d0f9              BEQ      |L29.8|
-;;;263    }
+;;;265    }
 000014  bd10              POP      {r4,pc}
-;;;264    
+;;;266    
                           ENDP
 
 
                           AREA ||i.uart1SendChars||, CODE, READONLY, ALIGN=2
 
                   uart1SendChars PROC
-;;;264    
-;;;265    void uart1SendChars(u8 *str, u16 strlen)
+;;;266    
+;;;267    void uart1SendChars(u8 *str, u16 strlen)
 000000  e92d41f0          PUSH     {r4-r8,lr}
-;;;266    { 
-;;;267    	  u16 k= 0 ; 
-;;;268       do { 
-;;;269           USART_SendData(USART1,*(str + k));
+;;;268    { 
+;;;269    	  u16 k= 0 ; 
+;;;270       do { 
+;;;271           USART_SendData(USART1,*(str + k));
 000004  4d09              LDR      r5,|L30.44|
-000006  460e              MOV      r6,r1                 ;266
-000008  4607              MOV      r7,r0                 ;266
-00000a  2400              MOVS     r4,#0                 ;267
+000006  460e              MOV      r6,r1                 ;268
+000008  4607              MOV      r7,r0                 ;268
+00000a  2400              MOVS     r4,#0                 ;269
                   |L30.12|
 00000c  4628              MOV      r0,r5
 00000e  5d39              LDRB     r1,[r7,r4]
 000010  f7fffffe          BL       USART_SendData
                   |L30.20|
-;;;270           while (USART_GetFlagStatus(USART1,USART_FLAG_TXE) == RESET);
+;;;272           while (USART_GetFlagStatus(USART1,USART_FLAG_TXE) == RESET);
 000014  2180              MOVS     r1,#0x80
 000016  4628              MOV      r0,r5
 000018  f7fffffe          BL       USART_GetFlagStatus
 00001c  2800              CMP      r0,#0
 00001e  d0f9              BEQ      |L30.20|
 000020  1c64              ADDS     r4,r4,#1
-;;;271           k++; 
+;;;273           k++; 
 000022  b2a4              UXTH     r4,r4
-;;;272           }   //循环发送,直到发送完毕   
-;;;273        while (k < strlen); 
+;;;274           }   //循环发送,直到发送完毕   
+;;;275        while (k < strlen); 
 000024  42b4              CMP      r4,r6
 000026  d3f1              BCC      |L30.12|
-;;;274    } 
+;;;276    } 
 000028  e8bd81f0          POP      {r4-r8,pc}
-;;;275    
+;;;277    
                           ENDP
 
                   |L30.44|

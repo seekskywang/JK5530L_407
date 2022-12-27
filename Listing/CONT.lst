@@ -746,11 +746,10 @@ Ntypedef unsigned           int uint32_t;
 Ntypedef unsigned       __INT64 uint64_t;
 Xtypedef unsigned       __int64 uint64_t;
 N
-Ntypedef unsigned          char u8;
-Ntypedef unsigned short     int u16;
-Ntypedef unsigned           int u32;
-Ntypedef unsigned       __INT64 u64;
-Xtypedef unsigned       __int64 u64;
+N//typedef unsigned          char u8;
+N//typedef unsigned short     int u16;
+N//typedef unsigned           int u32;
+N//typedef unsigned       __INT64 u64;
 N
 N//typedef unsigned          char vu8;
 N//typedef unsigned short     int vu16;
@@ -35107,6 +35106,8 @@ N#define SLAVE_REG_P15		0x000F		//Load_SET_Voltage
 N#define SLAVE_REG_P16		0x0010		//Load_SET_Current
 N#define SLAVE_REG_P17		0x0011		//Change_SET_Voltage
 N#define SLAVE_REG_P18		0x0012		//Change_SET_Current
+N#define SLAVE_REG_P19		0x0013		//充电截止时间
+N#define SLAVE_REG_P20		0x0014		//放电截止时间
 N
 N/* RTU 应答代码 */
 N#define RSP_OK				0		/* 成功 */
@@ -35119,6 +35120,8 @@ N#define S_RX_BUF_SIZE		30
 N#define S_TX_BUF_SIZE		128
 N
 N#define POWER_SW_DELAY		10
+N
+N#define SENDPCDELAY   150
 N//---------------------------
 Nextern vu8 UART_Buffer_Rece[16];
 Nextern vu8 UART_Buffer_Send[20];
@@ -35276,6 +35279,7 @@ N	vu16 CDC_Ccutoff_C;			//截止电流
 N	vu32 CDC_Load_C;			//负载电流    
 N	vu32 CDC_Dcutoff_V;			//截止电压  
 N	vu8  CDC_Cycle_Time;		//循环次数
+N	vu16 CDC_Gap_Time;			//搁置时间
 N
 N	/* 系统设置 */
 N	vu8 SYS_Comparator;			//分选开关
@@ -35296,6 +35300,9 @@ N	vu16 SYS_SYEARS;
 N	vu8  SYS_SMONTHS;
 N	vu8	 SYS_SDAYS;
 N	vu32 SYS_SerialNO;
+N	
+N	vu32 CaPCTIME;//容量充电时间单位0.1min
+N	vu32 CaPDCTIME;//容量放电时间单位0.1min
 N	
 N}SetPara;
 N

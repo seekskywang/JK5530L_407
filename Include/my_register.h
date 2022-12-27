@@ -238,6 +238,8 @@ extern vu8  correct_por[8];
 #define SLAVE_REG_P16		0x0010		//Load_SET_Current
 #define SLAVE_REG_P17		0x0011		//Change_SET_Voltage
 #define SLAVE_REG_P18		0x0012		//Change_SET_Current
+#define SLAVE_REG_P19		0x0013		//充电截止时间
+#define SLAVE_REG_P20		0x0014		//放电截止时间
 
 /* RTU 应答代码 */
 #define RSP_OK				0		/* 成功 */
@@ -250,6 +252,8 @@ extern vu8  correct_por[8];
 #define S_TX_BUF_SIZE		128
 
 #define POWER_SW_DELAY		10
+
+#define SENDPCDELAY   150
 //---------------------------
 extern vu8 UART_Buffer_Rece[16];
 extern vu8 UART_Buffer_Send[20];
@@ -407,6 +411,7 @@ typedef struct {
 	vu32 CDC_Load_C;			//负载电流    
 	vu32 CDC_Dcutoff_V;			//截止电压  
 	vu8  CDC_Cycle_Time;		//循环次数
+	vu16 CDC_Gap_Time;			//搁置时间
 
 	/* 系统设置 */
 	vu8 SYS_Comparator;			//分选开关
@@ -427,6 +432,9 @@ typedef struct {
 	vu8  SYS_SMONTHS;
 	vu8	 SYS_SDAYS;
 	vu32 SYS_SerialNO;
+	
+	vu32 CaPCTIME;//容量充电时间单位0.1min
+	vu32 CaPDCTIME;//容量放电时间单位0.1min
 	
 }SetPara;
 

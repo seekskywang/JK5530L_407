@@ -1137,7 +1137,7 @@
 
                           EXPORTAS ||area_number.19||, ||.bss||
                   Para
-                          %        164
+                          %        176
 
                           AREA ||.data||, DATA, ALIGN=0
 

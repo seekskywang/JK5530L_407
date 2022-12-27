@@ -745,11 +745,10 @@ Ntypedef unsigned           int uint32_t;
 Ntypedef unsigned       __INT64 uint64_t;
 Xtypedef unsigned       __int64 uint64_t;
 N
-Ntypedef unsigned          char u8;
-Ntypedef unsigned short     int u16;
-Ntypedef unsigned           int u32;
-Ntypedef unsigned       __INT64 u64;
-Xtypedef unsigned       __int64 u64;
+N//typedef unsigned          char u8;
+N//typedef unsigned short     int u16;
+N//typedef unsigned           int u32;
+N//typedef unsigned       __INT64 u64;
 N
 N//typedef unsigned          char vu8;
 N//typedef unsigned short     int vu16;
@@ -35106,6 +35105,8 @@ N#define SLAVE_REG_P15		0x000F		//Load_SET_Voltage
 N#define SLAVE_REG_P16		0x0010		//Load_SET_Current
 N#define SLAVE_REG_P17		0x0011		//Change_SET_Voltage
 N#define SLAVE_REG_P18		0x0012		//Change_SET_Current
+N#define SLAVE_REG_P19		0x0013		//充电截止时间
+N#define SLAVE_REG_P20		0x0014		//放电截止时间
 N
 N/* RTU 应答代码 */
 N#define RSP_OK				0		/* 成功 */
@@ -35118,6 +35119,8 @@ N#define S_RX_BUF_SIZE		30
 N#define S_TX_BUF_SIZE		128
 N
 N#define POWER_SW_DELAY		10
+N
+N#define SENDPCDELAY   150
 N//---------------------------
 Nextern vu8 UART_Buffer_Rece[16];
 Nextern vu8 UART_Buffer_Send[20];
@@ -35275,6 +35278,7 @@ N	vu16 CDC_Ccutoff_C;			//截止电流
 N	vu32 CDC_Load_C;			//负载电流    
 N	vu32 CDC_Dcutoff_V;			//截止电压  
 N	vu8  CDC_Cycle_Time;		//循环次数
+N	vu16 CDC_Gap_Time;			//搁置时间
 N
 N	/* 系统设置 */
 N	vu8 SYS_Comparator;			//分选开关
@@ -35295,6 +35299,9 @@ N	vu16 SYS_SYEARS;
 N	vu8  SYS_SMONTHS;
 N	vu8	 SYS_SDAYS;
 N	vu32 SYS_SerialNO;
+N	
+N	vu32 CaPCTIME;//容量充电时间单位0.1min
+N	vu32 CaPDCTIME;//容量放电时间单位0.1min
 N	
 N}SetPara;
 N
@@ -35438,15 +35445,19 @@ Nvu8 version=20;
 Nvu32 battery_c;
 Nvu8 charge_step;
 Nvu8 loop;
+Nvu32 ctime;
+Nvu32 dctime;
 Nu8 sendmodepow[6] = {0x01,0x53,0x00,0x00,0x00,0x01};
 Nu8 sendmodeload[6] = {0x01,0x53,0x00,0x00,0x00,0x02};
 Nu8 sendmodestop[6] = {0x01,0x52,0x00,0x00,0x00,0x04};
+Nu8 sendmodegap[6] = {0x01,0x53,0x00,0x00,0x00,0x03};
 Nu16 cdcswdelay;
 Nvu16 watchcurrent[1000];
 Nu16 watchcount;
 Nuint8_t vccbuf[13];
 Nfloat shortold_I = 0;
 Nvu8 overflag;
+Nvu32 capwait;
 N/*****************************************************************/
 Nvoid TIM4_Config(void)
 N{
@@ -35606,6 +35617,12 @@ N			vccbuf[6] = (vu16)(Para.CCurrent*10);
 N		}else if(mode_sw == 1){
 N			vccbuf[3] = (vu16)(DISS_Voltage*1000)>>8;
 N			vccbuf[4] = (vu16)(DISS_Voltage*1000);
+N			vccbuf[5] = (vu16)(DISS_Current*1000)>>8;
+N			vccbuf[6] = (vu16)(DISS_Current*1000);
+N		}else if(mode_sw == 2){
+N			vccbuf[5] = (vu16)(Para.CCurrent*10)>>8;
+N			vccbuf[6] = (vu16)(Para.CCurrent*10);
+N		}else if(mode_sw == 3){
 N			vccbuf[5] = (vu16)(DISS_Current*1000)>>8;
 N			vccbuf[6] = (vu16)(DISS_Current*1000);
 N		}
@@ -35948,15 +35965,20 @@ N				{
 N					if( ms_time%1000 == 0 && ms_time > 999 ){
 N				
 N						if( mode_sw == 1 ){
-N								
+N							dctime++;	
 N							ftemp = DISS_Current * 1000 * 1/3600;
 N							CDC_DCsumMah += ftemp;	 
 N							battery_c = CDC_DCsumMah;
-N						}else{
+N						}else if( mode_sw == 0 ){
+N							ctime++;
 N//							DISS_POW_Current=(float)Para.CCurrent/100;	
 N							ftemp = DISS_POW_Current * 1000 * 1/3600;
 N							CDC_CsumMah += ftemp;
 N							battery_c = CDC_CsumMah;
+N						}else if(mode_sw == 2){
+N							battery_c = CDC_CsumMah;
+N						}else if(mode_sw == 3){
+N							battery_c = CDC_DCsumMah;
 N						}
 N						SendToPC(2);
 N						
@@ -35969,7 +35991,8 @@ N						{
 N							for(i=0;i<3;i++)
 N							{
 N								MODS_SendWithCRC(sendmodepow,6);
-N								Delay_ms(50);
+N								Delay_ms(SENDPCDELAY);
+X								Delay_ms(150);
 N							}
 N							sendmodeflag = 0;
 N						}
@@ -35977,16 +36000,36 @@ N						if(cdcswdelay != 0)
 N						{
 N							cdcswdelay --;
 N						}
-N						if(charge_step == 1)
+N						if(Para.CaPCTIME == 0)
 N						{
-N							if(Para.CPOW_Voltage*10 >= Para.CDC_Ccutoff_V && Para.CDC_Ccutoff_V != 0 && cdcswdelay == 0)
+N							if(charge_step == 1)
 N							{
-N								Para.CSET_Voltage = Para.CDC_Ccutoff_V;
-N								charge_step = 2;
-N								cdcswdelay = 5000;
+N								if(Para.CPOW_Voltage*10 >= Para.CDC_Ccutoff_V && Para.CDC_Ccutoff_V != 0 && cdcswdelay == 0)
+N								{
+N									Para.CSET_Voltage = Para.CDC_Ccutoff_V;
+N									charge_step = 2;
+N									cdcswdelay = 5000;
+N								}
+N							}else if(charge_step == 2){
+N								if(Para.CCurrent*10 < Para.CDC_Ccutoff_C && Para.CDC_Ccutoff_C != 0 && cdcswdelay == 0)
+N								{
+N									charge_step = 1;
+N	//								GPIO_ResetBits(GPIOC,GPIO_Pin_1); //关闭电源输出
+N	//								Para.CSET_Voltage = 0;
+N	//								Para.CSET_Current = 0;
+N	//								GPIO_ResetBits(GPIOE,GPIO_Pin_2); //关闭电源输出继电器
+N									mainswitch = 0;
+N									ctime=0;
+N									listsend = 1;
+N									mode_sw = 2;
+N//									mode_sw = 1;
+N									sendmodeflag = 1;
+N									capwait = Para.CDC_Gap_Time*1000;
+N//									cdcswdelay = 5000;
+N								}
 N							}
-N						}else if(charge_step == 2){
-N							if(Para.CCurrent*10 < Para.CDC_Ccutoff_C && Para.CDC_Ccutoff_C != 0 && cdcswdelay == 0)
+N						}else{
+N							if(ctime >= Para.CaPCTIME && cdcswdelay == 0)
 N							{
 N								charge_step = 1;
 N//								GPIO_ResetBits(GPIOC,GPIO_Pin_1); //关闭电源输出
@@ -35994,19 +36037,23 @@ N//								Para.CSET_Voltage = 0;
 N//								Para.CSET_Current = 0;
 N//								GPIO_ResetBits(GPIOE,GPIO_Pin_2); //关闭电源输出继电器
 N								mainswitch = 0;
+N								ctime=0;
 N								listsend = 1;
-N								mode_sw = 1;
+N								mode_sw = 2;
+N//									mode_sw = 1;
 N								sendmodeflag = 1;
-N								cdcswdelay = 5000;
+N								capwait = Para.CDC_Gap_Time*1000;
+N//									cdcswdelay = 5000;
 N							}
 N						}
-N					}else{
+N					}else if(mode_sw == 1){//放电
 N						if(sendmodeflag == 1)
 N						{
 N							for(i=0;i<3;i++)
 N							{
 N								MODS_SendWithCRC(sendmodeload,6);
-N								Delay_ms(50);
+N								Delay_ms(SENDPCDELAY);
+X								Delay_ms(150);
 N							}
 N							sendmodeflag = 0;
 N							Delay_ms(100);
@@ -36019,49 +36066,156 @@ N						if(cdcswdelay != 0)
 N						{
 N							cdcswdelay --;
 N						}
-N						if(Para.CVoltage < Para.CDC_Dcutoff_V && cdcswdelay == 0)
+N						if(Para.CaPDCTIME == 0)
 N						{
-N							Flag_Swtich_ON = 0;
-X							(flagA . bit6) = 0;
-N							GPIO_SetBits(GPIOC,GPIO_Pin_7);//OFF
-X							GPIO_SetBits(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x00020000) + 0x0800)),((uint16_t)0x0080));
-N							if(loop == Para.CDC_Cycle_Time)
+N							if(Para.CVoltage < Para.CDC_Dcutoff_V && cdcswdelay == 0)
 N							{
-N								loop = 1;
-N								battery_c = battery_c/Para.CDC_Cycle_Time;
-N								for(i=0;i<3;i++)
-N								{
-N									if(rmtrig[2] == 1)
-N									{
-N//										SendToPC(2);
-N									}
-N									Delay_ms(50);
-N									MODS_SendWithCRC(sendmodestop,6);
-N									Delay_ms(50);
-N								}
-N								rmtrig[2] = 0;
-N								CDC_CsumMah = 0;
-N								CDC_DCsumMah = 0;
-N							}else{
-N//								CDC_CsumMah = 0;
-N//								CDC_DCsumMah = 0;
 N								Flag_Swtich_ON = 0;
 X								(flagA . bit6) = 0;
 N								GPIO_SetBits(GPIOC,GPIO_Pin_7);//OFF
 X								GPIO_SetBits(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x00020000) + 0x0800)),((uint16_t)0x0080));
-N								Delay_ms(100);
-N								mode_sw = 0;
-N//								GPIO_SetBits(GPIOE,GPIO_Pin_2);   //打开电源输出继电器
-N//								Para.CSET_Voltage = Para.CDC_OutPut_V;
-N//								Para.CSET_Current = Para.CDC_Limit_C;
-N//								GPIO_SetBits(GPIOC,GPIO_Pin_1);   //打开电源输出
-N								mainswitch = 1;
-N								listsend = 1;
-N								sendmodeflag = 1;
-N								charge_step = 1;
-N								cdcswdelay = 5000;
-N								loop ++;	
+N								if(loop == Para.CDC_Cycle_Time)
+N								{
+N									loop = 1;
+N									battery_c = battery_c/Para.CDC_Cycle_Time;
+N									for(i=0;i<3;i++)
+N									{
+N										if(rmtrig[2] == 1)
+N										{
+N	//										SendToPC(2);
+N										}
+N										Delay_ms(SENDPCDELAY);
+X										Delay_ms(150);
+N										MODS_SendWithCRC(sendmodestop,6);
+N										Delay_ms(SENDPCDELAY);
+X										Delay_ms(150);
+N									}
+N									rmtrig[2] = 0;
+N									CDC_CsumMah = 0;
+N									CDC_DCsumMah = 0;
+N									dctime = 0;
+N								}else{
+N	//								CDC_CsumMah = 0;
+N	//								CDC_DCsumMah = 0;
+N									Flag_Swtich_ON = 0;
+X									(flagA . bit6) = 0;
+N									GPIO_SetBits(GPIOC,GPIO_Pin_7);//OFF
+X									GPIO_SetBits(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x00020000) + 0x0800)),((uint16_t)0x0080));
+N									Delay_ms(100);
+N									dctime = 0;
+N									mode_sw = 3;
+N									sendmodeflag = 1;
+N									capwait = Para.CDC_Gap_Time*1000;
+N//									mode_sw = 0;
+N	//								GPIO_SetBits(GPIOE,GPIO_Pin_2);   //打开电源输出继电器
+N	//								Para.CSET_Voltage = Para.CDC_OutPut_V;
+N	//								Para.CSET_Current = Para.CDC_Limit_C;
+N	//								GPIO_SetBits(GPIOC,GPIO_Pin_1);   //打开电源输出
+N//									mainswitch = 1;
+N//									listsend = 1;
+N//									sendmodeflag = 1;
+N//									charge_step = 1;
+N//									cdcswdelay = 5000;
+N//									loop ++;	
+N								}
 N							}
+N						}else{
+N							if(dctime >= Para.CaPDCTIME && cdcswdelay == 0)
+N							{
+N								Flag_Swtich_ON = 0;
+X								(flagA . bit6) = 0;
+N								GPIO_SetBits(GPIOC,GPIO_Pin_7);//OFF
+X								GPIO_SetBits(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x00020000) + 0x0800)),((uint16_t)0x0080));
+N								if(loop == Para.CDC_Cycle_Time)
+N								{
+N									loop = 1;
+N									battery_c = battery_c/Para.CDC_Cycle_Time;
+N									for(i=0;i<3;i++)
+N									{
+N										if(rmtrig[2] == 1)
+N										{
+N	//										SendToPC(2);
+N										}
+N										Delay_ms(SENDPCDELAY);
+X										Delay_ms(150);
+N										MODS_SendWithCRC(sendmodestop,6);
+N										Delay_ms(SENDPCDELAY);
+X										Delay_ms(150);
+N									}
+N									rmtrig[2] = 0;
+N									CDC_CsumMah = 0;
+N									CDC_DCsumMah = 0;
+N									dctime = 0;
+N								}else{
+N	//								CDC_CsumMah = 0;
+N	//								CDC_DCsumMah = 0;
+N									Flag_Swtich_ON = 0;
+X									(flagA . bit6) = 0;
+N									GPIO_SetBits(GPIOC,GPIO_Pin_7);//OFF
+X									GPIO_SetBits(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x00020000) + 0x0800)),((uint16_t)0x0080));
+N									Delay_ms(100);
+N									dctime = 0;
+N									mode_sw = 3;
+N									sendmodeflag = 1;
+N									capwait = Para.CDC_Gap_Time*1000;
+N//									mode_sw = 0;
+N	//								GPIO_SetBits(GPIOE,GPIO_Pin_2);   //打开电源输出继电器
+N	//								Para.CSET_Voltage = Para.CDC_OutPut_V;
+N	//								Para.CSET_Current = Para.CDC_Limit_C;
+N	//								GPIO_SetBits(GPIOC,GPIO_Pin_1);   //打开电源输出
+N//									mainswitch = 1;
+N//									listsend = 1;
+N//									sendmodeflag = 1;
+N//									charge_step = 1;
+N//									cdcswdelay = 5000;
+N//									loop ++;	
+N								}
+N							}
+N						}
+N					}else if(mode_sw == 2){//充电搁置
+N						if(sendmodeflag == 1)
+N						{
+N							for(i=0;i<3;i++)
+N							{
+N								MODS_SendWithCRC(sendmodegap,6);
+N								Delay_ms(SENDPCDELAY);
+X								Delay_ms(150);
+N								
+N							}
+N							sendmodeflag = 0;
+N						}
+N						if(capwait == 0)
+N						{
+N							mode_sw = 1;
+N							sendmodeflag = 1;
+N							cdcswdelay = 5000;
+N						}else{
+N							capwait --;
+N						}
+N					}else if(mode_sw == 3){//放电搁置
+N						if(sendmodeflag == 1)
+N						{
+N							for(i=0;i<3;i++)
+N							{
+N								MODS_SendWithCRC(sendmodegap,6);
+N								Delay_ms(SENDPCDELAY);
+X								Delay_ms(150);
+N								
+N							}
+N							sendmodeflag = 0;
+N						}
+N						if(capwait == 0)
+N						{
+N							mode_sw = 0;
+N							mainswitch = 1;
+N							listsend = 1;
+N							sendmodeflag = 1;
+N							charge_step = 1;
+N							charge_step = 1;
+N							cdcswdelay = 5000;
+N							loop ++;
+N						}else{
+N							capwait --;
 N						}
 N					}
 N				}

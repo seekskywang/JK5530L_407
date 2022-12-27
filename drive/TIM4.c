@@ -40,15 +40,19 @@ vu8 version=20;
 vu32 battery_c;
 vu8 charge_step;
 vu8 loop;
+vu32 ctime;
+vu32 dctime;
 u8 sendmodepow[6] = {0x01,0x53,0x00,0x00,0x00,0x01};
 u8 sendmodeload[6] = {0x01,0x53,0x00,0x00,0x00,0x02};
 u8 sendmodestop[6] = {0x01,0x52,0x00,0x00,0x00,0x04};
+u8 sendmodegap[6] = {0x01,0x53,0x00,0x00,0x00,0x03};
 u16 cdcswdelay;
 vu16 watchcurrent[1000];
 u16 watchcount;
 uint8_t vccbuf[13];
 float shortold_I = 0;
 vu8 overflag;
+vu32 capwait;
 /*****************************************************************/
 void TIM4_Config(void)
 {
@@ -178,6 +182,12 @@ void SendToPC(u8 mode)
 		}else if(mode_sw == 1){
 			vccbuf[3] = (vu16)(DISS_Voltage*1000)>>8;
 			vccbuf[4] = (vu16)(DISS_Voltage*1000);
+			vccbuf[5] = (vu16)(DISS_Current*1000)>>8;
+			vccbuf[6] = (vu16)(DISS_Current*1000);
+		}else if(mode_sw == 2){
+			vccbuf[5] = (vu16)(Para.CCurrent*10)>>8;
+			vccbuf[6] = (vu16)(Para.CCurrent*10);
+		}else if(mode_sw == 3){
 			vccbuf[5] = (vu16)(DISS_Current*1000)>>8;
 			vccbuf[6] = (vu16)(DISS_Current*1000);
 		}
@@ -509,15 +519,20 @@ void TIM3_IRQHandler(void){
 					if( ms_time%1000 == 0 && ms_time > 999 ){
 				
 						if( mode_sw == 1 ){
-								
+							dctime++;	
 							ftemp = DISS_Current * 1000 * 1/3600;
 							CDC_DCsumMah += ftemp;	 
 							battery_c = CDC_DCsumMah;
-						}else{
+						}else if( mode_sw == 0 ){
+							ctime++;
 //							DISS_POW_Current=(float)Para.CCurrent/100;	
 							ftemp = DISS_POW_Current * 1000 * 1/3600;
 							CDC_CsumMah += ftemp;
 							battery_c = CDC_CsumMah;
+						}else if(mode_sw == 2){
+							battery_c = CDC_CsumMah;
+						}else if(mode_sw == 3){
+							battery_c = CDC_DCsumMah;
 						}
 						SendToPC(2);
 						
@@ -530,7 +545,7 @@ void TIM3_IRQHandler(void){
 							for(i=0;i<3;i++)
 							{
 								MODS_SendWithCRC(sendmodepow,6);
-								Delay_ms(50);
+								Delay_ms(SENDPCDELAY);
 							}
 							sendmodeflag = 0;
 						}
@@ -538,16 +553,36 @@ void TIM3_IRQHandler(void){
 						{
 							cdcswdelay --;
 						}
-						if(charge_step == 1)
+						if(Para.CaPCTIME == 0)
 						{
-							if(Para.CPOW_Voltage*10 >= Para.CDC_Ccutoff_V && Para.CDC_Ccutoff_V != 0 && cdcswdelay == 0)
+							if(charge_step == 1)
 							{
-								Para.CSET_Voltage = Para.CDC_Ccutoff_V;
-								charge_step = 2;
-								cdcswdelay = 5000;
+								if(Para.CPOW_Voltage*10 >= Para.CDC_Ccutoff_V && Para.CDC_Ccutoff_V != 0 && cdcswdelay == 0)
+								{
+									Para.CSET_Voltage = Para.CDC_Ccutoff_V;
+									charge_step = 2;
+									cdcswdelay = 5000;
+								}
+							}else if(charge_step == 2){
+								if(Para.CCurrent*10 < Para.CDC_Ccutoff_C && Para.CDC_Ccutoff_C != 0 && cdcswdelay == 0)
+								{
+									charge_step = 1;
+	//								GPIO_ResetBits(GPIOC,GPIO_Pin_1); //关闭电源输出
+	//								Para.CSET_Voltage = 0;
+	//								Para.CSET_Current = 0;
+	//								GPIO_ResetBits(GPIOE,GPIO_Pin_2); //关闭电源输出继电器
+									mainswitch = 0;
+									ctime=0;
+									listsend = 1;
+									mode_sw = 2;
+//									mode_sw = 1;
+									sendmodeflag = 1;
+									capwait = Para.CDC_Gap_Time*1000;
+//									cdcswdelay = 5000;
+								}
 							}
-						}else if(charge_step == 2){
-							if(Para.CCurrent*10 < Para.CDC_Ccutoff_C && Para.CDC_Ccutoff_C != 0 && cdcswdelay == 0)
+						}else{
+							if(ctime >= Para.CaPCTIME && cdcswdelay == 0)
 							{
 								charge_step = 1;
 //								GPIO_ResetBits(GPIOC,GPIO_Pin_1); //关闭电源输出
@@ -555,19 +590,22 @@ void TIM3_IRQHandler(void){
 //								Para.CSET_Current = 0;
 //								GPIO_ResetBits(GPIOE,GPIO_Pin_2); //关闭电源输出继电器
 								mainswitch = 0;
+								ctime=0;
 								listsend = 1;
-								mode_sw = 1;
+								mode_sw = 2;
+//									mode_sw = 1;
 								sendmodeflag = 1;
-								cdcswdelay = 5000;
+								capwait = Para.CDC_Gap_Time*1000;
+//									cdcswdelay = 5000;
 							}
 						}
-					}else{
+					}else if(mode_sw == 1){//放电
 						if(sendmodeflag == 1)
 						{
 							for(i=0;i<3;i++)
 							{
 								MODS_SendWithCRC(sendmodeload,6);
-								Delay_ms(50);
+								Delay_ms(SENDPCDELAY);
 							}
 							sendmodeflag = 0;
 							Delay_ms(100);
@@ -578,45 +616,142 @@ void TIM3_IRQHandler(void){
 						{
 							cdcswdelay --;
 						}
-						if(Para.CVoltage < Para.CDC_Dcutoff_V && cdcswdelay == 0)
+						if(Para.CaPDCTIME == 0)
 						{
-							Flag_Swtich_ON = 0;
-							GPIO_SetBits(GPIOC,GPIO_Pin_7);//OFF
-							if(loop == Para.CDC_Cycle_Time)
+							if(Para.CVoltage < Para.CDC_Dcutoff_V && cdcswdelay == 0)
 							{
-								loop = 1;
-								battery_c = battery_c/Para.CDC_Cycle_Time;
-								for(i=0;i<3;i++)
-								{
-									if(rmtrig[2] == 1)
-									{
-//										SendToPC(2);
-									}
-									Delay_ms(50);
-									MODS_SendWithCRC(sendmodestop,6);
-									Delay_ms(50);
-								}
-								rmtrig[2] = 0;
-								CDC_CsumMah = 0;
-								CDC_DCsumMah = 0;
-							}else{
-//								CDC_CsumMah = 0;
-//								CDC_DCsumMah = 0;
 								Flag_Swtich_ON = 0;
 								GPIO_SetBits(GPIOC,GPIO_Pin_7);//OFF
-								Delay_ms(100);
-								mode_sw = 0;
-//								GPIO_SetBits(GPIOE,GPIO_Pin_2);   //打开电源输出继电器
-//								Para.CSET_Voltage = Para.CDC_OutPut_V;
-//								Para.CSET_Current = Para.CDC_Limit_C;
-//								GPIO_SetBits(GPIOC,GPIO_Pin_1);   //打开电源输出
-								mainswitch = 1;
-								listsend = 1;
-								sendmodeflag = 1;
-								charge_step = 1;
-								cdcswdelay = 5000;
-								loop ++;	
+								if(loop == Para.CDC_Cycle_Time)
+								{
+									loop = 1;
+									battery_c = battery_c/Para.CDC_Cycle_Time;
+									for(i=0;i<3;i++)
+									{
+										if(rmtrig[2] == 1)
+										{
+	//										SendToPC(2);
+										}
+										Delay_ms(SENDPCDELAY);
+										MODS_SendWithCRC(sendmodestop,6);
+										Delay_ms(SENDPCDELAY);
+									}
+									rmtrig[2] = 0;
+									CDC_CsumMah = 0;
+									CDC_DCsumMah = 0;
+									dctime = 0;
+								}else{
+	//								CDC_CsumMah = 0;
+	//								CDC_DCsumMah = 0;
+									Flag_Swtich_ON = 0;
+									GPIO_SetBits(GPIOC,GPIO_Pin_7);//OFF
+									Delay_ms(100);
+									dctime = 0;
+									mode_sw = 3;
+									sendmodeflag = 1;
+									capwait = Para.CDC_Gap_Time*1000;
+//									mode_sw = 0;
+	//								GPIO_SetBits(GPIOE,GPIO_Pin_2);   //打开电源输出继电器
+	//								Para.CSET_Voltage = Para.CDC_OutPut_V;
+	//								Para.CSET_Current = Para.CDC_Limit_C;
+	//								GPIO_SetBits(GPIOC,GPIO_Pin_1);   //打开电源输出
+//									mainswitch = 1;
+//									listsend = 1;
+//									sendmodeflag = 1;
+//									charge_step = 1;
+//									cdcswdelay = 5000;
+//									loop ++;	
+								}
 							}
+						}else{
+							if(dctime >= Para.CaPDCTIME && cdcswdelay == 0)
+							{
+								Flag_Swtich_ON = 0;
+								GPIO_SetBits(GPIOC,GPIO_Pin_7);//OFF
+								if(loop == Para.CDC_Cycle_Time)
+								{
+									loop = 1;
+									battery_c = battery_c/Para.CDC_Cycle_Time;
+									for(i=0;i<3;i++)
+									{
+										if(rmtrig[2] == 1)
+										{
+	//										SendToPC(2);
+										}
+										Delay_ms(SENDPCDELAY);
+										MODS_SendWithCRC(sendmodestop,6);
+										Delay_ms(SENDPCDELAY);
+									}
+									rmtrig[2] = 0;
+									CDC_CsumMah = 0;
+									CDC_DCsumMah = 0;
+									dctime = 0;
+								}else{
+	//								CDC_CsumMah = 0;
+	//								CDC_DCsumMah = 0;
+									Flag_Swtich_ON = 0;
+									GPIO_SetBits(GPIOC,GPIO_Pin_7);//OFF
+									Delay_ms(100);
+									dctime = 0;
+									mode_sw = 3;
+									sendmodeflag = 1;
+									capwait = Para.CDC_Gap_Time*1000;
+//									mode_sw = 0;
+	//								GPIO_SetBits(GPIOE,GPIO_Pin_2);   //打开电源输出继电器
+	//								Para.CSET_Voltage = Para.CDC_OutPut_V;
+	//								Para.CSET_Current = Para.CDC_Limit_C;
+	//								GPIO_SetBits(GPIOC,GPIO_Pin_1);   //打开电源输出
+//									mainswitch = 1;
+//									listsend = 1;
+//									sendmodeflag = 1;
+//									charge_step = 1;
+//									cdcswdelay = 5000;
+//									loop ++;	
+								}
+							}
+						}
+					}else if(mode_sw == 2){//充电搁置
+						if(sendmodeflag == 1)
+						{
+							for(i=0;i<3;i++)
+							{
+								MODS_SendWithCRC(sendmodegap,6);
+								Delay_ms(SENDPCDELAY);
+								
+							}
+							sendmodeflag = 0;
+						}
+						if(capwait == 0)
+						{
+							mode_sw = 1;
+							sendmodeflag = 1;
+							cdcswdelay = 5000;
+						}else{
+							capwait --;
+						}
+					}else if(mode_sw == 3){//放电搁置
+						if(sendmodeflag == 1)
+						{
+							for(i=0;i<3;i++)
+							{
+								MODS_SendWithCRC(sendmodegap,6);
+								Delay_ms(SENDPCDELAY);
+								
+							}
+							sendmodeflag = 0;
+						}
+						if(capwait == 0)
+						{
+							mode_sw = 0;
+							mainswitch = 1;
+							listsend = 1;
+							sendmodeflag = 1;
+							charge_step = 1;
+							charge_step = 1;
+							cdcswdelay = 5000;
+							loop ++;
+						}else{
+							capwait --;
 						}
 					}
 				}

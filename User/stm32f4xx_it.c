@@ -39,6 +39,8 @@ float shortv;
 u8 sendmodeflag;
 u8 rmtrig[3];
 vu8 mode_sw;
+extern vu32 ctime;
+extern vu32 dctime;
 static void MODS_03H(void);
 static void MODS_06H(void);
 static void MODS_50H(void);
@@ -576,7 +578,8 @@ static uint8_t MODS_WriteRegValue(uint16_t reg_addr, uint16_t reg_value)
 
 		case SLAVE_REG_P13:
 			break;
-		case SLAVE_REG_P14:
+		case SLAVE_REG_P14://搁置时间
+			Para.CDC_Gap_Time = reg_value;
 			break;
 
 		case SLAVE_REG_P15:
@@ -588,6 +591,12 @@ static uint8_t MODS_WriteRegValue(uint16_t reg_addr, uint16_t reg_value)
 			break;
 		case SLAVE_REG_P18:
 			Para.LOAD_P = reg_value * 10;
+			break;
+		case SLAVE_REG_P19:
+			Para.CaPCTIME = reg_value*6;//转换为s
+			break;
+		case SLAVE_REG_P20:
+			Para.CaPDCTIME = reg_value*6;//转换为s
 			break;
 		default:
 			return 0;
@@ -774,6 +783,8 @@ static uint8_t MODS_CDC(uint16_t reg_addr, uint16_t reg_value)
 				sendmodeflag = 1;
 				charge_step = 1;
 				loop = 1;
+				ctime = 0;
+				dctime = 0;
 				cdcswdelay = 5000;
 			}else if(reg_value == 4){//鍋滄鐢垫簮
 				Off_GPOI_ResetSet();
@@ -782,6 +793,8 @@ static uint8_t MODS_CDC(uint16_t reg_addr, uint16_t reg_value)
 			    rmtrig[2] = 0;
 				CDC_CsumMah = 0;
 				CDC_DCsumMah = 0;
+				ctime = 0;
+				dctime = 0;
 			}
 			break;
 		case SLAVE_REG_P01://
