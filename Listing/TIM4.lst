@@ -745,10 +745,11 @@ Ntypedef unsigned           int uint32_t;
 Ntypedef unsigned       __INT64 uint64_t;
 Xtypedef unsigned       __int64 uint64_t;
 N
-N//typedef unsigned          char u8;
-N//typedef unsigned short     int u16;
-N//typedef unsigned           int u32;
-N//typedef unsigned       __INT64 u64;
+Ntypedef unsigned          char u8;
+Ntypedef unsigned short     int u16;
+Ntypedef unsigned           int u32;
+Ntypedef unsigned       __INT64 u64;
+Xtypedef unsigned       __int64 u64;
 N
 N//typedef unsigned          char vu8;
 N//typedef unsigned short     int vu16;
@@ -36002,15 +36003,15 @@ N							cdcswdelay --;
 N						}
 N						if(Para.CaPCTIME == 0)
 N						{
-N							if(charge_step == 1)
-N							{
-N								if(Para.CPOW_Voltage*10 >= Para.CDC_Ccutoff_V && Para.CDC_Ccutoff_V != 0 && cdcswdelay == 0)
-N								{
-N									Para.CSET_Voltage = Para.CDC_Ccutoff_V;
-N									charge_step = 2;
-N									cdcswdelay = 5000;
-N								}
-N							}else if(charge_step == 2){
+N//							if(charge_step == 1)
+N//							{
+N//								if(Para.CPOW_Voltage*10 >= Para.CDC_Ccutoff_V && Para.CDC_Ccutoff_V != 0 && cdcswdelay == 0)
+N//								{
+N//									Para.CSET_Voltage = Para.CDC_Ccutoff_V;
+N//									charge_step = 2;
+N//									cdcswdelay = 5000;
+N//								}
+N//							}else if(charge_step == 2){
 N								if(Para.CCurrent*10 < Para.CDC_Ccutoff_C && Para.CDC_Ccutoff_C != 0 && cdcswdelay == 0)
 N								{
 N									charge_step = 1;
@@ -36027,7 +36028,7 @@ N									sendmodeflag = 1;
 N									capwait = Para.CDC_Gap_Time*1000;
 N//									cdcswdelay = 5000;
 N								}
-N							}
+N//							}
 N						}else{
 N							if(ctime >= Para.CaPCTIME && cdcswdelay == 0)
 N							{

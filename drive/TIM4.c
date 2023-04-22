@@ -555,15 +555,15 @@ void TIM3_IRQHandler(void){
 						}
 						if(Para.CaPCTIME == 0)
 						{
-							if(charge_step == 1)
-							{
-								if(Para.CPOW_Voltage*10 >= Para.CDC_Ccutoff_V && Para.CDC_Ccutoff_V != 0 && cdcswdelay == 0)
-								{
-									Para.CSET_Voltage = Para.CDC_Ccutoff_V;
-									charge_step = 2;
-									cdcswdelay = 5000;
-								}
-							}else if(charge_step == 2){
+//							if(charge_step == 1)
+//							{
+//								if(Para.CPOW_Voltage*10 >= Para.CDC_Ccutoff_V && Para.CDC_Ccutoff_V != 0 && cdcswdelay == 0)
+//								{
+//									Para.CSET_Voltage = Para.CDC_Ccutoff_V;
+//									charge_step = 2;
+//									cdcswdelay = 5000;
+//								}
+//							}else if(charge_step == 2){
 								if(Para.CCurrent*10 < Para.CDC_Ccutoff_C && Para.CDC_Ccutoff_C != 0 && cdcswdelay == 0)
 								{
 									charge_step = 1;
@@ -580,7 +580,7 @@ void TIM3_IRQHandler(void){
 									capwait = Para.CDC_Gap_Time*1000;
 //									cdcswdelay = 5000;
 								}
-							}
+//							}
 						}else{
 							if(ctime >= Para.CaPCTIME && cdcswdelay == 0)
 							{

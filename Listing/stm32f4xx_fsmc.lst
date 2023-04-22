@@ -800,10 +800,11 @@ Ntypedef unsigned           int uint32_t;
 Ntypedef unsigned       __INT64 uint64_t;
 Xtypedef unsigned       __int64 uint64_t;
 N
-N//typedef unsigned          char u8;
-N//typedef unsigned short     int u16;
-N//typedef unsigned           int u32;
-N//typedef unsigned       __INT64 u64;
+Ntypedef unsigned          char u8;
+Ntypedef unsigned short     int u16;
+Ntypedef unsigned           int u32;
+Ntypedef unsigned       __INT64 u64;
+Xtypedef unsigned       __int64 u64;
 N
 N//typedef unsigned          char vu8;
 N//typedef unsigned short     int vu16;
