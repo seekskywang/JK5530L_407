@@ -764,6 +764,8 @@ void CalHandle(u8 mode,u8 range,u32 data)
 	}else if(mode == 2){
 		if(range == 0)//内阻低档位低段
 		{
+			LOAD_I_SW = 1;
+			GPIO_ResetBits(GPIOC,GPIO_Pin_11);//电流测量为高档位
 			RCONT_SW = 0;
 			calflag = 1;
 			x1 = Rmon_value;
@@ -775,7 +777,7 @@ void CalHandle(u8 mode,u8 range,u32 data)
 //			Modify_A_ACT = data;//读取低段
 		}else if (range == 1)//内阻低档位高段
 		{
-
+			
 			x2 = Rmon_value;
 			y2 = data;
 			CalPara.TestR[0] = ((float)y2 - (float)y1)/((float)x2 - (float)x1);
@@ -785,6 +787,8 @@ void CalHandle(u8 mode,u8 range,u32 data)
 			calflag = 0;
 		}else if(range == 2)//内阻高档位低段
 		{
+			LOAD_I_SW = 1;
+			GPIO_ResetBits(GPIOC,GPIO_Pin_11);//电流测量为高档位
 			RCONT_SW = 1;
 			calflag = 1;
 			x1 = Rmon_value;

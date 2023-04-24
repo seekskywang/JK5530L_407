@@ -55215,10 +55215,8 @@ N		if(USART3_Recive_flg == 1)
 N		{
 N			USART3HANDLE();
 N		}
-N		TIM_SetCompare3(TIM4,Contr_Voltage);//稳压电源电流DAC
-X		TIM_SetCompare3(((TIM_TypeDef *) (((uint32_t)0x40000000) + 0x0800)),Contr_Voltage);
-N		TIM_SetCompare4(TIM4,Contr_Current);//稳压电源电压DAC
-X		TIM_SetCompare4(((TIM_TypeDef *) (((uint32_t)0x40000000) + 0x0800)),Contr_Current);
+N//		TIM_SetCompare3(TIM4,Contr_Voltage);//稳压电源电流DAC
+N//		TIM_SetCompare4(TIM4,Contr_Current);//稳压电源电压DAC
 N		AD5541_Send(Contr_Laod);//加载DAC值
 N		MODE_CONT();//电压电流档位切换
 N		if(Flag_DAC_OFF==0 && calflag == 0)

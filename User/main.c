@@ -444,8 +444,8 @@ int main(void)
 		{
 			USART3HANDLE();
 		}
-		TIM_SetCompare3(TIM4,Contr_Voltage);//稳压电源电流DAC
-		TIM_SetCompare4(TIM4,Contr_Current);//稳压电源电压DAC
+//		TIM_SetCompare3(TIM4,Contr_Voltage);//稳压电源电流DAC
+//		TIM_SetCompare4(TIM4,Contr_Current);//稳压电源电压DAC
 		AD5541_Send(Contr_Laod);//加载DAC值
 		MODE_CONT();//电压电流档位切换
 		if(Flag_DAC_OFF==0 && calflag == 0)

@@ -37948,6 +37948,10 @@ N		}
 N	}else if(mode == 2){
 N		if(range == 0)//内阻低档位低段
 N		{
+N			LOAD_I_SW = 1;
+X			Run_Control[8] = 1;
+N			GPIO_ResetBits(GPIOC,GPIO_Pin_11);//电流测量为高档位
+X			GPIO_ResetBits(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x00020000) + 0x0800)),((uint16_t)0x0800));
 N			RCONT_SW = 0;
 X			Run_Control[9] = 0;
 N			calflag = 1;
@@ -37960,7 +37964,7 @@ N//			Modify_A_READ = Rmon_value;//测量电阻值
 N//			Modify_A_ACT = data;//读取低段
 N		}else if (range == 1)//内阻低档位高段
 N		{
-N
+N			
 N			x2 = Rmon_value;
 N			y2 = data;
 N			CalPara.TestR[0] = ((float)y2 - (float)y1)/((float)x2 - (float)x1);
@@ -37971,6 +37975,10 @@ X			(flagB . bit3)=0;
 N			calflag = 0;
 N		}else if(range == 2)//内阻高档位低段
 N		{
+N			LOAD_I_SW = 1;
+X			Run_Control[8] = 1;
+N			GPIO_ResetBits(GPIOC,GPIO_Pin_11);//电流测量为高档位
+X			GPIO_ResetBits(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x00020000) + 0x0800)),((uint16_t)0x0800));
 N			RCONT_SW = 1;
 X			Run_Control[9] = 1;
 N			calflag = 1;

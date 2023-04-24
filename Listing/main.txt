@@ -867,12 +867,12 @@
 00001c  f7fffffe          BL       GPIO_Conf
 ;;;378    
 ;;;379        abc_time = 0;
-000020  4859              LDR      r0,|L15.392|
+000020  4853              LDR      r0,|L15.368|
 000022  f04f0800          MOV      r8,#0
 000026  4644              MOV      r4,r8
 000028  f8c08000          STR      r8,[r0,#0]  ; abc_time
 ;;;380        ms_time = 0;
-00002c  4857              LDR      r0,|L15.396|
+00002c  4851              LDR      r0,|L15.372|
 00002e  f8c08000          STR      r8,[r0,#0]  ; ms_time
 ;;;381    
 ;;;382    	TIM1_PWM_Config();
@@ -910,7 +910,7 @@
 ;;;396    //	LCD_Initializtion();//液晶屏初始化
 ;;;397    	//EEPROM_READ_Coeff();//读取校准参数
 ;;;398    	RCONT_SW = 0;
-000072  4d47              LDR      r5,|L15.400|
+000072  4d41              LDR      r5,|L15.376|
 000074  626c              STR      r4,[r5,#0x24]  ; Run_Control
 ;;;399    	Read_Flash_Bytes();
 000076  f7fffffe          BL       Read_Flash_Bytes
@@ -925,7 +925,7 @@
 ;;;404    	LOAD_I_SW = 0;
 000086  622c              STR      r4,[r5,#0x20]  ; Run_Control
 ;;;405    	Flag_Swtich_ON = 0;
-000088  f8dfa108          LDR      r10,|L15.404|
+000088  f8dfa0f0          LDR      r10,|L15.380|
 ;;;406    	flag_CC_MODE = 1;
 00008c  f10a0008          ADD      r0,r10,#8
 000090  f8da1000          LDR      r1,[r10,#0]           ;405  ; flagA
@@ -962,8 +962,8 @@
 ;;;430    			for(t=0;t<len;t++)								  //通过长度进行循环
 ;;;431    			{
 ;;;432    				USART_SendData(USART2, USART_RX_BUF[t]);      //将数组采集好的数据 一次向串口1发送
-0000ac  f8df90e8          LDR      r9,|L15.408|
-0000b0  4f3a              LDR      r7,|L15.412|
+0000ac  f8df90d0          LDR      r9,|L15.384|
+0000b0  4f34              LDR      r7,|L15.388|
 0000b2  80e0              STRH     r0,[r4,#6]            ;407
                   |L15.180|
 0000b4  7920              LDRB     r0,[r4,#4]            ;410  ; tempflag
@@ -981,13 +981,13 @@
 0000cc  8838              LDRH     r0,[r7,#0]            ;423  ; USART_RX_STA
 0000ce  0400              LSLS     r0,r0,#16             ;423
 0000d0  d524              BPL      |L15.284|
-0000d2  4833              LDR      r0,|L15.416|
-0000d4  4933              LDR      r1,|L15.420|
+0000d2  482d              LDR      r0,|L15.392|
+0000d4  492d              LDR      r1,|L15.396|
 0000d6  7800              LDRB     r0,[r0,#0]            ;427  ; USART_RX_CNT
 0000d8  f7fffffe          BL       SerialRemoteHandleL
 0000dc  4606              MOV      r6,r0                 ;428
 0000de  2500              MOVS     r5,#0                 ;430
-0000e0  f8dfb0c0          LDR      r11,|L15.420|
+0000e0  f8dfb0a8          LDR      r11,|L15.396|
 0000e4  e012              B        |L15.268|
                   |L15.230|
 0000e6  f8848004          STRB     r8,[r4,#4]            ;412
@@ -1013,7 +1013,7 @@
 ;;;434    			}
 ;;;435    			memset(USART_RX_BUF,0,USART_REC_LEN);
 000110  21c8              MOVS     r1,#0xc8
-000112  4824              LDR      r0,|L15.420|
+000112  481e              LDR      r0,|L15.396|
 000114  f7fffffe          BL       __aeabi_memclr
 ;;;436    			
 ;;;437    			USART_RX_STA=0;			  //清零 虚拟寄存器		  为一下次采集做准备
@@ -1031,7 +1031,7 @@
                   |L15.296|
 ;;;442    		}
 ;;;443    		if(USART3_Recive_flg == 1)
-000128  481f              LDR      r0,|L15.424|
+000128  4819              LDR      r0,|L15.400|
 00012a  7800              LDRB     r0,[r0,#0]  ; USART3_Recive_flg
 00012c  2801              CMP      r0,#1
 00012e  d101              BNE      |L15.308|
@@ -1040,53 +1040,44 @@
 000130  f7fffffe          BL       USART3HANDLE
                   |L15.308|
 ;;;446    		}
-;;;447    		TIM_SetCompare3(TIM4,Contr_Voltage);//稳压电源电流DAC
-000134  481d              LDR      r0,|L15.428|
-000136  8801              LDRH     r1,[r0,#0]  ; Contr_Voltage
-000138  4d1d              LDR      r5,|L15.432|
-00013a  4628              MOV      r0,r5
-00013c  f7fffffe          BL       TIM_SetCompare3
-;;;448    		TIM_SetCompare4(TIM4,Contr_Current);//稳压电源电压DAC
-000140  481c              LDR      r0,|L15.436|
-000142  8801              LDRH     r1,[r0,#0]  ; Contr_Current
-000144  4628              MOV      r0,r5
-000146  f7fffffe          BL       TIM_SetCompare4
+;;;447    //		TIM_SetCompare3(TIM4,Contr_Voltage);//稳压电源电流DAC
+;;;448    //		TIM_SetCompare4(TIM4,Contr_Current);//稳压电源电压DAC
 ;;;449    		AD5541_Send(Contr_Laod);//加载DAC值
-00014a  481b              LDR      r0,|L15.440|
-00014c  8800              LDRH     r0,[r0,#0]  ; Contr_Laod
-00014e  f7fffffe          BL       AD5541_Send
+000134  4817              LDR      r0,|L15.404|
+000136  8800              LDRH     r0,[r0,#0]  ; Contr_Laod
+000138  f7fffffe          BL       AD5541_Send
 ;;;450    		MODE_CONT();//电压电流档位切换
-000152  f7fffffe          BL       MODE_CONT
+00013c  f7fffffe          BL       MODE_CONT
 ;;;451    		if(Flag_DAC_OFF==0 && calflag == 0)
-000156  480f              LDR      r0,|L15.404|
-000158  1d00              ADDS     r0,r0,#4
-00015a  7800              LDRB     r0,[r0,#0]  ; flagB
-00015c  0700              LSLS     r0,r0,#28
-00015e  d403              BMI      |L15.360|
-000160  78e0              LDRB     r0,[r4,#3]  ; calflag
-000162  b908              CBNZ     r0,|L15.360|
+000140  480e              LDR      r0,|L15.380|
+000142  1d00              ADDS     r0,r0,#4
+000144  7800              LDRB     r0,[r0,#0]  ; flagB
+000146  0700              LSLS     r0,r0,#28
+000148  d403              BMI      |L15.338|
+00014a  78e0              LDRB     r0,[r4,#3]  ; calflag
+00014c  b908              CBNZ     r0,|L15.338|
 ;;;452    		{
 ;;;453    			Transformation_ADC();
-000164  f7fffffe          BL       Transformation_ADC
-                  |L15.360|
+00014e  f7fffffe          BL       Transformation_ADC
+                  |L15.338|
 ;;;454    		}
 ;;;455    		if(Flag_ADC_Full==1)
-000168  f8da1000          LDR      r1,[r10,#0]  ; flagA
-00016c  078a              LSLS     r2,r1,#30
-00016e  d505              BPL      |L15.380|
+000152  f8da1000          LDR      r1,[r10,#0]  ; flagA
+000156  078a              LSLS     r2,r1,#30
+000158  d505              BPL      |L15.358|
 ;;;456    		{
 ;;;457    			Flag_ADC_Full=0;
-000170  f0210102          BIC      r1,r1,#2
+00015a  f0210102          BIC      r1,r1,#2
 ;;;458    			ADC_CH_Scan();//ADC滤波
-000174  f8ca1000          STR      r1,[r10,#0]  ; flagA
-000178  f7fffffe          BL       ADC_CH_Scan
-                  |L15.380|
+00015e  f8ca1000          STR      r1,[r10,#0]  ; flagA
+000162  f7fffffe          BL       ADC_CH_Scan
+                  |L15.358|
 ;;;459    		}
 ;;;460    		AD7689_Scan_CH();//读取AD7689各通道AD值
-00017c  f7fffffe          BL       AD7689_Scan_CH
+000166  f7fffffe          BL       AD7689_Scan_CH
 ;;;461    		Temp_Comapre();//风扇控制
-000180  f7fffffe          BL       Temp_Comapre
-000184  e796              B        |L15.180|
+00016a  f7fffffe          BL       Temp_Comapre
+00016e  e7a1              B        |L15.180|
 ;;;462    	}
 ;;;463    	//IWDG_Inte();
 ;;;464    //	MainTask();
@@ -1094,32 +1085,25 @@
 ;;;466    
                           ENDP
 
-000186  0000              DCW      0x0000
-                  |L15.392|
+                  |L15.368|
                           DCD      abc_time
-                  |L15.396|
+                  |L15.372|
                           DCD      ms_time
-                  |L15.400|
+                  |L15.376|
                           DCD      Run_Control
-                  |L15.404|
+                  |L15.380|
                           DCD      ||area_number.24||+0x8
-                  |L15.408|
+                  |L15.384|
                           DCD      0x40004400
-                  |L15.412|
+                  |L15.388|
                           DCD      USART_RX_STA
-                  |L15.416|
+                  |L15.392|
                           DCD      USART_RX_CNT
-                  |L15.420|
+                  |L15.396|
                           DCD      USART_RX_BUF
-                  |L15.424|
+                  |L15.400|
                           DCD      USART3_Recive_flg
-                  |L15.428|
-                          DCD      Contr_Voltage
-                  |L15.432|
-                          DCD      0x40000800
-                  |L15.436|
-                          DCD      Contr_Current
-                  |L15.440|
+                  |L15.404|
                           DCD      Contr_Laod
 
                           AREA ||.bss||, DATA, NOINIT, ALIGN=2
