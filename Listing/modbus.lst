@@ -38247,7 +38247,7 @@ N//			else var32 = var32 + CLists.CSET_LoadA_Offset_LOW;
 N//			var32 = var32/CLists.CSET_Load_CorrectionA_LOW;
 N//			var32=var32>>1;
 N			Contr_Laod = var32;
-N			if(Para.CSET_Current_Laod==0)
+N			if(Para.CSET_Current_Laod==0 || mainswitch == 0)
 N			{
 N				Contr_Laod=0;
 N			}
@@ -38273,7 +38273,7 @@ N//			else var32 = var32 + CLists.CSET_LoadA_Offset_HIG;
 N//			var32 = var32/CLists.CSET_Load_CorrectionA_HIG;
 N//			var32=var32>>1;
 N			Contr_Laod = var32;
-N			if(Para.CSET_Current_Laod==0)
+N			if(Para.CSET_Current_Laod==0 || mainswitch == 0)
 N			{
 N				Contr_Laod=0;
 N			}
@@ -38298,7 +38298,7 @@ N//			else var32 = var32 + CLists.CSET_LoadV_Offset_LOW;
 N//			var32 = var32/CLists.CSET_Load_CorrectionV_LOW;
 N//			var32=var32>>1;
 N			Contr_Laod = var32;
-N			if(Para.CSET_Voltage_Laod==0)
+N			if(Para.CSET_Voltage_Laod==0 || mainswitch == 0)
 N			{
 N				Contr_Laod=0;
 N			}

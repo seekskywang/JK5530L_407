@@ -1063,7 +1063,7 @@ void Transformation_ADC(void)
 //			var32 = var32/CLists.CSET_Load_CorrectionA_LOW;
 //			var32=var32>>1;
 			Contr_Laod = var32;
-			if(Para.CSET_Current_Laod==0)
+			if(Para.CSET_Current_Laod==0 || mainswitch == 0)
 			{
 				Contr_Laod=0;
 			}
@@ -1089,7 +1089,7 @@ void Transformation_ADC(void)
 //			var32 = var32/CLists.CSET_Load_CorrectionA_HIG;
 //			var32=var32>>1;
 			Contr_Laod = var32;
-			if(Para.CSET_Current_Laod==0)
+			if(Para.CSET_Current_Laod==0 || mainswitch == 0)
 			{
 				Contr_Laod=0;
 			}
@@ -1112,7 +1112,7 @@ void Transformation_ADC(void)
 //			var32 = var32/CLists.CSET_Load_CorrectionV_LOW;
 //			var32=var32>>1;
 			Contr_Laod = var32;
-			if(Para.CSET_Voltage_Laod==0)
+			if(Para.CSET_Voltage_Laod==0 || mainswitch == 0)
 			{
 				Contr_Laod=0;
 			}
