@@ -1428,11 +1428,11 @@
 ;;;533    			break;
 ;;;534    		
 ;;;535    		case SLAVE_REG_P02://负载电流
-;;;536    			Para.LOAD_C = reg_value;
+;;;536    			Para.LOAD_C = reg_value*10;
+000002  eb010381          ADD      r3,r1,r1,LSL #2
 ;;;537    			break;
 ;;;538    		case SLAVE_REG_P03://输出电压
 ;;;539    			Para.POWER_OutPut_V = reg_value*10;
-000002  eb010381          ADD      r3,r1,r1,LSL #2
 ;;;540    			break;
 ;;;541    
 ;;;542    		case SLAVE_REG_P04://限制电流
@@ -1456,7 +1456,7 @@
 ;;;560    
 ;;;561    			break;
 ;;;562    		case SLAVE_REG_P09:	//充放电负载电�?
-;;;563    			Para.CDC_Load_C = reg_value;
+;;;563    			Para.CDC_Load_C = reg_value*10;
 ;;;564    
 ;;;565    			break;
 ;;;566    		case SLAVE_REG_P10:	//放电截止电压
@@ -1492,7 +1492,7 @@
 ;;;596    			Para.CaPCTIME = reg_value*6;//ת��Ϊs
 000006  eb010441          ADD      r4,r1,r1,LSL #1
 00000a  4a1e              LDR      r2,|L19.132|
-00000c  005b              LSLS     r3,r3,#1              ;539
+00000c  005b              LSLS     r3,r3,#1              ;536
 00000e  0064              LSLS     r4,r4,#1
 000010  2815              CMP      r0,#0x15              ;517
 000012  d235              BCS      |L19.128|
@@ -1507,7 +1507,7 @@
 000030  e024              B        |L19.124|
 000032  6611              STR      r1,[r2,#0x60]         ;531  ; Para
 000034  e022              B        |L19.124|
-000036  65d1              STR      r1,[r2,#0x5c]         ;536  ; Para
+000036  65d3              STR      r3,[r2,#0x5c]         ;536  ; Para
 000038  e020              B        |L19.124|
 00003a  6553              STR      r3,[r2,#0x54]         ;539  ; Para
 00003c  e01e              B        |L19.124|
@@ -1521,7 +1521,7 @@
 000050  e014              B        |L19.124|
 000052  f8a21078          STRH     r1,[r2,#0x78]         ;559
 000056  e011              B        |L19.124|
-000058  67d1              STR      r1,[r2,#0x7c]         ;563  ; Para
+000058  67d3              STR      r3,[r2,#0x7c]         ;563  ; Para
 00005a  e00f              B        |L19.124|
 00005c  f8c21080          STR      r1,[r2,#0x80]         ;567  ; Para
 000060  e00c              B        |L19.124|

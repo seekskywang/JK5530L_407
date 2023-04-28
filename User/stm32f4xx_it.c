@@ -533,7 +533,7 @@ static uint8_t MODS_WriteRegValue(uint16_t reg_addr, uint16_t reg_value)
 			break;
 		
 		case SLAVE_REG_P02://负载电流
-			Para.LOAD_C = reg_value;
+			Para.LOAD_C = reg_value*10;
 			break;
 		case SLAVE_REG_P03://输出电压
 			Para.POWER_OutPut_V = reg_value*10;
@@ -560,7 +560,7 @@ static uint8_t MODS_WriteRegValue(uint16_t reg_addr, uint16_t reg_value)
 
 			break;
 		case SLAVE_REG_P09:	//充放电负载电�?
-			Para.CDC_Load_C = reg_value;
+			Para.CDC_Load_C = reg_value*10;
 
 			break;
 		case SLAVE_REG_P10:	//放电截止电压

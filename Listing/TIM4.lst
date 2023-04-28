@@ -35455,7 +35455,7 @@ Nu8 sendmodegap[6] = {0x01,0x53,0x00,0x00,0x00,0x03};
 Nu16 cdcswdelay;
 Nvu16 watchcurrent[1000];
 Nu16 watchcount;
-Nuint8_t vccbuf[13];
+Nuint8_t vccbuf[15];
 Nfloat shortold_I = 0;
 Nvu8 overflag;
 Nvu32 capwait;
@@ -35573,69 +35573,85 @@ N{
 N	
 N	
 N	vccbuf[0] = 0x01;
-N	vccbuf[2] = 0x0A;
-N	if(mode == 0)
+N	vccbuf[2] = 0x0C;
+N	if(mode == 0)//动态负载模式
 N	{
-N		vccbuf[1] = 0x50;
+N		vccbuf[1] = 0x50;//负载功能
 N		
 N		vccbuf[3] = (vu16)(DISS_Voltage*1000)>>8;
-N		vccbuf[4] = (vu16)(DISS_Voltage*1000);
+N		vccbuf[4] = (vu16)(DISS_Voltage*1000);//2字节负载电压
 N		
-N		vccbuf[5] = (vu16)(DISS_Current*1000)>>8;
-N		vccbuf[6] = (vu16)(DISS_Current*1000);
+N		vccbuf[5] = ((vu32)(DISS_Current*1000))>>24;
+N		vccbuf[6] = ((vu32)(DISS_Current*1000))>>16;
+N		vccbuf[7] = ((vu32)(DISS_Current*1000))>>8;
+N		vccbuf[8] = ((vu32)(DISS_Current*1000));//4字节负载电流
 N		
-N		vccbuf[7] = battery_c>>24;
-N		vccbuf[8] = battery_c>>16;
-N		vccbuf[9] = battery_c>>8;
-N		vccbuf[10] = battery_c;
-N		vccbuf[11] = Temperature>>8;
-N		vccbuf[12] = (vu8)Temperature;
-N	}else if(mode == 1){
+N		vccbuf[9] = battery_c>>24;
+N		vccbuf[10] = battery_c>>16;
+N		vccbuf[11] = battery_c>>8;
+N		vccbuf[12] = battery_c;//4字节容量
+N		vccbuf[13] = Temperature>>8;
+N		vccbuf[14] = (vu8)Temperature;//2字节温度
+N	}else if(mode == 1){//动态电源模式
 N		vccbuf[1] = 0x51;
 N		
 N		vccbuf[3] = (vu16)(Para.CPOW_Voltage*10)>>8;
-N		vccbuf[4] = (vu16)(Para.CPOW_Voltage*10);
+N		vccbuf[4] = (vu16)(Para.CPOW_Voltage*10);//2字节电源电压
 N		
-N		vccbuf[5] = (vu16)(Para.CCurrent*10)>>8;
-N		vccbuf[6] = (vu16)(Para.CCurrent*10);
+N		vccbuf[5] = ((vu32)(Para.CCurrent*10))>>24;
+N		vccbuf[6] = ((vu32)(Para.CCurrent*10))>>16;
+N		vccbuf[7] = ((vu32)(Para.CCurrent*10))>>8;
+N		vccbuf[8] = ((vu32)(Para.CCurrent*10));//4字节电源电流
 N		
-N		vccbuf[7] = battery_c>>24;
-N		vccbuf[8] = battery_c>>16;
-N		vccbuf[9] = battery_c>>8;
-N		vccbuf[10] = battery_c;
-N		vccbuf[11] = Temperature>>8;
-N		vccbuf[12] = (vu8)Temperature;
-N	}else if(mode == 2){
+N		vccbuf[9] = battery_c>>24;
+N		vccbuf[10] = battery_c>>16;
+N		vccbuf[11] = battery_c>>8;
+N		vccbuf[12] = battery_c;//4字节容量
+N		vccbuf[13] = Temperature>>8;
+N		vccbuf[14] = (vu8)Temperature;//2字节温度
+N	}else if(mode == 2){//动态充放电
 N		vccbuf[1] = 0x52;
 N		
 N		
-N		if(mode_sw == 0)
+N		if(mode_sw == 0)//放电
 N		{
 N			vccbuf[3] = (vu16)(Para.CPOW_Voltage*10)>>8;
-N			vccbuf[4] = (vu16)(Para.CPOW_Voltage*10);
-N			vccbuf[5] = (vu16)(Para.CCurrent*10)>>8;
-N			vccbuf[6] = (vu16)(Para.CCurrent*10);
-N		}else if(mode_sw == 1){
+N			vccbuf[4] = (vu16)(Para.CPOW_Voltage*10);//2字节电源电压
+N			vccbuf[5] = ((vu32)(Para.CCurrent*10))>>24;
+N			vccbuf[6] = ((vu32)(Para.CCurrent*10))>>16;
+N			vccbuf[7] = ((vu32)(Para.CCurrent*10))>>8;
+N			vccbuf[8] = ((vu32)(Para.CCurrent*10));//4字节电源电流
+N		}else if(mode_sw == 1){//充电
+N			vccbuf[3] = (vu16)(DISS_Voltage*1000)>>8;
+N			vccbuf[4] = (vu16)(DISS_Voltage*1000);//2字节负载电压
+N			vccbuf[5] = ((vu32)(DISS_Current*1000))>>24;
+N			vccbuf[6] = ((vu32)(DISS_Current*1000))>>16;
+N			vccbuf[7] = ((vu32)(DISS_Current*1000))>>8;
+N			vccbuf[8] = ((vu32)(DISS_Current*1000));//4字节负载电流
+N		}else if(mode_sw == 2){//充电搁置
+N			vccbuf[3] = (vu16)(DISS_Voltage*1000)>>8;
+N			vccbuf[4] = (vu16)(DISS_Voltage*1000);//2字节负载电压
+N			vccbuf[5] = ((vu32)(Para.CCurrent*10))>>24;
+N			vccbuf[6] = ((vu32)(Para.CCurrent*10))>>16;
+N			vccbuf[7] = ((vu32)(Para.CCurrent*10))>>8;
+N			vccbuf[8] = ((vu32)(Para.CCurrent*10));//4字节电源电流
+N		}else if(mode_sw == 3){//放电搁置
 N			vccbuf[3] = (vu16)(DISS_Voltage*1000)>>8;
 N			vccbuf[4] = (vu16)(DISS_Voltage*1000);
-N			vccbuf[5] = (vu16)(DISS_Current*1000)>>8;
-N			vccbuf[6] = (vu16)(DISS_Current*1000);
-N		}else if(mode_sw == 2){
-N			vccbuf[5] = (vu16)(Para.CCurrent*10)>>8;
-N			vccbuf[6] = (vu16)(Para.CCurrent*10);
-N		}else if(mode_sw == 3){
-N			vccbuf[5] = (vu16)(DISS_Current*1000)>>8;
-N			vccbuf[6] = (vu16)(DISS_Current*1000);
+N			vccbuf[5] = ((vu32)(DISS_Current*1000))>>24;
+N			vccbuf[6] = ((vu32)(DISS_Current*1000))>>16;
+N			vccbuf[7] = ((vu32)(DISS_Current*1000))>>8;
+N			vccbuf[8] = ((vu32)(DISS_Current*1000));//4字节负载电流
 N		}
 N		
-N		vccbuf[7] = battery_c>>24;
-N		vccbuf[8] = battery_c>>16;
-N		vccbuf[9] = battery_c>>8;
-N		vccbuf[10] = battery_c;
-N		vccbuf[11] = Temperature>>8;
-N		vccbuf[12] = (vu8)Temperature;
+N		vccbuf[9] = battery_c>>24;
+N		vccbuf[10] = battery_c>>16;
+N		vccbuf[11] = battery_c>>8;
+N		vccbuf[12] = battery_c;//4字节容量
+N		vccbuf[13] = Temperature>>8;
+N		vccbuf[14] = (vu8)Temperature;//2字节温度
 N	}
-N	MODS_SendWithCRC(vccbuf, 13);
+N	MODS_SendWithCRC(vccbuf, 15);
 N}
 N
 Nvoid TIM3_Int_Init(u16 arr,u16 psc)
@@ -35934,6 +35950,8 @@ N							finishdelay = 1000*Para.ACT_DELAY;
 N						}else{
 N							finishdelay = 1000;
 N						}
+N						TIM_SetCompare1(TIM1,33000/2);
+X						TIM_SetCompare1(((TIM_TypeDef *) ((((uint32_t)0x40000000) + 0x00010000) + 0x0000)),33000/2);
 N//						finishdelay = 5000;
 N					}
 N				}

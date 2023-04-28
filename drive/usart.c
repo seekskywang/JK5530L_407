@@ -271,12 +271,14 @@ void MODE_ONOFF(vu8 value)
 			if( value == 0 ){
 				
 				Flag_Swtich_ON = 0;
-				GPIO_SetBits(GPIOC,GPIO_Pin_7);//OFF	  	
+				GPIO_SetBits(GPIOC,GPIO_Pin_7);//OFF	
+//				TIM_SetCompare1(TIM1,33000/2);
 			}
 			else if( value == 1 ){
 				
 				Flag_Swtich_ON = 1;
 				GPIO_ResetBits(GPIOC,GPIO_Pin_7);//On
+//				TIM_SetCompare1(TIM1,0);
 			}
 		}break;
 		case 1://稳压电源ON/OFF
@@ -317,6 +319,7 @@ void MODE_ONOFF(vu8 value)
 				Para.CSET_Current_Laod =  Para.IR_Start_C;
 			}
 			else if( value == 1 ){
+//				TIM_SetCompare1(TIM1,0);
 				LOAD_MODE = 0;
 				GPIO_ResetBits(GPIOC,GPIO_Pin_12);//CC模式
 				Para.CSET_Current_Laod =  Para.IR_Start_C;
@@ -347,12 +350,14 @@ void LIST_ONOFF(vu8 value)
 			if( value == 0 ){
 				
 				Flag_Swtich_ON = 0;
-				GPIO_SetBits(GPIOC,GPIO_Pin_7);//OFF	  	
+				GPIO_SetBits(GPIOC,GPIO_Pin_7);//OFF	 
+//				TIM_SetCompare1(TIM1,33000/2);				
 			}
 			else if( value == 1 ){
 				
 				Flag_Swtich_ON = 1;
 				GPIO_ResetBits(GPIOC,GPIO_Pin_7);//On
+//				TIM_SetCompare1(TIM1,0);
 			}
 		}break;
 		case 1://稳压电源ON/OFF
@@ -387,6 +392,7 @@ void LIST_ONOFF(vu8 value)
 				Para.CSET_Current_Laod =  Para.IR_Start_C;
 			}
 			else if( value == 1 ){
+//				TIM_SetCompare1(TIM1,0);
 				LOAD_I_SW = 1;
 				testv = DISS_Voltage;
 				Para.CSET_Voltage = (int)(DISS_Voltage*1000) + 1000;
@@ -433,12 +439,12 @@ void LIST_ONOFF(vu8 value)
 		case 4://电子负载ON/OFF
 		{
 			if( value == 0 ){
-				
+//				TIM_SetCompare1(TIM1,33000/2);
 				Flag_Swtich_ON = 0;
 				GPIO_SetBits(GPIOC,GPIO_Pin_7);//OFF	  	
 			}
 			else if( value == 1 ){
-				
+//				TIM_SetCompare1(TIM1,0);
 				Flag_Swtich_ON = 1;
 				GPIO_ResetBits(GPIOC,GPIO_Pin_7);//On
 			}
@@ -1470,7 +1476,7 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 						
 						if(buf[currCharNum++] == ',')
 						{
-							for(i=0,temp1=0;i<5;i++)
+							for(i=0,temp1=0;i<6;i++)
 							{
 								temp1 = temp1*10+(buf[currCharNum++]-0x30);
 							}
@@ -1513,7 +1519,7 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 						
 						if(buf[currCharNum++] == ',')
 						{
-							for(i=0,temp1=0;i<5;i++)
+							for(i=0,temp1=0;i<6;i++)
 							{
 								temp1 = temp1*10+(buf[currCharNum++]-0x30);
 							}
@@ -1544,7 +1550,7 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 						
 						if(buf[currCharNum++] == ',')
 						{
-							for(i=0,temp1=0;i<5;i++)
+							for(i=0,temp1=0;i<6;i++)
 							{
 								temp1 = temp1*10+(buf[currCharNum++]-0x30);
 							}
@@ -1579,7 +1585,7 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 						
 						if(buf[currCharNum++] == ',')
 						{
-							for(i=0,temp1=0;i<5;i++)
+							for(i=0,temp1=0;i<6;i++)
 							{
 								temp1 = temp1*10+(buf[currCharNum++]-0x30);
 							}
@@ -1610,7 +1616,7 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 						
 						if(buf[currCharNum++] == ',')
 						{
-							for(i=0,temp1=0;i<5;i++)
+							for(i=0,temp1=0;i<6;i++)
 							{
 								temp1 = temp1*10+(buf[currCharNum++]-0x30);
 							}
@@ -1652,7 +1658,7 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 						
 						if(buf[currCharNum++] == ',')
 						{
-							for(i=0,temp1=0;i<5;i++)
+							for(i=0,temp1=0;i<6;i++)
 							{
 								temp1 = temp1*10+(buf[currCharNum++]-0x30);
 							}
@@ -1683,7 +1689,7 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 						
 						if(buf[currCharNum++] == ',')
 						{
-							for(i=0,temp1=0;i<5;i++)
+							for(i=0,temp1=0;i<6;i++)
 							{
 								temp1 = temp1*10+(buf[currCharNum++]-0x30);
 							}

@@ -36593,7 +36593,7 @@ N			break;
 N		
 N		case SLAVE_REG_P02://负载电流
 X		case 0x0002:
-N			Para.LOAD_C = reg_value;
+N			Para.LOAD_C = reg_value*10;
 N			break;
 N		case SLAVE_REG_P03://输出电压
 X		case 0x0003:
@@ -36627,7 +36627,7 @@ N
 N			break;
 N		case SLAVE_REG_P09:	//充放电负载电�?
 X		case 0x0009:	
-N			Para.CDC_Load_C = reg_value;
+N			Para.CDC_Load_C = reg_value*10;
 N
 N			break;
 N		case SLAVE_REG_P10:	//放电截止电压

@@ -1692,7 +1692,7 @@
       <GroupNumber>4</GroupNumber>
       <FileNumber>56</FileNumber>
       <FileType>1</FileType>
-      <tvExp>1</tvExp>
+      <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\drive\ssd1963.c</PathWithFileName>
@@ -2016,7 +2016,7 @@
       <GroupNumber>7</GroupNumber>
       <FileNumber>81</FileNumber>
       <FileType>1</FileType>
-      <tvExp>1</tvExp>
+      <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\drive\HZ16.c</PathWithFileName>

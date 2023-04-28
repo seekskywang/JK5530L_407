@@ -49,7 +49,7 @@ u8 sendmodegap[6] = {0x01,0x53,0x00,0x00,0x00,0x03};
 u16 cdcswdelay;
 vu16 watchcurrent[1000];
 u16 watchcount;
-uint8_t vccbuf[13];
+uint8_t vccbuf[15];
 float shortold_I = 0;
 vu8 overflag;
 vu32 capwait;
@@ -137,69 +137,85 @@ void SendToPC(u8 mode)
 	
 	
 	vccbuf[0] = 0x01;
-	vccbuf[2] = 0x0A;
-	if(mode == 0)
+	vccbuf[2] = 0x0C;
+	if(mode == 0)//动态负载模式
 	{
-		vccbuf[1] = 0x50;
+		vccbuf[1] = 0x50;//负载功能
 		
 		vccbuf[3] = (vu16)(DISS_Voltage*1000)>>8;
-		vccbuf[4] = (vu16)(DISS_Voltage*1000);
+		vccbuf[4] = (vu16)(DISS_Voltage*1000);//2字节负载电压
 		
-		vccbuf[5] = (vu16)(DISS_Current*1000)>>8;
-		vccbuf[6] = (vu16)(DISS_Current*1000);
+		vccbuf[5] = ((vu32)(DISS_Current*1000))>>24;
+		vccbuf[6] = ((vu32)(DISS_Current*1000))>>16;
+		vccbuf[7] = ((vu32)(DISS_Current*1000))>>8;
+		vccbuf[8] = ((vu32)(DISS_Current*1000));//4字节负载电流
 		
-		vccbuf[7] = battery_c>>24;
-		vccbuf[8] = battery_c>>16;
-		vccbuf[9] = battery_c>>8;
-		vccbuf[10] = battery_c;
-		vccbuf[11] = Temperature>>8;
-		vccbuf[12] = (vu8)Temperature;
-	}else if(mode == 1){
+		vccbuf[9] = battery_c>>24;
+		vccbuf[10] = battery_c>>16;
+		vccbuf[11] = battery_c>>8;
+		vccbuf[12] = battery_c;//4字节容量
+		vccbuf[13] = Temperature>>8;
+		vccbuf[14] = (vu8)Temperature;//2字节温度
+	}else if(mode == 1){//动态电源模式
 		vccbuf[1] = 0x51;
 		
 		vccbuf[3] = (vu16)(Para.CPOW_Voltage*10)>>8;
-		vccbuf[4] = (vu16)(Para.CPOW_Voltage*10);
+		vccbuf[4] = (vu16)(Para.CPOW_Voltage*10);//2字节电源电压
 		
-		vccbuf[5] = (vu16)(Para.CCurrent*10)>>8;
-		vccbuf[6] = (vu16)(Para.CCurrent*10);
+		vccbuf[5] = ((vu32)(Para.CCurrent*10))>>24;
+		vccbuf[6] = ((vu32)(Para.CCurrent*10))>>16;
+		vccbuf[7] = ((vu32)(Para.CCurrent*10))>>8;
+		vccbuf[8] = ((vu32)(Para.CCurrent*10));//4字节电源电流
 		
-		vccbuf[7] = battery_c>>24;
-		vccbuf[8] = battery_c>>16;
-		vccbuf[9] = battery_c>>8;
-		vccbuf[10] = battery_c;
-		vccbuf[11] = Temperature>>8;
-		vccbuf[12] = (vu8)Temperature;
-	}else if(mode == 2){
+		vccbuf[9] = battery_c>>24;
+		vccbuf[10] = battery_c>>16;
+		vccbuf[11] = battery_c>>8;
+		vccbuf[12] = battery_c;//4字节容量
+		vccbuf[13] = Temperature>>8;
+		vccbuf[14] = (vu8)Temperature;//2字节温度
+	}else if(mode == 2){//动态充放电
 		vccbuf[1] = 0x52;
 		
 		
-		if(mode_sw == 0)
+		if(mode_sw == 0)//放电
 		{
 			vccbuf[3] = (vu16)(Para.CPOW_Voltage*10)>>8;
-			vccbuf[4] = (vu16)(Para.CPOW_Voltage*10);
-			vccbuf[5] = (vu16)(Para.CCurrent*10)>>8;
-			vccbuf[6] = (vu16)(Para.CCurrent*10);
-		}else if(mode_sw == 1){
+			vccbuf[4] = (vu16)(Para.CPOW_Voltage*10);//2字节电源电压
+			vccbuf[5] = ((vu32)(Para.CCurrent*10))>>24;
+			vccbuf[6] = ((vu32)(Para.CCurrent*10))>>16;
+			vccbuf[7] = ((vu32)(Para.CCurrent*10))>>8;
+			vccbuf[8] = ((vu32)(Para.CCurrent*10));//4字节电源电流
+		}else if(mode_sw == 1){//充电
+			vccbuf[3] = (vu16)(DISS_Voltage*1000)>>8;
+			vccbuf[4] = (vu16)(DISS_Voltage*1000);//2字节负载电压
+			vccbuf[5] = ((vu32)(DISS_Current*1000))>>24;
+			vccbuf[6] = ((vu32)(DISS_Current*1000))>>16;
+			vccbuf[7] = ((vu32)(DISS_Current*1000))>>8;
+			vccbuf[8] = ((vu32)(DISS_Current*1000));//4字节负载电流
+		}else if(mode_sw == 2){//充电搁置
+			vccbuf[3] = (vu16)(DISS_Voltage*1000)>>8;
+			vccbuf[4] = (vu16)(DISS_Voltage*1000);//2字节负载电压
+			vccbuf[5] = ((vu32)(Para.CCurrent*10))>>24;
+			vccbuf[6] = ((vu32)(Para.CCurrent*10))>>16;
+			vccbuf[7] = ((vu32)(Para.CCurrent*10))>>8;
+			vccbuf[8] = ((vu32)(Para.CCurrent*10));//4字节电源电流
+		}else if(mode_sw == 3){//放电搁置
 			vccbuf[3] = (vu16)(DISS_Voltage*1000)>>8;
 			vccbuf[4] = (vu16)(DISS_Voltage*1000);
-			vccbuf[5] = (vu16)(DISS_Current*1000)>>8;
-			vccbuf[6] = (vu16)(DISS_Current*1000);
-		}else if(mode_sw == 2){
-			vccbuf[5] = (vu16)(Para.CCurrent*10)>>8;
-			vccbuf[6] = (vu16)(Para.CCurrent*10);
-		}else if(mode_sw == 3){
-			vccbuf[5] = (vu16)(DISS_Current*1000)>>8;
-			vccbuf[6] = (vu16)(DISS_Current*1000);
+			vccbuf[5] = ((vu32)(DISS_Current*1000))>>24;
+			vccbuf[6] = ((vu32)(DISS_Current*1000))>>16;
+			vccbuf[7] = ((vu32)(DISS_Current*1000))>>8;
+			vccbuf[8] = ((vu32)(DISS_Current*1000));//4字节负载电流
 		}
 		
-		vccbuf[7] = battery_c>>24;
-		vccbuf[8] = battery_c>>16;
-		vccbuf[9] = battery_c>>8;
-		vccbuf[10] = battery_c;
-		vccbuf[11] = Temperature>>8;
-		vccbuf[12] = (vu8)Temperature;
+		vccbuf[9] = battery_c>>24;
+		vccbuf[10] = battery_c>>16;
+		vccbuf[11] = battery_c>>8;
+		vccbuf[12] = battery_c;//4字节容量
+		vccbuf[13] = Temperature>>8;
+		vccbuf[14] = (vu8)Temperature;//2字节温度
 	}
-	MODS_SendWithCRC(vccbuf, 13);
+	MODS_SendWithCRC(vccbuf, 15);
 }
 
 void TIM3_Int_Init(u16 arr,u16 psc)
@@ -487,6 +503,7 @@ void TIM3_IRQHandler(void){
 						}else{
 							finishdelay = 1000;
 						}
+						TIM_SetCompare1(TIM1,33000/2);
 //						finishdelay = 5000;
 					}
 				}

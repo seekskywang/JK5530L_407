@@ -37389,8 +37389,9 @@ N			if( value == 0 ){
 N				
 N				Flag_Swtich_ON = 0;
 X				(flagA . bit6) = 0;
-N				GPIO_SetBits(GPIOC,GPIO_Pin_7);//OFF	  	
+N				GPIO_SetBits(GPIOC,GPIO_Pin_7);//OFF	
 X				GPIO_SetBits(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x00020000) + 0x0800)),((uint16_t)0x0080));
+N//				TIM_SetCompare1(TIM1,33000/2);
 N			}
 N			else if( value == 1 ){
 N				
@@ -37398,6 +37399,7 @@ N				Flag_Swtich_ON = 1;
 X				(flagA . bit6) = 1;
 N				GPIO_ResetBits(GPIOC,GPIO_Pin_7);//On
 X				GPIO_ResetBits(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x00020000) + 0x0800)),((uint16_t)0x0080));
+N//				TIM_SetCompare1(TIM1,0);
 N			}
 N		}break;
 N		case 1://稳压电源ON/OFF
@@ -37438,6 +37440,7 @@ N				max_discahrgeNum = 0;
 N				Para.CSET_Current_Laod =  Para.IR_Start_C;
 N			}
 N			else if( value == 1 ){
+N//				TIM_SetCompare1(TIM1,0);
 N				LOAD_MODE = 0;
 X				Run_Control[6] = 0;
 N				GPIO_ResetBits(GPIOC,GPIO_Pin_12);//CC模式
@@ -37475,8 +37478,9 @@ N			if( value == 0 ){
 N				
 N				Flag_Swtich_ON = 0;
 X				(flagA . bit6) = 0;
-N				GPIO_SetBits(GPIOC,GPIO_Pin_7);//OFF	  	
+N				GPIO_SetBits(GPIOC,GPIO_Pin_7);//OFF	 
 X				GPIO_SetBits(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x00020000) + 0x0800)),((uint16_t)0x0080));
+N//				TIM_SetCompare1(TIM1,33000/2);				
 N			}
 N			else if( value == 1 ){
 N				
@@ -37484,6 +37488,7 @@ N				Flag_Swtich_ON = 1;
 X				(flagA . bit6) = 1;
 N				GPIO_ResetBits(GPIOC,GPIO_Pin_7);//On
 X				GPIO_ResetBits(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x00020000) + 0x0800)),((uint16_t)0x0080));
+N//				TIM_SetCompare1(TIM1,0);
 N			}
 N		}break;
 N		case 1://稳压电源ON/OFF
@@ -37518,6 +37523,7 @@ N				max_discahrgeNum = 0;
 N				Para.CSET_Current_Laod =  Para.IR_Start_C;
 N			}
 N			else if( value == 1 ){
+N//				TIM_SetCompare1(TIM1,0);
 N				LOAD_I_SW = 1;
 X				Run_Control[8] = 1;
 N				testv = DISS_Voltage;
@@ -37571,14 +37577,14 @@ N		}break;
 N		case 4://电子负载ON/OFF
 N		{
 N			if( value == 0 ){
-N				
+N//				TIM_SetCompare1(TIM1,33000/2);
 N				Flag_Swtich_ON = 0;
 X				(flagA . bit6) = 0;
 N				GPIO_SetBits(GPIOC,GPIO_Pin_7);//OFF	  	
 X				GPIO_SetBits(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x00020000) + 0x0800)),((uint16_t)0x0080));
 N			}
 N			else if( value == 1 ){
-N				
+N//				TIM_SetCompare1(TIM1,0);
 N				Flag_Swtich_ON = 1;
 X				(flagA . bit6) = 1;
 N				GPIO_ResetBits(GPIOC,GPIO_Pin_7);//On
@@ -38686,7 +38692,7 @@ N						temp1 = 0;
 N						
 N						if(buf[currCharNum++] == ',')
 N						{
-N							for(i=0,temp1=0;i<5;i++)
+N							for(i=0,temp1=0;i<6;i++)
 N							{
 N								temp1 = temp1*10+(buf[currCharNum++]-0x30);
 N							}
@@ -38735,7 +38741,7 @@ N						temp1 = 0;
 N						
 N						if(buf[currCharNum++] == ',')
 N						{
-N							for(i=0,temp1=0;i<5;i++)
+N							for(i=0,temp1=0;i<6;i++)
 N							{
 N								temp1 = temp1*10+(buf[currCharNum++]-0x30);
 N							}
@@ -38768,7 +38774,7 @@ N						temp1 = 0;
 N						
 N						if(buf[currCharNum++] == ',')
 N						{
-N							for(i=0,temp1=0;i<5;i++)
+N							for(i=0,temp1=0;i<6;i++)
 N							{
 N								temp1 = temp1*10+(buf[currCharNum++]-0x30);
 N							}
@@ -38803,7 +38809,7 @@ N
 N						
 N						if(buf[currCharNum++] == ',')
 N						{
-N							for(i=0,temp1=0;i<5;i++)
+N							for(i=0,temp1=0;i<6;i++)
 N							{
 N								temp1 = temp1*10+(buf[currCharNum++]-0x30);
 N							}
@@ -38834,7 +38840,7 @@ N						temp1 = 0;
 N						
 N						if(buf[currCharNum++] == ',')
 N						{
-N							for(i=0,temp1=0;i<5;i++)
+N							for(i=0,temp1=0;i<6;i++)
 N							{
 N								temp1 = temp1*10+(buf[currCharNum++]-0x30);
 N							}
@@ -38882,7 +38888,7 @@ N						temp1 = 0;
 N						
 N						if(buf[currCharNum++] == ',')
 N						{
-N							for(i=0,temp1=0;i<5;i++)
+N							for(i=0,temp1=0;i<6;i++)
 N							{
 N								temp1 = temp1*10+(buf[currCharNum++]-0x30);
 N							}
@@ -38913,7 +38919,7 @@ N						temp1 = 0;
 N						
 N						if(buf[currCharNum++] == ',')
 N						{
-N							for(i=0,temp1=0;i<5;i++)
+N							for(i=0,temp1=0;i<6;i++)
 N							{
 N								temp1 = temp1*10+(buf[currCharNum++]-0x30);
 N							}
