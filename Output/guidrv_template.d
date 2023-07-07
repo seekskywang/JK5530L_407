@@ -1,12 +1,12 @@
 ..\output\guidrv_template.o: ..\STemWinLibrary522\Config\GUIDRV_Template.c
-..\output\guidrv_template.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+..\output\guidrv_template.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
 ..\output\guidrv_template.o: ..\Include\ssd1963.h
 ..\output\guidrv_template.o: ..\Include\my_register.h
 ..\output\guidrv_template.o: ..\User\STM32F4xx.h
 ..\output\guidrv_template.o: ..\Libraries\CMSIS\inc\core_cm4.h
-..\output\guidrv_template.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-..\output\guidrv_template.o: E:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h
-..\output\guidrv_template.o: E:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
+..\output\guidrv_template.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\guidrv_template.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h
+..\output\guidrv_template.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
 ..\output\guidrv_template.o: ..\Libraries\CMSIS\inc\core_cm4_simd.h
 ..\output\guidrv_template.o: ..\User\system_stm32f4xx.h
 ..\output\guidrv_template.o: ..\User\stm32f4xx_conf.h

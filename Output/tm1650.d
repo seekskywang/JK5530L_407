@@ -2,9 +2,9 @@
 ..\output\tm1650.o: ..\Include\my_register.h
 ..\output\tm1650.o: ..\User\STM32F4xx.h
 ..\output\tm1650.o: ..\Libraries\CMSIS\inc\core_cm4.h
-..\output\tm1650.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-..\output\tm1650.o: E:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h
-..\output\tm1650.o: E:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
+..\output\tm1650.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\tm1650.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h
+..\output\tm1650.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
 ..\output\tm1650.o: ..\Libraries\CMSIS\inc\core_cm4_simd.h
 ..\output\tm1650.o: ..\User\system_stm32f4xx.h
 ..\output\tm1650.o: ..\User\stm32f4xx_conf.h

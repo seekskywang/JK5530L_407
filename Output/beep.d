@@ -2,9 +2,9 @@
 ..\output\beep.o: ..\Include\my_register.h
 ..\output\beep.o: ..\User\STM32F4xx.h
 ..\output\beep.o: ..\Libraries\CMSIS\inc\core_cm4.h
-..\output\beep.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-..\output\beep.o: E:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h
-..\output\beep.o: E:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
+..\output\beep.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\beep.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h
+..\output\beep.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
 ..\output\beep.o: ..\Libraries\CMSIS\inc\core_cm4_simd.h
 ..\output\beep.o: ..\User\system_stm32f4xx.h
 ..\output\beep.o: ..\User\stm32f4xx_conf.h

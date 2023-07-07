@@ -2,9 +2,9 @@
 ..\output\ad5541.o: ..\Include\my_register.h
 ..\output\ad5541.o: ..\User\STM32F4xx.h
 ..\output\ad5541.o: ..\Libraries\CMSIS\inc\core_cm4.h
-..\output\ad5541.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-..\output\ad5541.o: E:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h
-..\output\ad5541.o: E:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
+..\output\ad5541.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\ad5541.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h
+..\output\ad5541.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
 ..\output\ad5541.o: ..\Libraries\CMSIS\inc\core_cm4_simd.h
 ..\output\ad5541.o: ..\User\system_stm32f4xx.h
 ..\output\ad5541.o: ..\User\stm32f4xx_conf.h

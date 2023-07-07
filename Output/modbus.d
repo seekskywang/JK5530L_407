@@ -2,9 +2,9 @@
 ..\output\modbus.o: ..\Include\my_register.h
 ..\output\modbus.o: ..\User\STM32F4xx.h
 ..\output\modbus.o: ..\Libraries\CMSIS\inc\core_cm4.h
-..\output\modbus.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-..\output\modbus.o: E:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h
-..\output\modbus.o: E:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
+..\output\modbus.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\modbus.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h
+..\output\modbus.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
 ..\output\modbus.o: ..\Libraries\CMSIS\inc\core_cm4_simd.h
 ..\output\modbus.o: ..\User\system_stm32f4xx.h
 ..\output\modbus.o: ..\User\stm32f4xx_conf.h
@@ -36,7 +36,7 @@
 ..\output\modbus.o: ..\Libraries\FWlib\inc\stm32f4xx_dcmi.h
 ..\output\modbus.o: ..\Libraries\FWlib\inc\stm32f4xx_fsmc.h
 ..\output\modbus.o: ..\drive\usart.h
-..\output\modbus.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+..\output\modbus.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 ..\output\modbus.o: ..\Include\modbus.h
 ..\output\modbus.o: ..\Include\flash.h
 ..\output\modbus.o: ..\Include\my_register.h

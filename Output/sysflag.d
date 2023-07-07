@@ -2,9 +2,9 @@
 ..\output\sysflag.o: ..\Include\my_register.h
 ..\output\sysflag.o: ..\User\STM32F4xx.h
 ..\output\sysflag.o: ..\Libraries\CMSIS\inc\core_cm4.h
-..\output\sysflag.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-..\output\sysflag.o: E:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h
-..\output\sysflag.o: E:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
+..\output\sysflag.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\sysflag.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h
+..\output\sysflag.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
 ..\output\sysflag.o: ..\Libraries\CMSIS\inc\core_cm4_simd.h
 ..\output\sysflag.o: ..\User\system_stm32f4xx.h
 ..\output\sysflag.o: ..\User\stm32f4xx_conf.h
@@ -55,7 +55,7 @@
 ..\output\sysflag.o: ..\STemWinLibrary522\inc\GUI_Private.h
 ..\output\sysflag.o: ..\STemWinLibrary522\inc\LCD_Protected.h
 ..\output\sysflag.o: ..\STemWinLibrary522\inc\GUI_Debug.h
-..\output\sysflag.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+..\output\sysflag.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
 ..\output\sysflag.o: ..\STemWinLibrary522\inc\SCROLLBAR.h
 ..\output\sysflag.o: ..\STemWinLibrary522\inc\WIDGET.h
 ..\output\sysflag.o: ..\STemWinLibrary522\inc\CALENDAR.h
@@ -86,7 +86,7 @@
 ..\output\sysflag.o: ..\Include\my_register.h
 ..\output\sysflag.o: ..\Include\key.h
 ..\output\sysflag.o: ..\Include\my_register.h
-..\output\sysflag.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
-..\output\sysflag.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
-..\output\sysflag.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
-..\output\sysflag.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+..\output\sysflag.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+..\output\sysflag.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+..\output\sysflag.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+..\output\sysflag.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h

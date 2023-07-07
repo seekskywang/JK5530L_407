@@ -3,9 +3,9 @@
 ..\output\iic_24c01.o: ..\Include\my_register.h
 ..\output\iic_24c01.o: ..\User\STM32F4xx.h
 ..\output\iic_24c01.o: ..\Libraries\CMSIS\inc\core_cm4.h
-..\output\iic_24c01.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-..\output\iic_24c01.o: E:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h
-..\output\iic_24c01.o: E:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
+..\output\iic_24c01.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\iic_24c01.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h
+..\output\iic_24c01.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
 ..\output\iic_24c01.o: ..\Libraries\CMSIS\inc\core_cm4_simd.h
 ..\output\iic_24c01.o: ..\User\system_stm32f4xx.h
 ..\output\iic_24c01.o: ..\User\stm32f4xx_conf.h

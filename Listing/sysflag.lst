@@ -669,7 +669,7 @@ S  #endif
 N#endif
 N
 N#include <stdint.h>                      /* standard types definitions                      */
-L 1 "E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h" 1
+L 1 "C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h" 1
 N/* Copyright (C) ARM Ltd., 1999,2014 */
 N/* All rights reserved */
 N
@@ -681,7 +681,7 @@ N */
 N
 N#ifndef __stdint_h
 N#define __stdint_h
-N#define __ARMCLIB_VERSION 5060037
+N#define __ARMCLIB_VERSION 5060019
 N
 N  #ifdef __INT64_TYPE__
 S    /* armclang predefines '__INT64_TYPE__' and '__INT64_C_SUFFIX__' */
@@ -744,12 +744,6 @@ Ntypedef unsigned short     int u16;
 Ntypedef unsigned           int u32;
 Ntypedef unsigned       __INT64 u64;
 Xtypedef unsigned       __int64 u64;
-N
-N//typedef unsigned          char vu8;
-N//typedef unsigned short     int vu16;
-N//typedef unsigned            int vu32;
-N//typedef unsigned       __INT64 vu64;
-N
 N    /* 7.18.1.2 */
 N
 N    /* smallest type of at least n bits */
@@ -782,10 +776,6 @@ Ntypedef unsigned           int uint_fast16_t;
 Ntypedef unsigned           int uint_fast32_t;
 Ntypedef unsigned       __INT64 uint_fast64_t;
 Xtypedef unsigned       __int64 uint_fast64_t;
-N
-N//typedef unsigned long  vu32;
-N//typedef unsigned short vu16;
-N//typedef unsigned char  vu8;
 N
 N    /* 7.18.1.4 integer types capable of holding object pointers */
 N#if __sizeof_ptr == 8
@@ -1016,7 +1006,7 @@ N
 N/* end of stdint.h */
 L 169 "..\Libraries\CMSIS\inc\core_cm4.h" 2
 N#include <core_cmInstr.h>                /* Core Instruction Access                         */
-L 1 "E:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h" 1
+L 1 "C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h" 1
 N/**************************************************************************//**
 N * @file     core_cmInstr.h
 N * @brief    CMSIS Cortex-M Core Instruction Access Header File
@@ -1069,7 +1059,7 @@ X#if   1L
 N/* ARM armcc specific functions */
 N
 N#if (__ARMCC_VERSION < 400677)
-X#if (5060750 < 400677)
+X#if (5060422 < 400677)
 S  #error "Please use ARM Compiler Toolchain V4.0.677 or later!"
 N#endif
 N
@@ -1713,7 +1703,7 @@ N
 N#endif /* __CORE_CMINSTR_H */
 L 170 "..\Libraries\CMSIS\inc\core_cm4.h" 2
 N#include <core_cmFunc.h>                 /* Core Function Access                            */
-L 1 "E:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h" 1
+L 1 "C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h" 1
 N/**************************************************************************//**
 N * @file     core_cmFunc.h
 N * @brief    CMSIS Cortex-M Core Function Access Header File
@@ -1766,7 +1756,7 @@ X#if   1L
 N/* ARM armcc specific functions */
 N
 N#if (__ARMCC_VERSION < 400677)
-X#if (5060750 < 400677)
+X#if (5060422 < 400677)
 S  #error "Please use ARM Compiler Toolchain V4.0.677 or later!"
 N#endif
 N
@@ -42077,7 +42067,7 @@ N#ifndef GUI_DEBUG_H
 N#define GUI_DEBUG_H
 N
 N#include <stddef.h>
-L 1 "E:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h" 1
+L 1 "C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h" 1
 N/* stddef.h: ANSI 'C' (X3J11 Oct 88) library header, section 4.1.4 */
 N
 N/* Copyright (C) ARM Ltd., 1999
@@ -42099,7 +42089,7 @@ N */
 N
 N#ifndef __stddef_h
 N#define __stddef_h
-N#define __ARMCLIB_VERSION 5060037
+N#define __ARMCLIB_VERSION 5060019
 N
 N  #ifndef __STDDEF_DECLS
 N  #define __STDDEF_DECLS
@@ -50952,7 +50942,7 @@ N#endif
 N/******************* (C) COPYRIGHT 2015 AVER *****END OF FILE***************************/
 L 8 "..\APP\sysflag.h" 2
 N#include <math.h>
-L 1 "E:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h" 1
+L 1 "C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h" 1
 N/*
 N * math.h: ANSI 'C' (X3J11 Oct 88) library header, section 4.5
 N * Copyright (C) Codemist Ltd., 1988
@@ -50980,7 +50970,7 @@ N */
 N
 N#ifndef __math_h
 N#define __math_h
-N#define __ARMCLIB_VERSION 5060037
+N#define __ARMCLIB_VERSION 5060019
 N
 N#if defined(__clang__) || (defined(__ARMCC_VERSION) && !defined(__STRICT_ANSI__))
 X#if 0L || (1L && !0L)
@@ -52474,7 +52464,7 @@ N
 N/* end of math.h */
 L 9 "..\APP\sysflag.h" 2
 N#include <string.h>
-L 1 "E:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h" 1
+L 1 "C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h" 1
 N/* string.h: ANSI 'C' (X3J11 Oct 88) library header, section 4.11 */
 N/* Copyright (C) Codemist Ltd., 1988-1993.                        */
 N/* Copyright 1991-1993 ARM Limited. All rights reserved.          */
@@ -52496,7 +52486,7 @@ N */
 N
 N#ifndef __string_h
 N#define __string_h
-N#define __ARMCLIB_VERSION 5060037
+N#define __ARMCLIB_VERSION 5060019
 N
 N#define _ARMABI __declspec(__nothrow)
 N
@@ -53025,7 +53015,7 @@ N/* end of string.h */
 N
 L 10 "..\APP\sysflag.h" 2
 N#include <stdlib.h>
-L 1 "E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h" 1
+L 1 "C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h" 1
 N/* stdlib.h: ANSI draft (X3J11 May 88) library header, section 4.10 */
 N/* Copyright (C) Codemist Ltd., 1988-1993.                          */
 N/* Copyright 1991-1998,2014 ARM Limited. All rights reserved.       */
@@ -53042,7 +53032,7 @@ N */
 N
 N#ifndef __stdlib_h
 N#define __stdlib_h
-N#define __ARMCLIB_VERSION 5060037
+N#define __ARMCLIB_VERSION 5060019
 N
 N#if defined(__clang__) || (defined(__ARMCC_VERSION) && !defined(__STRICT_ANSI__))
 X#if 0L || (1L && !0L)
@@ -53998,7 +53988,7 @@ N
 N/* end of stdlib.h */
 L 11 "..\APP\sysflag.h" 2
 N#include <stdio.h>
-L 1 "E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h" 1
+L 1 "C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h" 1
 N/* stdio.h: ANSI 'C' (X3J11 Oct 88) library header, section 4.9 */
 N/* Copyright (C) Codemist Ltd., 1988-1993                       */
 N/* Copyright 1991-1998 ARM Limited. All rights reserved.        */
@@ -54018,7 +54008,7 @@ N */
 N
 N#ifndef __stdio_h
 N#define __stdio_h
-N#define __ARMCLIB_VERSION 5060037
+N#define __ARMCLIB_VERSION 5060019
 N
 N/*
 N * Depending on compiler version __int64 or __INT64_TYPE__ should be defined.

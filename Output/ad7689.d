@@ -3,9 +3,9 @@
 ..\output\ad7689.o: ..\Include\sys.h
 ..\output\ad7689.o: ..\User\stm32f4xx.h
 ..\output\ad7689.o: ..\Libraries\CMSIS\inc\core_cm4.h
-..\output\ad7689.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-..\output\ad7689.o: E:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h
-..\output\ad7689.o: E:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
+..\output\ad7689.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\ad7689.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h
+..\output\ad7689.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
 ..\output\ad7689.o: ..\Libraries\CMSIS\inc\core_cm4_simd.h
 ..\output\ad7689.o: ..\User\system_stm32f4xx.h
 ..\output\ad7689.o: ..\User\stm32f4xx_conf.h

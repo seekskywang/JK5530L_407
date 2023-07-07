@@ -3,9 +3,9 @@
 ..\output\bsp_systick.o: ..\Include\my_register.h
 ..\output\bsp_systick.o: ..\User\STM32F4xx.h
 ..\output\bsp_systick.o: ..\Libraries\CMSIS\inc\core_cm4.h
-..\output\bsp_systick.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-..\output\bsp_systick.o: E:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h
-..\output\bsp_systick.o: E:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
+..\output\bsp_systick.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\bsp_systick.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h
+..\output\bsp_systick.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
 ..\output\bsp_systick.o: ..\Libraries\CMSIS\inc\core_cm4_simd.h
 ..\output\bsp_systick.o: ..\User\system_stm32f4xx.h
 ..\output\bsp_systick.o: ..\User\stm32f4xx_conf.h

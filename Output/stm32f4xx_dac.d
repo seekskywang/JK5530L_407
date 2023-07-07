@@ -2,9 +2,9 @@
 ..\output\stm32f4xx_dac.o: ..\Libraries\FWlib\inc\stm32f4xx_dac.h
 ..\output\stm32f4xx_dac.o: ..\User\stm32f4xx.h
 ..\output\stm32f4xx_dac.o: ..\Libraries\CMSIS\inc\core_cm4.h
-..\output\stm32f4xx_dac.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-..\output\stm32f4xx_dac.o: E:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h
-..\output\stm32f4xx_dac.o: E:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
+..\output\stm32f4xx_dac.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\stm32f4xx_dac.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h
+..\output\stm32f4xx_dac.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
 ..\output\stm32f4xx_dac.o: ..\Libraries\CMSIS\inc\core_cm4_simd.h
 ..\output\stm32f4xx_dac.o: ..\User\system_stm32f4xx.h
 ..\output\stm32f4xx_dac.o: ..\User\stm32f4xx_conf.h

@@ -750,7 +750,7 @@ S  #endif
 N#endif
 N
 N#include <stdint.h>                      /* standard types definitions                      */
-L 1 "E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h" 1
+L 1 "C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h" 1
 N/* Copyright (C) ARM Ltd., 1999,2014 */
 N/* All rights reserved */
 N
@@ -762,7 +762,7 @@ N */
 N
 N#ifndef __stdint_h
 N#define __stdint_h
-N#define __ARMCLIB_VERSION 5060037
+N#define __ARMCLIB_VERSION 5060019
 N
 N  #ifdef __INT64_TYPE__
 S    /* armclang predefines '__INT64_TYPE__' and '__INT64_C_SUFFIX__' */
@@ -825,12 +825,6 @@ Ntypedef unsigned short     int u16;
 Ntypedef unsigned           int u32;
 Ntypedef unsigned       __INT64 u64;
 Xtypedef unsigned       __int64 u64;
-N
-N//typedef unsigned          char vu8;
-N//typedef unsigned short     int vu16;
-N//typedef unsigned            int vu32;
-N//typedef unsigned       __INT64 vu64;
-N
 N    /* 7.18.1.2 */
 N
 N    /* smallest type of at least n bits */
@@ -863,10 +857,6 @@ Ntypedef unsigned           int uint_fast16_t;
 Ntypedef unsigned           int uint_fast32_t;
 Ntypedef unsigned       __INT64 uint_fast64_t;
 Xtypedef unsigned       __int64 uint_fast64_t;
-N
-N//typedef unsigned long  vu32;
-N//typedef unsigned short vu16;
-N//typedef unsigned char  vu8;
 N
 N    /* 7.18.1.4 integer types capable of holding object pointers */
 N#if __sizeof_ptr == 8
@@ -1097,7 +1087,7 @@ N
 N/* end of stdint.h */
 L 169 "..\Libraries\CMSIS\inc\core_cm4.h" 2
 N#include <core_cmInstr.h>                /* Core Instruction Access                         */
-L 1 "E:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h" 1
+L 1 "C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h" 1
 N/**************************************************************************//**
 N * @file     core_cmInstr.h
 N * @brief    CMSIS Cortex-M Core Instruction Access Header File
@@ -1150,7 +1140,7 @@ X#if   1L
 N/* ARM armcc specific functions */
 N
 N#if (__ARMCC_VERSION < 400677)
-X#if (5060750 < 400677)
+X#if (5060422 < 400677)
 S  #error "Please use ARM Compiler Toolchain V4.0.677 or later!"
 N#endif
 N
@@ -1794,7 +1784,7 @@ N
 N#endif /* __CORE_CMINSTR_H */
 L 170 "..\Libraries\CMSIS\inc\core_cm4.h" 2
 N#include <core_cmFunc.h>                 /* Core Function Access                            */
-L 1 "E:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h" 1
+L 1 "C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h" 1
 N/**************************************************************************//**
 N * @file     core_cmFunc.h
 N * @brief    CMSIS Cortex-M Core Function Access Header File
@@ -1847,7 +1837,7 @@ X#if   1L
 N/* ARM armcc specific functions */
 N
 N#if (__ARMCC_VERSION < 400677)
-X#if (5060750 < 400677)
+X#if (5060422 < 400677)
 S  #error "Please use ARM Compiler Toolchain V4.0.677 or later!"
 N#endif
 N

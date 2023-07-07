@@ -2,9 +2,9 @@
 ..\output\clock.o: ..\Include\my_register.h
 ..\output\clock.o: ..\User\STM32F4xx.h
 ..\output\clock.o: ..\Libraries\CMSIS\inc\core_cm4.h
-..\output\clock.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-..\output\clock.o: E:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h
-..\output\clock.o: E:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
+..\output\clock.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\clock.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h
+..\output\clock.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
 ..\output\clock.o: ..\Libraries\CMSIS\inc\core_cm4_simd.h
 ..\output\clock.o: ..\User\system_stm32f4xx.h
 ..\output\clock.o: ..\User\stm32f4xx_conf.h

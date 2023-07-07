@@ -6,9 +6,9 @@
 ..\output\usbh_msc_core.o: ..\USB\USB_APP\usb_conf.h
 ..\output\usbh_msc_core.o: ..\User\stm32f4xx.h
 ..\output\usbh_msc_core.o: ..\Libraries\CMSIS\inc\core_cm4.h
-..\output\usbh_msc_core.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-..\output\usbh_msc_core.o: E:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h
-..\output\usbh_msc_core.o: E:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
+..\output\usbh_msc_core.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\usbh_msc_core.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h
+..\output\usbh_msc_core.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
 ..\output\usbh_msc_core.o: ..\Libraries\CMSIS\inc\core_cm4_simd.h
 ..\output\usbh_msc_core.o: ..\User\system_stm32f4xx.h
 ..\output\usbh_msc_core.o: ..\User\stm32f4xx_conf.h
