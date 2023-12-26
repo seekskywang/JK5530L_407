@@ -477,7 +477,7 @@ static uint8_t MODS_ReadRegValue(uint16_t reg_addr, uint8_t *reg_value)
 			value =	0;							/* ½«¼Ä´æÆ÷Öµ¶Á³ö */
 			break;
 		case SLAVE_REG_P14:
-			value =	!flag_Load_CC;	
+			value =	Para.CLOAD_MODE;	
 			break;
 
 		case SLAVE_REG_P15:
@@ -615,10 +615,12 @@ static uint8_t MODS_Load(uint16_t reg_addr, uint16_t reg_value)
 				MODE = 0;
 				MODE_PARASET(MODE);
 				MODE_ONOFF(1);
+				mainswitch = 1;
 				rmtrig[0] = 1;
 			}else if(reg_value == 4){//åœæ­¢è´Ÿè½½
 				MODE = 0;
 				MODE_ONOFF(0);
+				mainswitch = 0;
 				rmtrig[0] = 0;
 			}
 			break;

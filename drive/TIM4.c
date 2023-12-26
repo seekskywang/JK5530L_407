@@ -36,7 +36,7 @@ float testv;
 vu8 finishflag;
 vu32 finishdelay;
 vu8 lockflag;
-vu8 version=20;
+vu8 version=21;
 vu32 battery_c;
 vu8 charge_step;
 vu8 loop;
@@ -740,6 +740,7 @@ void TIM3_IRQHandler(void){
 						}
 						if(capwait == 0)
 						{
+							mainswitch = 1;
 							mode_sw = 1;
 							sendmodeflag = 1;
 							cdcswdelay = 5000;

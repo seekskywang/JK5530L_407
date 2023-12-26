@@ -36519,8 +36519,7 @@ N			value =	0;							/* Ω´ºƒ¥Ê∆˜÷µ∂¡≥ˆ */
 N			break;
 N		case SLAVE_REG_P14:
 X		case 0x000E:
-N			value =	!flag_Load_CC;	
-X			value =	!(flagD . bit7);	
+N			value =	Para.CLOAD_MODE;	
 N			break;
 N
 N		case SLAVE_REG_P15:
@@ -36684,10 +36683,12 @@ N			{
 N				MODE = 0;
 N				MODE_PARASET(MODE);
 N				MODE_ONOFF(1);
+N				mainswitch = 1;
 N				rmtrig[0] = 1;
 N			}else if(reg_value == 4){//ÂÅúÊ≠¢Ë¥üËΩΩ
 N				MODE = 0;
 N				MODE_ONOFF(0);
+N				mainswitch = 0;
 N				rmtrig[0] = 0;
 N			}
 N			break;
