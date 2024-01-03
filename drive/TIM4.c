@@ -36,7 +36,7 @@ float testv;
 vu8 finishflag;
 vu32 finishdelay;
 vu8 lockflag;
-vu8 version=21;
+vu8 version=22;
 vu32 battery_c;
 vu8 charge_step;
 vu8 loop;
@@ -393,7 +393,8 @@ void TIM3_IRQHandler(void){
 								Para.POWER_OutPut_V = (int)(testv*1000) + 3000;
 								Para.POWER_Limit_C = 1000;
 								mainswitch = 1;
-								sendwait = 1;
+								PowerCommWaitHandle(1,0);
+//								sendwait = 1;
 //								OnOff_GPOI_ResetSet(0,1);
 							}
 						}else{
@@ -414,7 +415,8 @@ void TIM3_IRQHandler(void){
 								Para.POWER_OutPut_V = (int)(testv*1000) + 3000;
 								Para.POWER_Limit_C = 1000;
 								mainswitch = 1;
-								sendwait = 1;
+								PowerCommWaitHandle(1,0);
+//								sendwait = 1;
 							}
 						}
 					}								
@@ -425,7 +427,8 @@ void TIM3_IRQHandler(void){
 					if(recharge == 0)
 					{
 						mainswitch = 0;
-						sendwait = 3;
+						PowerCommWaitHandle(3,0);
+//						sendwait = 3;
 //						Off_GPOI_ResetSet();
 						LOAD_MODE = 1;
 						GPIO_SetBits(GPIOC,GPIO_Pin_12);//CV模式
@@ -481,7 +484,8 @@ void TIM3_IRQHandler(void){
 						Para.POWER_OutPut_V = (int)(testv*1000) + 3000;
 						Para.POWER_Limit_C = 1000;
 						mainswitch = 1;
-						sendwait = 1;
+						PowerCommWaitHandle(1,0);
+//						sendwait = 1;
 					}
 				}
 				if(reboot != 0)
@@ -490,7 +494,8 @@ void TIM3_IRQHandler(void){
 					if(reboot == 0)
 					{
 						mainswitch = 0;
-						sendwait = 3;
+						PowerCommWaitHandle(3,0);
+//						sendwait = 3;
 //						Off_GPOI_ResetSet();
 						Para.CSET_Current_Laod =  Para.IR_Start_C;
 						LOAD_MODE = 0;
@@ -590,7 +595,8 @@ void TIM3_IRQHandler(void){
 	//								GPIO_ResetBits(GPIOE,GPIO_Pin_2); //关闭电源输出继电器
 									mainswitch = 0;
 									ctime=0;
-									listsend = 1;
+									PowerCommWaitHandle(1,1);
+//									listsend = 1;
 									mode_sw = 2;
 //									mode_sw = 1;
 									sendmodeflag = 1;
@@ -608,7 +614,8 @@ void TIM3_IRQHandler(void){
 //								GPIO_ResetBits(GPIOE,GPIO_Pin_2); //关闭电源输出继电器
 								mainswitch = 0;
 								ctime=0;
-								listsend = 1;
+								PowerCommWaitHandle(1,1);
+//								listsend = 1;
 								mode_sw = 2;
 //									mode_sw = 1;
 								sendmodeflag = 1;
@@ -762,7 +769,8 @@ void TIM3_IRQHandler(void){
 						{
 							mode_sw = 0;
 							mainswitch = 1;
-							listsend = 1;
+							PowerCommWaitHandle(1,1);
+//							listsend = 1;
 							sendmodeflag = 1;
 							charge_step = 1;
 							charge_step = 1;

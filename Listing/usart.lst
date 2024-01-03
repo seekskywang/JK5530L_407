@@ -745,11 +745,17 @@ Ntypedef unsigned           int uint32_t;
 Ntypedef unsigned       __INT64 uint64_t;
 Xtypedef unsigned       __int64 uint64_t;
 N
-Ntypedef unsigned          char u8;
-Ntypedef unsigned short     int u16;
-Ntypedef unsigned           int u32;
-Ntypedef unsigned       __INT64 u64;
-Xtypedef unsigned       __int64 u64;
+N	typedef unsigned          char u8;
+N	typedef unsigned short     int u16;
+N	typedef unsigned           int u32;
+N	typedef unsigned       __INT64 u64;
+X	typedef unsigned       __int64 u64;
+N
+N//typedef unsigned          char u8;
+N//typedef unsigned short     int u16;
+N//typedef unsigned           int u32;
+N//typedef unsigned       __INT64 vu64;
+N
 N    /* 7.18.1.2 */
 N
 N    /* smallest type of at least n bits */
@@ -34999,6 +35005,8 @@ Nextern vu8 version;
 Nextern short Temperature;
 Nextern vu8 sendwait;
 Nextern vu8 listsend;
+Nextern vu8 waitcommand1;
+Nextern vu8 waitcommand2;
 Nextern vu8 overflag;
 N#define onoff_Load                    Run_Control[0]  //ON/OFF
 N#define onoff_POWE                    Run_Control[1]  //ON/OFF
@@ -35381,6 +35389,7 @@ Nvoid MODE_PARASET(vu8 value);
 Nvoid MODE_ONOFF(vu8 value);
 Nvoid JumpBoot(u8 flag);
 Nvoid SetPowerC(vu16 powc);
+Nvoid PowerCommWaitHandle(u8 command,u8 mode);
 Nextern void ReadPowData(void);
 Nextern u8 USART3_Recive_flg;
 Nstruct MODS_T
@@ -37148,6 +37157,8 @@ Nuint32_t x1,y1,x2,y2,x3,y3,x4,y4,x5,y5,x6,y6,x7,y7,x8,y8;
 Nvu32 powsetdelay;
 Nvu8 sendwait;
 Nvu8 listsend;
+Nvu8 waitcommand1;
+Nvu8 waitcommand2;
 Nvu32 watchtest;
 Nvoid SetPowerC(vu16 powc);
 Nvoid ReadPowData(void);
@@ -37228,13 +37239,13 @@ N
 Nvoid SetPowerModeV(void)
 N{
 N	SetPowerV(Para.POWER_OutPut_V);
-N	sendwait = 2;
+N//	sendwait = 2;
 N}
 N
 Nvoid SetPowerModeC(void)
 N{
 N	SetPowerC(Para.POWER_Limit_C);
-N	sendwait = 3;
+N//	sendwait = 3;
 N}
 N
 Nvoid SetPowerModeS(void)
@@ -37255,18 +37266,18 @@ N		GPIO_ResetBits(GPIOE,GPIO_Pin_2); //关闭电源输出继电器
 X		GPIO_ResetBits(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x00020000) + 0x1000)),((uint16_t)0x0004)); 
 N	}
 N	
-N	sendwait = 0;
+N//	sendwait = 0;
 N}
 Nvoid SetListPV(void)
 N{
 N	SetPowerV(Para.CDC_OutPut_V);
-N	listsend = 2;
+N//	listsend = 2;
 N}
 N
 Nvoid SetListPC(void)
 N{
 N	SetPowerC(Para.CDC_Limit_C);
-N	listsend = 3;
+N//	listsend = 3;
 N}
 N
 N
@@ -37290,7 +37301,7 @@ N		GPIO_ResetBits(GPIOE,GPIO_Pin_2); //关闭电源输出继电器
 X		GPIO_ResetBits(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x00020000) + 0x1000)),((uint16_t)0x0004)); 
 N	}
 N	
-N	listsend = 0;
+N//	listsend = 0;
 N}
 N
 Nvoid PowerSwitch(vu8 bit)
@@ -37317,6 +37328,26 @@ N	MasterSendbuf[5] = 0x02;
 N	MasterSendbuf[6] = (u8)(Hardware_CRC(MasterSendbuf,6));
 N	MasterSendbuf[7] = (u8)(Hardware_CRC(MasterSendbuf,6)>>8);	
 N	USART3WriteDMA(8);
+N}
+N//如果在前一组通讯还未完成时收到新的电源控制命令，则把这组命令存起来，等前一组通讯完成后再发送
+Nvoid PowerCommWaitHandle(u8 command,u8 mode)
+N{
+N	if(mode == 0)//普通操作
+N	{
+N		if(sendwait != 0)
+N		{
+N			waitcommand1 = command;
+N		}else{
+N			sendwait = command;
+N		}
+N	}else if(mode == 1){//列表操作
+N		if(sendwait != 0)
+N		{
+N			waitcommand2 = command;
+N		}else{
+N			listsend = command;
+N		}
+N	}
 N}
 N
 Nvoid USART3HANDLE(void)
@@ -37361,6 +37392,39 @@ N					SetListPV();
 N				}
 N		}else if(MasterRecbuf[1] == 0x06){
 N			memset(MasterRecbuf,0,sizeof(MasterRecbuf));
+N			if(sendwait == 1)
+N			{
+N				sendwait = 2;
+N			}else if(sendwait == 2){
+N				sendwait = 3;
+N			}else if(sendwait == 3){
+N				sendwait = 0;
+N				if(waitcommand1 != 0)
+N				{
+N					sendwait = waitcommand1;
+N					waitcommand1 = 0;
+N				}else if(waitcommand2 != 0){
+N					listsend = waitcommand2;
+N					waitcommand2 = 0;
+N				}
+N			}
+N			
+N			if(listsend == 1)
+N			{
+N				listsend = 2;
+N			}else if(listsend == 2){
+N				listsend = 3;
+N			}else if(listsend == 3){
+N				listsend = 0;
+N				if(waitcommand1 != 0)
+N				{
+N					sendwait = waitcommand1;
+N					waitcommand1 = 0;
+N				}else if(waitcommand2 != 0){
+N					listsend = waitcommand2;
+N					waitcommand2 = 0;
+N				}
+N			}
 N			watchtest ++;
 N		}
 N	}	
@@ -37394,7 +37458,14 @@ N			}
 N		}break;
 N		case 1://稳压电源ON/OFF
 N		{
-N			sendwait = 1;
+N			if( value == 0 )
+N			{
+N				PowerCommWaitHandle(3,0);
+N//				sendwait = 3;
+N			}else{
+N				PowerCommWaitHandle(1,0);
+N//				sendwait = 1;
+N			}
 N//			if( value == 0 ){
 N//				sendwait = 1;
 N////				PowerSwitch(0);//关闭电源输出
@@ -37484,7 +37555,8 @@ N		}break;
 N		case 1://稳压电源ON/OFF
 N		{
 N			if( value == 0 ){
-N				listsend = 3;
+N				PowerCommWaitHandle(3,1);
+N//				listsend = 3;
 N				listpowwatch1 ++;
 N//				PowerSwitch(0);
 N//				GPIO_ResetBits(GPIOC,GPIO_Pin_1); //关闭电源输出
@@ -37493,7 +37565,8 @@ N//				Para.CSET_Current = 0;
 N//				GPIO_ResetBits(GPIOE,GPIO_Pin_2); //关闭电源输出继电器
 N			}
 N			else if( value == 1 ){
-N				listsend = 1;
+N				PowerCommWaitHandle(1,1);
+N//				listsend = 1;
 N				listpowwatch2 ++;
 N//				PowerSwitch(1);
 N//				Para.CSET_Voltage = Para.CDC_OutPut_V;
@@ -37620,7 +37693,8 @@ N//			OnOff_GPOI_ResetSet( 2, 0 );
 N//			mainswitch = 0;
 N//			if(USART3_Recive_flg == 1)
 N//			{
-N				sendwait = 1;
+N			PowerCommWaitHandle(1,0);
+N//				sendwait = 1;
 N//			}else{
 N//				SetPowerMode();
 N//			}
@@ -37661,8 +37735,8 @@ N		{
 N//			OnOff_GPOI_ResetSet( 2, 0 );
 N//			mainswitch = 0;
 N//			sendwait = 3;
-N			
-N			sendwait = 1;
+N			PowerCommWaitHandle(1,0);
+N//			sendwait = 1;
 N		}break;
 N	}
 N}
@@ -38371,7 +38445,8 @@ N					MODE=temp1;
 N//					Off_GPOI_ResetSet();
 N					OnOff_GPOI_ResetSet( 2, 0 );
 N					mainswitch = 0;
-N					sendwait = 3;
+N					PowerCommWaitHandle(3,0);
+N//					sendwait = 3;
 N					MODE_PARASET(MODE);
 N	//				Change_LM_Val(LM_S_Vale);
 N					buf[currCharNum++] = ChrEndR;

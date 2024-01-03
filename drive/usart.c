@@ -52,6 +52,8 @@ uint32_t x1,y1,x2,y2,x3,y3,x4,y4,x5,y5,x6,y6,x7,y7,x8,y8;
 vu32 powsetdelay;
 vu8 sendwait;
 vu8 listsend;
+vu8 waitcommand1;
+vu8 waitcommand2;
 vu32 watchtest;
 void SetPowerC(vu16 powc);
 void ReadPowData(void);
@@ -129,13 +131,13 @@ void SetPowerC(vu16 powc)
 void SetPowerModeV(void)
 {
 	SetPowerV(Para.POWER_OutPut_V);
-	sendwait = 2;
+//	sendwait = 2;
 }
 
 void SetPowerModeC(void)
 {
 	SetPowerC(Para.POWER_Limit_C);
-	sendwait = 3;
+//	sendwait = 3;
 }
 
 void SetPowerModeS(void)
@@ -152,18 +154,18 @@ void SetPowerModeS(void)
 		GPIO_ResetBits(GPIOE,GPIO_Pin_2); //关闭电源输出继电器
 	}
 	
-	sendwait = 0;
+//	sendwait = 0;
 }
 void SetListPV(void)
 {
 	SetPowerV(Para.CDC_OutPut_V);
-	listsend = 2;
+//	listsend = 2;
 }
 
 void SetListPC(void)
 {
 	SetPowerC(Para.CDC_Limit_C);
-	listsend = 3;
+//	listsend = 3;
 }
 
 
@@ -183,7 +185,7 @@ void SetListPS(void)
 		GPIO_ResetBits(GPIOE,GPIO_Pin_2); //关闭电源输出继电器
 	}
 	
-	listsend = 0;
+//	listsend = 0;
 }
 
 void PowerSwitch(vu8 bit)
@@ -210,6 +212,26 @@ void ReadPowData(void)
 	MasterSendbuf[6] = (u8)(Hardware_CRC(MasterSendbuf,6));
 	MasterSendbuf[7] = (u8)(Hardware_CRC(MasterSendbuf,6)>>8);	
 	USART3WriteDMA(8);
+}
+//如果在前一组通讯还未完成时收到新的电源控制命令，则把这组命令存起来，等前一组通讯完成后再发送
+void PowerCommWaitHandle(u8 command,u8 mode)
+{
+	if(mode == 0)//普通操作
+	{
+		if(sendwait != 0)
+		{
+			waitcommand1 = command;
+		}else{
+			sendwait = command;
+		}
+	}else if(mode == 1){//列表操作
+		if(sendwait != 0)
+		{
+			waitcommand2 = command;
+		}else{
+			listsend = command;
+		}
+	}
 }
 
 void USART3HANDLE(void)
@@ -254,6 +276,39 @@ void USART3HANDLE(void)
 				}
 		}else if(MasterRecbuf[1] == 0x06){
 			memset(MasterRecbuf,0,sizeof(MasterRecbuf));
+			if(sendwait == 1)
+			{
+				sendwait = 2;
+			}else if(sendwait == 2){
+				sendwait = 3;
+			}else if(sendwait == 3){
+				sendwait = 0;
+				if(waitcommand1 != 0)
+				{
+					sendwait = waitcommand1;
+					waitcommand1 = 0;
+				}else if(waitcommand2 != 0){
+					listsend = waitcommand2;
+					waitcommand2 = 0;
+				}
+			}
+			
+			if(listsend == 1)
+			{
+				listsend = 2;
+			}else if(listsend == 2){
+				listsend = 3;
+			}else if(listsend == 3){
+				listsend = 0;
+				if(waitcommand1 != 0)
+				{
+					sendwait = waitcommand1;
+					waitcommand1 = 0;
+				}else if(waitcommand2 != 0){
+					listsend = waitcommand2;
+					waitcommand2 = 0;
+				}
+			}
 			watchtest ++;
 		}
 	}	
@@ -283,7 +338,14 @@ void MODE_ONOFF(vu8 value)
 		}break;
 		case 1://稳压电源ON/OFF
 		{
-			sendwait = 1;
+			if( value == 0 )
+			{
+				PowerCommWaitHandle(3,0);
+//				sendwait = 3;
+			}else{
+				PowerCommWaitHandle(1,0);
+//				sendwait = 1;
+			}
 //			if( value == 0 ){
 //				sendwait = 1;
 ////				PowerSwitch(0);//关闭电源输出
@@ -363,7 +425,8 @@ void LIST_ONOFF(vu8 value)
 		case 1://稳压电源ON/OFF
 		{
 			if( value == 0 ){
-				listsend = 3;
+				PowerCommWaitHandle(3,1);
+//				listsend = 3;
 				listpowwatch1 ++;
 //				PowerSwitch(0);
 //				GPIO_ResetBits(GPIOC,GPIO_Pin_1); //关闭电源输出
@@ -372,7 +435,8 @@ void LIST_ONOFF(vu8 value)
 //				GPIO_ResetBits(GPIOE,GPIO_Pin_2); //关闭电源输出继电器
 			}
 			else if( value == 1 ){
-				listsend = 1;
+				PowerCommWaitHandle(1,1);
+//				listsend = 1;
 				listpowwatch2 ++;
 //				PowerSwitch(1);
 //				Para.CSET_Voltage = Para.CDC_OutPut_V;
@@ -484,7 +548,8 @@ void MODE_PARASET(vu8 value)
 //			mainswitch = 0;
 //			if(USART3_Recive_flg == 1)
 //			{
-				sendwait = 1;
+			PowerCommWaitHandle(1,0);
+//				sendwait = 1;
 //			}else{
 //				SetPowerMode();
 //			}
@@ -520,8 +585,8 @@ void MODE_PARASET(vu8 value)
 //			OnOff_GPOI_ResetSet( 2, 0 );
 //			mainswitch = 0;
 //			sendwait = 3;
-			
-			sendwait = 1;
+			PowerCommWaitHandle(1,0);
+//			sendwait = 1;
 		}break;
 	}
 }
@@ -1172,7 +1237,8 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 //					Off_GPOI_ResetSet();
 					OnOff_GPOI_ResetSet( 2, 0 );
 					mainswitch = 0;
-					sendwait = 3;
+					PowerCommWaitHandle(3,0);
+//					sendwait = 3;
 					MODE_PARASET(MODE);
 	//				Change_LM_Val(LM_S_Vale);
 					buf[currCharNum++] = ChrEndR;

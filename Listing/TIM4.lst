@@ -745,11 +745,17 @@ Ntypedef unsigned           int uint32_t;
 Ntypedef unsigned       __INT64 uint64_t;
 Xtypedef unsigned       __int64 uint64_t;
 N
-Ntypedef unsigned          char u8;
-Ntypedef unsigned short     int u16;
-Ntypedef unsigned           int u32;
-Ntypedef unsigned       __INT64 u64;
-Xtypedef unsigned       __int64 u64;
+N	typedef unsigned          char u8;
+N	typedef unsigned short     int u16;
+N	typedef unsigned           int u32;
+N	typedef unsigned       __INT64 u64;
+X	typedef unsigned       __int64 u64;
+N
+N//typedef unsigned          char u8;
+N//typedef unsigned short     int u16;
+N//typedef unsigned           int u32;
+N//typedef unsigned       __INT64 vu64;
+N
 N    /* 7.18.1.2 */
 N
 N    /* smallest type of at least n bits */
@@ -34999,6 +35005,8 @@ Nextern vu8 version;
 Nextern short Temperature;
 Nextern vu8 sendwait;
 Nextern vu8 listsend;
+Nextern vu8 waitcommand1;
+Nextern vu8 waitcommand2;
 Nextern vu8 overflag;
 N#define onoff_Load                    Run_Control[0]  //ON/OFF
 N#define onoff_POWE                    Run_Control[1]  //ON/OFF
@@ -35381,6 +35389,7 @@ Nvoid MODE_PARASET(vu8 value);
 Nvoid MODE_ONOFF(vu8 value);
 Nvoid JumpBoot(u8 flag);
 Nvoid SetPowerC(vu16 powc);
+Nvoid PowerCommWaitHandle(u8 command,u8 mode);
 Nextern void ReadPowData(void);
 Nextern u8 USART3_Recive_flg;
 Nstruct MODS_T
@@ -35432,7 +35441,7 @@ Nfloat testv;
 Nvu8 finishflag;
 Nvu32 finishdelay;
 Nvu8 lockflag;
-Nvu8 version=21;
+Nvu8 version=22;
 Nvu32 battery_c;
 Nvu8 charge_step;
 Nvu8 loop;
@@ -35826,7 +35835,8 @@ N								}
 N								Para.POWER_OutPut_V = (int)(testv*1000) + 3000;
 N								Para.POWER_Limit_C = 1000;
 N								mainswitch = 1;
-N								sendwait = 1;
+N								PowerCommWaitHandle(1,0);
+N//								sendwait = 1;
 N//								OnOff_GPOI_ResetSet(0,1);
 N							}
 N						}else{
@@ -35847,7 +35857,8 @@ N								}
 N								Para.POWER_OutPut_V = (int)(testv*1000) + 3000;
 N								Para.POWER_Limit_C = 1000;
 N								mainswitch = 1;
-N								sendwait = 1;
+N								PowerCommWaitHandle(1,0);
+N//								sendwait = 1;
 N							}
 N						}
 N					}								
@@ -35858,7 +35869,8 @@ N					recharge --;
 N					if(recharge == 0)
 N					{
 N						mainswitch = 0;
-N						sendwait = 3;
+N						PowerCommWaitHandle(3,0);
+N//						sendwait = 3;
 N//						Off_GPOI_ResetSet();
 N						LOAD_MODE = 1;
 X						Run_Control[6] = 1;
@@ -35916,7 +35928,8 @@ N//						reboot = 5000;
 N						Para.POWER_OutPut_V = (int)(testv*1000) + 3000;
 N						Para.POWER_Limit_C = 1000;
 N						mainswitch = 1;
-N						sendwait = 1;
+N						PowerCommWaitHandle(1,0);
+N//						sendwait = 1;
 N					}
 N				}
 N				if(reboot != 0)
@@ -35925,7 +35938,8 @@ N					reboot --;
 N					if(reboot == 0)
 N					{
 N						mainswitch = 0;
-N						sendwait = 3;
+N						PowerCommWaitHandle(3,0);
+N//						sendwait = 3;
 N//						Off_GPOI_ResetSet();
 N						Para.CSET_Current_Laod =  Para.IR_Start_C;
 N						LOAD_MODE = 0;
@@ -36029,7 +36043,8 @@ N	//								Para.CSET_Current = 0;
 N	//								GPIO_ResetBits(GPIOE,GPIO_Pin_2); //关闭电源输出继电器
 N									mainswitch = 0;
 N									ctime=0;
-N									listsend = 1;
+N									PowerCommWaitHandle(1,1);
+N//									listsend = 1;
 N									mode_sw = 2;
 N//									mode_sw = 1;
 N									sendmodeflag = 1;
@@ -36047,7 +36062,8 @@ N//								Para.CSET_Current = 0;
 N//								GPIO_ResetBits(GPIOE,GPIO_Pin_2); //关闭电源输出继电器
 N								mainswitch = 0;
 N								ctime=0;
-N								listsend = 1;
+N								PowerCommWaitHandle(1,1);
+N//								listsend = 1;
 N								mode_sw = 2;
 N//									mode_sw = 1;
 N								sendmodeflag = 1;
@@ -36218,7 +36234,8 @@ N						if(capwait == 0)
 N						{
 N							mode_sw = 0;
 N							mainswitch = 1;
-N							listsend = 1;
+N							PowerCommWaitHandle(1,1);
+N//							listsend = 1;
 N							sendmodeflag = 1;
 N							charge_step = 1;
 N							charge_step = 1;

@@ -750,11 +750,17 @@ Ntypedef unsigned           int uint32_t;
 Ntypedef unsigned       __INT64 uint64_t;
 Xtypedef unsigned       __int64 uint64_t;
 N
-Ntypedef unsigned          char u8;
-Ntypedef unsigned short     int u16;
-Ntypedef unsigned           int u32;
-Ntypedef unsigned       __INT64 u64;
-Xtypedef unsigned       __int64 u64;
+N	typedef unsigned          char u8;
+N	typedef unsigned short     int u16;
+N	typedef unsigned           int u32;
+N	typedef unsigned       __INT64 u64;
+X	typedef unsigned       __int64 u64;
+N
+N//typedef unsigned          char u8;
+N//typedef unsigned short     int u16;
+N//typedef unsigned           int u32;
+N//typedef unsigned       __INT64 vu64;
+N
 N    /* 7.18.1.2 */
 N
 N    /* smallest type of at least n bits */
@@ -35004,6 +35010,8 @@ Nextern vu8 version;
 Nextern short Temperature;
 Nextern vu8 sendwait;
 Nextern vu8 listsend;
+Nextern vu8 waitcommand1;
+Nextern vu8 waitcommand2;
 Nextern vu8 overflag;
 N#define onoff_Load                    Run_Control[0]  //ON/OFF
 N#define onoff_POWE                    Run_Control[1]  //ON/OFF
@@ -35386,6 +35394,7 @@ Nvoid MODE_PARASET(vu8 value);
 Nvoid MODE_ONOFF(vu8 value);
 Nvoid JumpBoot(u8 flag);
 Nvoid SetPowerC(vu16 powc);
+Nvoid PowerCommWaitHandle(u8 command,u8 mode);
 Nextern void ReadPowData(void);
 Nextern u8 USART3_Recive_flg;
 Nstruct MODS_T
@@ -35571,6 +35580,8 @@ Sextern vu8 version;
 Sextern short Temperature;
 Sextern vu8 sendwait;
 Sextern vu8 listsend;
+Sextern vu8 waitcommand1;
+Sextern vu8 waitcommand2;
 Sextern vu8 overflag;
 S#define onoff_Load                    Run_Control[0]  //ON/OFF
 S#define onoff_POWE                    Run_Control[1]  //ON/OFF
@@ -35953,6 +35964,7 @@ Svoid MODE_PARASET(vu8 value);
 Svoid MODE_ONOFF(vu8 value);
 Svoid JumpBoot(u8 flag);
 Svoid SetPowerC(vu16 powc);
+Svoid PowerCommWaitHandle(u8 command,u8 mode);
 Sextern void ReadPowData(void);
 Sextern u8 USART3_Recive_flg;
 Sstruct MODS_T
@@ -36146,6 +36158,8 @@ Sextern vu8 version;
 Sextern short Temperature;
 Sextern vu8 sendwait;
 Sextern vu8 listsend;
+Sextern vu8 waitcommand1;
+Sextern vu8 waitcommand2;
 Sextern vu8 overflag;
 S#define onoff_Load                    Run_Control[0]  //ON/OFF
 S#define onoff_POWE                    Run_Control[1]  //ON/OFF
@@ -36528,6 +36542,7 @@ Svoid MODE_PARASET(vu8 value);
 Svoid MODE_ONOFF(vu8 value);
 Svoid JumpBoot(u8 flag);
 Svoid SetPowerC(vu16 powc);
+Svoid PowerCommWaitHandle(u8 command,u8 mode);
 Sextern void ReadPowData(void);
 Sextern u8 USART3_Recive_flg;
 Sstruct MODS_T

@@ -141,6 +141,8 @@ extern vu8 version;
 extern short Temperature;
 extern vu8 sendwait;
 extern vu8 listsend;
+extern vu8 waitcommand1;
+extern vu8 waitcommand2;
 extern vu8 overflag;
 #define onoff_Load                    Run_Control[0]  //ON/OFF
 #define onoff_POWE                    Run_Control[1]  //ON/OFF
@@ -523,6 +525,7 @@ void MODE_PARASET(vu8 value);
 void MODE_ONOFF(vu8 value);
 void JumpBoot(u8 flag);
 void SetPowerC(vu16 powc);
+void PowerCommWaitHandle(u8 command,u8 mode);
 extern void ReadPowData(void);
 extern u8 USART3_Recive_flg;
 struct MODS_T
