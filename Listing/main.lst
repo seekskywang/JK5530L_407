@@ -55202,7 +55202,7 @@ N			Temperature = Ds18b20GetTemp();
 N		}else{
 N			tempflag ++;
 N		}
-N		if(readpowflag > 200/* && mainswitch == 1*/)
+N		if(readpowflag > 200 && sendwait == 0 && listsend == 0/* && mainswitch == 1*/)
 N		{
 N			ReadPowData();
 N			readpowflag = 0;

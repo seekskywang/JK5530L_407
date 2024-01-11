@@ -414,7 +414,7 @@ int main(void)
 		}else{
 			tempflag ++;
 		}
-		if(readpowflag > 200/* && mainswitch == 1*/)
+		if(readpowflag > 200 && sendwait == 0 && listsend == 0/* && mainswitch == 1*/)
 		{
 			ReadPowData();
 			readpowflag = 0;

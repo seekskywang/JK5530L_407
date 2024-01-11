@@ -867,12 +867,12 @@
 00001c  f7fffffe          BL       GPIO_Conf
 ;;;378    
 ;;;379        abc_time = 0;
-000020  4853              LDR      r0,|L15.368|
+000020  4856              LDR      r0,|L15.380|
 000022  f04f0800          MOV      r8,#0
 000026  4644              MOV      r4,r8
 000028  f8c08000          STR      r8,[r0,#0]  ; abc_time
 ;;;380        ms_time = 0;
-00002c  4851              LDR      r0,|L15.372|
+00002c  4854              LDR      r0,|L15.384|
 00002e  f8c08000          STR      r8,[r0,#0]  ; ms_time
 ;;;381    
 ;;;382    	TIM1_PWM_Config();
@@ -910,7 +910,7 @@
 ;;;396    //	LCD_Initializtion();//液晶屏初始化
 ;;;397    	//EEPROM_READ_Coeff();//读取校准参数
 ;;;398    	RCONT_SW = 0;
-000072  4d41              LDR      r5,|L15.376|
+000072  4d44              LDR      r5,|L15.388|
 000074  626c              STR      r4,[r5,#0x24]  ; Run_Control
 ;;;399    	Read_Flash_Bytes();
 000076  f7fffffe          BL       Read_Flash_Bytes
@@ -925,7 +925,7 @@
 ;;;404    	LOAD_I_SW = 0;
 000086  622c              STR      r4,[r5,#0x20]  ; Run_Control
 ;;;405    	Flag_Swtich_ON = 0;
-000088  f8dfa0f0          LDR      r10,|L15.380|
+000088  f8dfa0fc          LDR      r10,|L15.392|
 ;;;406    	flag_CC_MODE = 1;
 00008c  f10a0008          ADD      r0,r10,#8
 000090  f8da1000          LDR      r1,[r10,#0]           ;405  ; flagA
@@ -946,7 +946,7 @@
 ;;;414    		}else{
 ;;;415    			tempflag ++;
 ;;;416    		}
-;;;417    		if(readpowflag > 200/* && mainswitch == 1*/)
+;;;417    		if(readpowflag > 200 && sendwait == 0 && listsend == 0/* && mainswitch == 1*/)
 ;;;418    		{
 ;;;419    			ReadPowData();
 ;;;420    			readpowflag = 0;
@@ -962,122 +962,129 @@
 ;;;430    			for(t=0;t<len;t++)								  //通过长度进行循环
 ;;;431    			{
 ;;;432    				USART_SendData(USART2, USART_RX_BUF[t]);      //将数组采集好的数据 一次向串口1发送
-0000ac  f8df90d0          LDR      r9,|L15.384|
-0000b0  4f34              LDR      r7,|L15.388|
+0000ac  f8df90dc          LDR      r9,|L15.396|
+0000b0  4f37              LDR      r7,|L15.400|
 0000b2  80e0              STRH     r0,[r4,#6]            ;407
                   |L15.180|
 0000b4  7920              LDRB     r0,[r4,#4]            ;410  ; tempflag
 0000b6  2814              CMP      r0,#0x14              ;410
-0000b8  d015              BEQ      |L15.230|
+0000b8  d008              BEQ      |L15.204|
 0000ba  1c40              ADDS     r0,r0,#1              ;410
 0000bc  7120              STRB     r0,[r4,#4]            ;415
                   |L15.190|
 0000be  6960              LDR      r0,[r4,#0x14]         ;417  ; readpowflag
 0000c0  28c8              CMP      r0,#0xc8              ;417
-0000c2  d903              BLS      |L15.204|
-0000c4  f7fffffe          BL       ReadPowData
-0000c8  f8c48014          STR      r8,[r4,#0x14]         ;420  ; readpowflag
+0000c2  d910              BLS      |L15.230|
+0000c4  4833              LDR      r0,|L15.404|
+0000c6  7800              LDRB     r0,[r0,#0]            ;417  ; sendwait
+0000c8  b130              CBZ      r0,|L15.216|
+0000ca  e00c              B        |L15.230|
                   |L15.204|
-0000cc  8838              LDRH     r0,[r7,#0]            ;423  ; USART_RX_STA
-0000ce  0400              LSLS     r0,r0,#16             ;423
-0000d0  d524              BPL      |L15.284|
-0000d2  482d              LDR      r0,|L15.392|
-0000d4  492d              LDR      r1,|L15.396|
-0000d6  7800              LDRB     r0,[r0,#0]            ;427  ; USART_RX_CNT
-0000d8  f7fffffe          BL       SerialRemoteHandleL
-0000dc  4606              MOV      r6,r0                 ;428
-0000de  2500              MOVS     r5,#0                 ;430
-0000e0  f8dfb0a8          LDR      r11,|L15.396|
-0000e4  e012              B        |L15.268|
+0000cc  f8848004          STRB     r8,[r4,#4]            ;412
+0000d0  f7fffffe          BL       Ds18b20GetTemp
+0000d4  80e0              STRH     r0,[r4,#6]            ;413
+0000d6  e7f2              B        |L15.190|
+                  |L15.216|
+0000d8  482f              LDR      r0,|L15.408|
+0000da  7800              LDRB     r0,[r0,#0]            ;417  ; listsend
+0000dc  b918              CBNZ     r0,|L15.230|
+0000de  f7fffffe          BL       ReadPowData
+0000e2  f8c48014          STR      r8,[r4,#0x14]         ;420  ; readpowflag
                   |L15.230|
-0000e6  f8848004          STRB     r8,[r4,#4]            ;412
-0000ea  f7fffffe          BL       Ds18b20GetTemp
-0000ee  80e0              STRH     r0,[r4,#6]            ;413
-0000f0  e7e5              B        |L15.190|
-0000f2  bf00              NOP      
-                  |L15.244|
-0000f4  f81b1005          LDRB     r1,[r11,r5]
-0000f8  4648              MOV      r0,r9
-0000fa  f7fffffe          BL       USART_SendData
-                  |L15.254|
+0000e6  8838              LDRH     r0,[r7,#0]            ;423  ; USART_RX_STA
+0000e8  0400              LSLS     r0,r0,#16             ;423
+0000ea  d51d              BPL      |L15.296|
+0000ec  482b              LDR      r0,|L15.412|
+0000ee  492c              LDR      r1,|L15.416|
+0000f0  7800              LDRB     r0,[r0,#0]            ;427  ; USART_RX_CNT
+0000f2  f7fffffe          BL       SerialRemoteHandleL
+0000f6  4606              MOV      r6,r0                 ;428
+0000f8  2500              MOVS     r5,#0                 ;430
+0000fa  f8dfb0a4          LDR      r11,|L15.416|
+0000fe  e00b              B        |L15.280|
+                  |L15.256|
+000100  f81b1005          LDRB     r1,[r11,r5]
+000104  4648              MOV      r0,r9
+000106  f7fffffe          BL       USART_SendData
+                  |L15.266|
 ;;;433    				while(USART_GetFlagStatus(USART2,USART_FLAG_TC)!=SET);//等待发送结束
-0000fe  2140              MOVS     r1,#0x40
-000100  4648              MOV      r0,r9
-000102  f7fffffe          BL       USART_GetFlagStatus
-000106  2801              CMP      r0,#1
-000108  d1f9              BNE      |L15.254|
-00010a  1c6d              ADDS     r5,r5,#1
-                  |L15.268|
-00010c  42b5              CMP      r5,r6                 ;430
-00010e  dbf1              BLT      |L15.244|
+00010a  2140              MOVS     r1,#0x40
+00010c  4648              MOV      r0,r9
+00010e  f7fffffe          BL       USART_GetFlagStatus
+000112  2801              CMP      r0,#1
+000114  d1f9              BNE      |L15.266|
+000116  1c6d              ADDS     r5,r5,#1
+                  |L15.280|
+000118  42b5              CMP      r5,r6                 ;430
+00011a  dbf1              BLT      |L15.256|
 ;;;434    			}
 ;;;435    			memset(USART_RX_BUF,0,USART_REC_LEN);
-000110  21c8              MOVS     r1,#0xc8
-000112  481e              LDR      r0,|L15.396|
-000114  f7fffffe          BL       __aeabi_memclr
+00011c  21c8              MOVS     r1,#0xc8
+00011e  4820              LDR      r0,|L15.416|
+000120  f7fffffe          BL       __aeabi_memclr
 ;;;436    			
 ;;;437    			USART_RX_STA=0;			  //清零 虚拟寄存器		  为一下次采集做准备
-000118  f8a78000          STRH     r8,[r7,#0]
-                  |L15.284|
+000124  f8a78000          STRH     r8,[r7,#0]
+                  |L15.296|
 ;;;438    		}
 ;;;439    		if(jumpflag == 1)
-00011c  7820              LDRB     r0,[r4,#0]  ; jumpflag
-00011e  2801              CMP      r0,#1
-000120  d102              BNE      |L15.296|
+000128  7820              LDRB     r0,[r4,#0]  ; jumpflag
+00012a  2801              CMP      r0,#1
+00012c  d102              BNE      |L15.308|
 ;;;440    		{
 ;;;441    			JumpBoot(55);
-000122  2037              MOVS     r0,#0x37
-000124  f7fffffe          BL       JumpBoot
-                  |L15.296|
+00012e  2037              MOVS     r0,#0x37
+000130  f7fffffe          BL       JumpBoot
+                  |L15.308|
 ;;;442    		}
 ;;;443    		if(USART3_Recive_flg == 1)
-000128  4819              LDR      r0,|L15.400|
-00012a  7800              LDRB     r0,[r0,#0]  ; USART3_Recive_flg
-00012c  2801              CMP      r0,#1
-00012e  d101              BNE      |L15.308|
+000134  481b              LDR      r0,|L15.420|
+000136  7800              LDRB     r0,[r0,#0]  ; USART3_Recive_flg
+000138  2801              CMP      r0,#1
+00013a  d101              BNE      |L15.320|
 ;;;444    		{
 ;;;445    			USART3HANDLE();
-000130  f7fffffe          BL       USART3HANDLE
-                  |L15.308|
+00013c  f7fffffe          BL       USART3HANDLE
+                  |L15.320|
 ;;;446    		}
 ;;;447    //		TIM_SetCompare3(TIM4,Contr_Voltage);//稳压电源电流DAC
 ;;;448    //		TIM_SetCompare4(TIM4,Contr_Current);//稳压电源电压DAC
 ;;;449    		AD5541_Send(Contr_Laod);//加载DAC值
-000134  4817              LDR      r0,|L15.404|
-000136  8800              LDRH     r0,[r0,#0]  ; Contr_Laod
-000138  f7fffffe          BL       AD5541_Send
+000140  4819              LDR      r0,|L15.424|
+000142  8800              LDRH     r0,[r0,#0]  ; Contr_Laod
+000144  f7fffffe          BL       AD5541_Send
 ;;;450    		MODE_CONT();//电压电流档位切换
-00013c  f7fffffe          BL       MODE_CONT
+000148  f7fffffe          BL       MODE_CONT
 ;;;451    		if(Flag_DAC_OFF==0 && calflag == 0)
-000140  480e              LDR      r0,|L15.380|
-000142  1d00              ADDS     r0,r0,#4
-000144  7800              LDRB     r0,[r0,#0]  ; flagB
-000146  0700              LSLS     r0,r0,#28
-000148  d403              BMI      |L15.338|
-00014a  78e0              LDRB     r0,[r4,#3]  ; calflag
-00014c  b908              CBNZ     r0,|L15.338|
+00014c  480e              LDR      r0,|L15.392|
+00014e  1d00              ADDS     r0,r0,#4
+000150  7800              LDRB     r0,[r0,#0]  ; flagB
+000152  0700              LSLS     r0,r0,#28
+000154  d403              BMI      |L15.350|
+000156  78e0              LDRB     r0,[r4,#3]  ; calflag
+000158  b908              CBNZ     r0,|L15.350|
 ;;;452    		{
 ;;;453    			Transformation_ADC();
-00014e  f7fffffe          BL       Transformation_ADC
-                  |L15.338|
+00015a  f7fffffe          BL       Transformation_ADC
+                  |L15.350|
 ;;;454    		}
 ;;;455    		if(Flag_ADC_Full==1)
-000152  f8da1000          LDR      r1,[r10,#0]  ; flagA
-000156  078a              LSLS     r2,r1,#30
-000158  d505              BPL      |L15.358|
+00015e  f8da1000          LDR      r1,[r10,#0]  ; flagA
+000162  078a              LSLS     r2,r1,#30
+000164  d505              BPL      |L15.370|
 ;;;456    		{
 ;;;457    			Flag_ADC_Full=0;
-00015a  f0210102          BIC      r1,r1,#2
+000166  f0210102          BIC      r1,r1,#2
 ;;;458    			ADC_CH_Scan();//ADC滤波
-00015e  f8ca1000          STR      r1,[r10,#0]  ; flagA
-000162  f7fffffe          BL       ADC_CH_Scan
-                  |L15.358|
+00016a  f8ca1000          STR      r1,[r10,#0]  ; flagA
+00016e  f7fffffe          BL       ADC_CH_Scan
+                  |L15.370|
 ;;;459    		}
 ;;;460    		AD7689_Scan_CH();//读取AD7689各通道AD值
-000166  f7fffffe          BL       AD7689_Scan_CH
+000172  f7fffffe          BL       AD7689_Scan_CH
 ;;;461    		Temp_Comapre();//风扇控制
-00016a  f7fffffe          BL       Temp_Comapre
-00016e  e7a1              B        |L15.180|
+000176  f7fffffe          BL       Temp_Comapre
+00017a  e79b              B        |L15.180|
 ;;;462    	}
 ;;;463    	//IWDG_Inte();
 ;;;464    //	MainTask();
@@ -1085,25 +1092,29 @@
 ;;;466    
                           ENDP
 
-                  |L15.368|
-                          DCD      abc_time
-                  |L15.372|
-                          DCD      ms_time
-                  |L15.376|
-                          DCD      Run_Control
                   |L15.380|
-                          DCD      ||area_number.24||+0x8
+                          DCD      abc_time
                   |L15.384|
-                          DCD      0x40004400
+                          DCD      ms_time
                   |L15.388|
-                          DCD      USART_RX_STA
+                          DCD      Run_Control
                   |L15.392|
-                          DCD      USART_RX_CNT
+                          DCD      ||area_number.24||+0x8
                   |L15.396|
-                          DCD      USART_RX_BUF
+                          DCD      0x40004400
                   |L15.400|
-                          DCD      USART3_Recive_flg
+                          DCD      USART_RX_STA
                   |L15.404|
+                          DCD      sendwait
+                  |L15.408|
+                          DCD      listsend
+                  |L15.412|
+                          DCD      USART_RX_CNT
+                  |L15.416|
+                          DCD      USART_RX_BUF
+                  |L15.420|
+                          DCD      USART3_Recive_flg
+                  |L15.424|
                           DCD      Contr_Laod
 
                           AREA ||.bss||, DATA, NOINIT, ALIGN=2
