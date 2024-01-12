@@ -15,13 +15,13 @@
 ;;;599    		if(range == 0)//低档位低段
 ;;;600    		{
 ;;;601    			calflag = 1;
-000006  4eff              LDR      r6,|L1.1028|
+000006  4efe              LDR      r6,|L1.1024|
 ;;;602    			LOAD_V_SW = 0;
-000008  4aff              LDR      r2,|L1.1032|
+000008  4afe              LDR      r2,|L1.1028|
 00000a  2700              MOVS     r7,#0                 ;596
 00000c  f04f0801          MOV      r8,#1                 ;601
 ;;;603    			x1 = Vmon_Load_value;
-000010  4cfe              LDR      r4,|L1.1036|
+000010  4cfd              LDR      r4,|L1.1032|
 ;;;604    			y1 = data;
 ;;;605    		}else if(range == 1){//低档位高段
 ;;;606    			
@@ -31,8 +31,8 @@
 ;;;610    			CalPara.OffsetLV[0] = (float)y2 - CalPara.TestLV[0]*(float)x2;
 ;;;611    			
 ;;;612    			Flag_DAC_OFF=0;
-000012  f8dfc400          LDR      r12,|L1.1044|
-000016  f8dfa3f8          LDR      r10,|L1.1040|
+000012  f8dfc3fc          LDR      r12,|L1.1040|
+000016  f8dfa3f4          LDR      r10,|L1.1036|
 ;;;613    			calflag = 0;
 ;;;614    		}else if(range == 2){//高档位低段
 ;;;615    			calflag = 1;
@@ -81,7 +81,7 @@
 ;;;658    			GPIO_ResetBits(GPIOB,GPIO_Pin_1);//电压档位为低档
 ;;;659    			calflag = 1;
 ;;;660    			Contr_Laod = 1000;
-00001a  f8df93fc          LDR      r9,|L1.1048|
+00001a  f8df93f8          LDR      r9,|L1.1044|
 00001e  f8dc3000          LDR      r3,[r12,#0]           ;612
 000022  edd40a05          VLDR     s1,[r4,#0x14]         ;603
 000026  ed940a06          VLDR     s0,[r4,#0x18]         ;603
@@ -136,7 +136,7 @@
 ;;;705    		if(range == 0)//负载电流低档位1
 ;;;706    		{		
 ;;;707    			LOAD_I_SW = 0;
-;;;708    			Contr_Laod = 6000;
+;;;708    			Contr_Laod = 10000;
 ;;;709    			calflag = 1;
 ;;;710    			OnOff_GPOI_ResetSet(2,1);
 ;;;711    		}
@@ -181,7 +181,7 @@
 ;;;750    			GPIO_ResetBits(GPIOC,GPIO_Pin_11);//电流测量为高档位
 000038  f44f6e00          MOV      lr,#0x800
 00003c  2801              CMP      r0,#1                 ;704
-00003e  d07c              BEQ      |L1.314|
+00003e  d07b              BEQ      |L1.312|
 ;;;751    			Contr_Laod = 6000;
 ;;;752    			calflag = 1;
 ;;;753    			OnOff_GPOI_ResetSet(2,1);
@@ -268,641 +268,644 @@
 ;;;834    		}
 ;;;835    	}else if(mode == 2){
 000040  2802              CMP      r0,#2
-000042  d07b              BEQ      |L1.316|
-000044  e254              B        |L1.1264|
+000042  d07a              BEQ      |L1.314|
+000044  e257              B        |L1.1270|
                   |L1.70|
-000046  48f5              LDR      r0,|L1.1052|
-000048  b1f9              CBZ      r1,|L1.138|
+000046  48f4              LDR      r0,|L1.1048|
+000048  b1f1              CBZ      r1,|L1.136|
 00004a  2901              CMP      r1,#1                 ;605
-00004c  d021              BEQ      |L1.146|
+00004c  d020              BEQ      |L1.144|
 00004e  f04f0b0a          MOV      r11,#0xa              ;618
 000052  2902              CMP      r1,#2                 ;614
-000054  d041              BEQ      |L1.218|
+000054  d040              BEQ      |L1.216|
 000056  2903              CMP      r1,#3                 ;619
-000058  d049              BEQ      |L1.238|
-00005a  f2413088          MOV      r0,#0x1388            ;631
+000058  d048              BEQ      |L1.236|
+00005a  f2413e88          MOV      lr,#0x1388            ;631
 00005e  2904              CMP      r1,#4                 ;628
-000060  d071              BEQ      |L1.326|
-000062  f8dfe3bc          LDR      lr,|L1.1056|
-000066  2905              CMP      r1,#5                 ;633
-000068  d07b              BEQ      |L1.354|
-00006a  2906              CMP      r1,#6                 ;640
-00006c  d069              BEQ      |L1.322|
-00006e  48ed              LDR      r0,|L1.1060|
-000070  2907              CMP      r1,#7                 ;655
-000072  d067              BEQ      |L1.324|
-000074  2908              CMP      r1,#8                 ;662
-000076  d06f              BEQ      |L1.344|
-000078  2909              CMP      r1,#9                 ;670
-00007a  d06e              BEQ      |L1.346|
-00007c  290a              CMP      r1,#0xa               ;679
-00007e  d06d              BEQ      |L1.348|
-000080  290b              CMP      r1,#0xb               ;686
-000082  d06c              BEQ      |L1.350|
-000084  290c              CMP      r1,#0xc               ;694
-000086  d06b              BEQ      |L1.352|
-000088  e232              B        |L1.1264|
-                  |L1.138|
-00008a  f8868000          STRB     r8,[r6,#0]            ;601
-00008e  61d7              STR      r7,[r2,#0x1c]         ;602  ; Run_Control
-000090  e3a9              B        |L1.2022|
-                  |L1.146|
-000092  8800              LDRH     r0,[r0,#0]            ;607  ; Vmon_Load_value
-000094  ee015a10          VMOV     s2,r5                 ;609
-000098  eeb80a40          VCVT.F32.U32 s0,s0                 ;609
-00009c  eef80a60          VCVT.F32.U32 s1,s1                 ;609
-0000a0  eeb81a41          VCVT.F32.U32 s2,s2                 ;609
-0000a4  e9c40507          STRD     r0,r5,[r4,#0x1c]      ;607
-0000a8  ee311a40          VSUB.F32 s2,s2,s0              ;609
-0000ac  ee000a10          VMOV     s0,r0                 ;609
-0000b0  eeb80a40          VCVT.F32.U32 s0,s0                 ;609
-0000b4  ee300a60          VSUB.F32 s0,s0,s1              ;609
-0000b8  eec10a00          VDIV.F32 s1,s2,s0              ;609
-0000bc  ee000a10          VMOV     s0,r0                 ;610
-0000c0  eeb81a40          VCVT.F32.U32 s2,s0                 ;610
-0000c4  ee005a10          VMOV     s0,r5                 ;610
-0000c8  eeb80a40          VCVT.F32.U32 s0,s0                 ;610
-0000cc  edca0a00          VSTR     s1,[r10,#0]           ;609
-0000d0  ee000ac1          VMLS.F32 s0,s1,s2              ;610
-0000d4  ed8a0a04          VSTR     s0,[r10,#0x10]        ;610
-0000d8  e3ab              B        |L1.2098|
-                  |L1.218|
-0000da  f8868000          STRB     r8,[r6,#0]            ;615
-0000de  f8c2801c          STR      r8,[r2,#0x1c]         ;616  ; Run_Control
-0000e2  8800              LDRH     r0,[r0,#0]            ;617  ; Vmon_Load_value
-0000e4  6160              STR      r0,[r4,#0x14]         ;618  ; x1
-0000e6  fbb5f0fb          UDIV     r0,r5,r11             ;618
-0000ea  61a0              STR      r0,[r4,#0x18]         ;618  ; y1
-0000ec  e200              B        |L1.1264|
-                  |L1.238|
-0000ee  8800              LDRH     r0,[r0,#0]            ;621  ; Vmon_Load_value
-0000f0  fbb5f1fb          UDIV     r1,r5,r11             ;622
-0000f4  ee011a10          VMOV     s2,r1                 ;623
-0000f8  eeb80a40          VCVT.F32.U32 s0,s0                 ;623
-0000fc  eef80a60          VCVT.F32.U32 s1,s1                 ;623
-000100  eeb81a41          VCVT.F32.U32 s2,s2                 ;623
-000104  e9c40107          STRD     r0,r1,[r4,#0x1c]      ;623
-000108  ee311a40          VSUB.F32 s2,s2,s0              ;623
-00010c  ee000a10          VMOV     s0,r0                 ;623
-000110  eeb80a40          VCVT.F32.U32 s0,s0                 ;623
-000114  ee300a60          VSUB.F32 s0,s0,s1              ;623
-000118  eec10a00          VDIV.F32 s1,s2,s0              ;623
-00011c  ee000a10          VMOV     s0,r0                 ;624
-000120  eeb81a40          VCVT.F32.U32 s2,s0                 ;624
-000124  ee001a10          VMOV     s0,r1                 ;624
-000128  eeb80a40          VCVT.F32.U32 s0,s0                 ;624
-00012c  edca0a01          VSTR     s1,[r10,#4]           ;623
-000130  ee000ac1          VMLS.F32 s0,s1,s2              ;624
-000134  ed8a0a05          VSTR     s0,[r10,#0x14]        ;624
-000138  e37b              B        |L1.2098|
+000060  d070              BEQ      |L1.324|
+000062  48ee              LDR      r0,|L1.1052|
+000064  2905              CMP      r1,#5                 ;633
+000066  d07c              BEQ      |L1.354|
+000068  2906              CMP      r1,#6                 ;640
+00006a  d069              BEQ      |L1.320|
+00006c  48ec              LDR      r0,|L1.1056|
+00006e  2907              CMP      r1,#7                 ;655
+000070  d067              BEQ      |L1.322|
+000072  2908              CMP      r1,#8                 ;662
+000074  d070              BEQ      |L1.344|
+000076  2909              CMP      r1,#9                 ;670
+000078  d06f              BEQ      |L1.346|
+00007a  290a              CMP      r1,#0xa               ;679
+00007c  d06e              BEQ      |L1.348|
+00007e  290b              CMP      r1,#0xb               ;686
+000080  d06d              BEQ      |L1.350|
+000082  290c              CMP      r1,#0xc               ;694
+000084  d06c              BEQ      |L1.352|
+000086  e236              B        |L1.1270|
+                  |L1.136|
+000088  f8868000          STRB     r8,[r6,#0]            ;601
+00008c  61d7              STR      r7,[r2,#0x1c]         ;602  ; Run_Control
+00008e  e3ad              B        |L1.2028|
+                  |L1.144|
+000090  8800              LDRH     r0,[r0,#0]            ;607  ; Vmon_Load_value
+000092  ee015a10          VMOV     s2,r5                 ;609
+000096  eeb80a40          VCVT.F32.U32 s0,s0                 ;609
+00009a  eef80a60          VCVT.F32.U32 s1,s1                 ;609
+00009e  eeb81a41          VCVT.F32.U32 s2,s2                 ;609
+0000a2  e9c40507          STRD     r0,r5,[r4,#0x1c]      ;607
+0000a6  ee311a40          VSUB.F32 s2,s2,s0              ;609
+0000aa  ee000a10          VMOV     s0,r0                 ;609
+0000ae  eeb80a40          VCVT.F32.U32 s0,s0                 ;609
+0000b2  ee300a60          VSUB.F32 s0,s0,s1              ;609
+0000b6  eec10a00          VDIV.F32 s1,s2,s0              ;609
+0000ba  ee000a10          VMOV     s0,r0                 ;610
+0000be  eeb81a40          VCVT.F32.U32 s2,s0                 ;610
+0000c2  ee005a10          VMOV     s0,r5                 ;610
+0000c6  eeb80a40          VCVT.F32.U32 s0,s0                 ;610
+0000ca  edca0a00          VSTR     s1,[r10,#0]           ;609
+0000ce  ee000ac1          VMLS.F32 s0,s1,s2              ;610
+0000d2  ed8a0a04          VSTR     s0,[r10,#0x10]        ;610
+0000d6  e3af              B        |L1.2104|
+                  |L1.216|
+0000d8  f8868000          STRB     r8,[r6,#0]            ;615
+0000dc  f8c2801c          STR      r8,[r2,#0x1c]         ;616  ; Run_Control
+0000e0  8800              LDRH     r0,[r0,#0]            ;617  ; Vmon_Load_value
+0000e2  6160              STR      r0,[r4,#0x14]         ;618  ; x1
+0000e4  fbb5f0fb          UDIV     r0,r5,r11             ;618
+0000e8  61a0              STR      r0,[r4,#0x18]         ;618  ; y1
+0000ea  e204              B        |L1.1270|
+                  |L1.236|
+0000ec  8800              LDRH     r0,[r0,#0]            ;621  ; Vmon_Load_value
+0000ee  fbb5f1fb          UDIV     r1,r5,r11             ;622
+0000f2  ee011a10          VMOV     s2,r1                 ;623
+0000f6  eeb80a40          VCVT.F32.U32 s0,s0                 ;623
+0000fa  eef80a60          VCVT.F32.U32 s1,s1                 ;623
+0000fe  eeb81a41          VCVT.F32.U32 s2,s2                 ;623
+000102  e9c40107          STRD     r0,r1,[r4,#0x1c]      ;623
+000106  ee311a40          VSUB.F32 s2,s2,s0              ;623
+00010a  ee000a10          VMOV     s0,r0                 ;623
+00010e  eeb80a40          VCVT.F32.U32 s0,s0                 ;623
+000112  ee300a60          VSUB.F32 s0,s0,s1              ;623
+000116  eec10a00          VDIV.F32 s1,s2,s0              ;623
+00011a  ee000a10          VMOV     s0,r0                 ;624
+00011e  eeb81a40          VCVT.F32.U32 s2,s0                 ;624
+000122  ee001a10          VMOV     s0,r1                 ;624
+000126  eeb80a40          VCVT.F32.U32 s0,s0                 ;624
+00012a  edca0a01          VSTR     s1,[r10,#4]           ;623
+00012e  ee000ac1          VMLS.F32 s0,s1,s2              ;624
+000132  ed8a0a05          VSTR     s0,[r10,#0x14]        ;624
+000136  e37f              B        |L1.2104|
+                  |L1.312|
+000138  e0ea              B        |L1.784|
                   |L1.314|
-00013a  e0ea              B        |L1.786|
-                  |L1.316|
-00013c  e32a              B        |L1.1940|
-00013e  e002              B        |L1.326|
-000140  e00f              B        |L1.354|
+00013a  e32e              B        |L1.1946|
+00013c  e002              B        |L1.324|
+00013e  e010              B        |L1.354|
+                  |L1.320|
+000140  e01c              B        |L1.380|
                   |L1.322|
-000142  e01b              B        |L1.380|
+000142  e064              B        |L1.526|
                   |L1.324|
-000144  e064              B        |L1.528|
-                  |L1.326|
-000146  f8868000          STRB     r8,[r6,#0]            ;629
-00014a  49b7              LDR      r1,|L1.1064|
-00014c  f64052ac          MOV      r2,#0xdac             ;630
-000150  800a              STRH     r2,[r1,#0]            ;630
-000152  49b6              LDR      r1,|L1.1068|
-000154  8008              STRH     r0,[r1,#0]            ;631
-000156  e2c3              B        |L1.1760|
+000144  f8868000          STRB     r8,[r6,#0]            ;629
+000148  48b6              LDR      r0,|L1.1060|
+00014a  f64051ac          MOV      r1,#0xdac             ;630
+00014e  8001              STRH     r1,[r0,#0]            ;630
+000150  49b5              LDR      r1,|L1.1064|
+000152  f8a1e000          STRH     lr,[r1,#0]            ;631
+000156  e2c6              B        |L1.1766|
                   |L1.344|
-000158  e061              B        |L1.542|
+000158  e060              B        |L1.540|
                   |L1.346|
-00015a  e06c              B        |L1.566|
+00015a  e06b              B        |L1.564|
                   |L1.348|
-00015c  e090              B        |L1.640|
+00015c  e08f              B        |L1.638|
                   |L1.350|
-00015e  e09f              B        |L1.672|
+00015e  e09e              B        |L1.670|
                   |L1.352|
-000160  e0b0              B        |L1.708|
+000160  e0af              B        |L1.706|
                   |L1.354|
-000162  49b1              LDR      r1,|L1.1064|
+000162  49b0              LDR      r1,|L1.1060|
 000164  6165              STR      r5,[r4,#0x14]         ;635  ; x1
 000166  880a              LDRH     r2,[r1,#0]            ;635  ; Contr_Voltage
 000168  61a2              STR      r2,[r4,#0x18]         ;636  ; y1
-00016a  f8be2000          LDRH     r2,[lr,#0]            ;636  ; Vmon_POWE_value
-00016e  e9c42509          STRD     r2,r5,[r4,#0x24]      ;636
-000172  f2427210          MOV      r2,#0x2710            ;638
-000176  800a              STRH     r2,[r1,#0]            ;638
-000178  49ac              LDR      r1,|L1.1068|
-00017a  e2c0              B        |L1.1790|
+00016a  8800              LDRH     r0,[r0,#0]            ;636  ; Vmon_POWE_value
+00016c  e9c40509          STRD     r0,r5,[r4,#0x24]      ;636
+000170  f2427010          MOV      r0,#0x2710            ;638
+000174  8008              STRH     r0,[r1,#0]            ;638
+000176  4670              MOV      r0,lr                 ;639
+000178  49ab              LDR      r1,|L1.1064|
+00017a  e2c3              B        |L1.1796|
                   |L1.380|
-00017c  48aa              LDR      r0,|L1.1064|
+00017c  49a9              LDR      r1,|L1.1060|
 00017e  61e5              STR      r5,[r4,#0x1c]         ;642  ; x2
-000180  8801              LDRH     r1,[r0,#0]            ;642  ; Contr_Voltage
+000180  8809              LDRH     r1,[r1,#0]            ;642  ; Contr_Voltage
 000182  6221              STR      r1,[r4,#0x20]         ;643  ; y2
-000184  f8be0000          LDRH     r0,[lr,#0]            ;643  ; Vmon_POWE_value
-000188  ee011a10          VMOV     s2,r1                 ;646
-00018c  eeb80a40          VCVT.F32.U32 s0,s0                 ;646
-000190  eef80a60          VCVT.F32.U32 s1,s1                 ;646
-000194  eeb81a41          VCVT.F32.U32 s2,s2                 ;646
-000198  e9c4050b          STRD     r0,r5,[r4,#0x2c]      ;643
-00019c  ee311a40          VSUB.F32 s2,s2,s0              ;646
-0001a0  ee005a10          VMOV     s0,r5                 ;646
-0001a4  4652              MOV      r2,r10                ;646
-0001a6  eeb80a40          VCVT.F32.U32 s0,s0                 ;646
-0001aa  ee300a60          VSUB.F32 s0,s0,s1              ;646
-0001ae  eec10a00          VDIV.F32 s1,s2,s0              ;646
-0001b2  ee005a10          VMOV     s0,r5                 ;647
-0001b6  eeb81a40          VCVT.F32.U32 s2,s0                 ;647
-0001ba  ee001a10          VMOV     s0,r1                 ;647
-0001be  eeb80a40          VCVT.F32.U32 s0,s0                 ;647
-0001c2  edca0a02          VSTR     s1,[r10,#8]           ;646
-0001c6  ee000ac1          VMLS.F32 s0,s1,s2              ;647
-0001ca  eef80a62          VCVT.F32.U32 s1,s5                 ;649
-0001ce  ed8a0a06          VSTR     s0,[r10,#0x18]        ;647
-0001d2  ee005a10          VMOV     s0,r5                 ;649
-0001d6  eeb80a40          VCVT.F32.U32 s0,s0                 ;649
-0001da  ee301a60          VSUB.F32 s2,s0,s1              ;649
-0001de  ee000a10          VMOV     s0,r0                 ;649
-0001e2  eef80a42          VCVT.F32.U32 s1,s4                 ;649
-0001e6  eeb80a40          VCVT.F32.U32 s0,s0                 ;649
-0001ea  ee300a60          VSUB.F32 s0,s0,s1              ;649
-0001ee  eec10a00          VDIV.F32 s1,s2,s0              ;649
-0001f2  ee000a10          VMOV     s0,r0                 ;650
-0001f6  eeb81a40          VCVT.F32.U32 s2,s0                 ;650
-0001fa  ee005a10          VMOV     s0,r5                 ;650
-0001fe  eeb80a40          VCVT.F32.U32 s0,s0                 ;650
-000202  edc20a03          VSTR     s1,[r2,#0xc]          ;649
-000206  ee000ac1          VMLS.F32 s0,s1,s2              ;650
-00020a  ed8a0a07          VSTR     s0,[r10,#0x1c]        ;650
-00020e  e257              B        |L1.1728|
-                  |L1.528|
-000210  f8c28018          STR      r8,[r2,#0x18]         ;656  ; Run_Control
-000214  61d7              STR      r7,[r2,#0x1c]         ;657  ; Run_Control
-000216  2102              MOVS     r1,#2                 ;658
-000218  f7fffffe          BL       GPIO_ResetBits
-00021c  e037              B        |L1.654|
-                  |L1.542|
-00021e  f8c28018          STR      r8,[r2,#0x18]         ;663  ; Run_Control
-000222  61d7              STR      r7,[r2,#0x1c]         ;664  ; Run_Control
-000224  2102              MOVS     r1,#2                 ;665
-000226  f7fffffe          BL       GPIO_ResetBits
-00022a  6165              STR      r5,[r4,#0x14]         ;667  ; x1
-00022c  f8b91000          LDRH     r1,[r9,#0]            ;667  ; Contr_Laod
-000230  4648              MOV      r0,r9                 ;667
-000232  61a1              STR      r1,[r4,#0x18]         ;668  ; y1
-000234  e17e              B        |L1.1332|
-                  |L1.566|
-000236  61e5              STR      r5,[r4,#0x1c]         ;672  ; x2
-000238  f8b90000          LDRH     r0,[r9,#0]            ;672  ; Contr_Laod
-00023c  eeb80a40          VCVT.F32.U32 s0,s0                 ;673
-000240  ee010a10          VMOV     s2,r0                 ;673
-000244  eef80a60          VCVT.F32.U32 s1,s1                 ;673
-000248  6220              STR      r0,[r4,#0x20]         ;673  ; y2
-00024a  eeb81a41          VCVT.F32.U32 s2,s2                 ;673
-00024e  ee311a40          VSUB.F32 s2,s2,s0              ;673
-000252  ee005a10          VMOV     s0,r5                 ;673
-000256  eeb80a40          VCVT.F32.U32 s0,s0                 ;673
-00025a  ee300a60          VSUB.F32 s0,s0,s1              ;673
-00025e  eec10a00          VDIV.F32 s1,s2,s0              ;673
-000262  ee005a10          VMOV     s0,r5                 ;674
-000266  eeb81a40          VCVT.F32.U32 s2,s0                 ;674
-00026a  ee000a10          VMOV     s0,r0                 ;674
-00026e  eeb80a40          VCVT.F32.U32 s0,s0                 ;674
-000272  edca0a0d          VSTR     s1,[r10,#0x34]        ;673
-000276  ee000ac1          VMLS.F32 s0,s1,s2              ;674
-00027a  ed8a0a1b          VSTR     s0,[r10,#0x6c]        ;674
-00027e  e21f              B        |L1.1728|
-                  |L1.640|
-000280  f8c28018          STR      r8,[r2,#0x18]         ;680  ; Run_Control
-000284  f8c2801c          STR      r8,[r2,#0x1c]         ;681  ; Run_Control
-000288  2102              MOVS     r1,#2                 ;682
-00028a  f7fffffe          BL       GPIO_SetBits
-                  |L1.654|
-00028e  f8868000          STRB     r8,[r6,#0]            ;659
-000292  f44f707a          MOV      r0,#0x3e8             ;660
-000296  f8a90000          STRH     r0,[r9,#0]            ;660
-                  |L1.666|
-00029a  2101              MOVS     r1,#1                 ;661
-00029c  2002              MOVS     r0,#2                 ;661
-00029e  e125              B        |L1.1260|
-                  |L1.672|
-0002a0  f8c28018          STR      r8,[r2,#0x18]         ;687  ; Run_Control
-0002a4  f8c2801c          STR      r8,[r2,#0x1c]         ;688  ; Run_Control
-0002a8  2102              MOVS     r1,#2                 ;689
-0002aa  f7fffffe          BL       GPIO_SetBits
-0002ae  fbb5f0fb          UDIV     r0,r5,r11             ;690
-0002b2  6160              STR      r0,[r4,#0x14]         ;691  ; x1
-0002b4  f8b91000          LDRH     r1,[r9,#0]            ;691  ; Contr_Laod
-0002b8  61a1              STR      r1,[r4,#0x18]         ;692  ; y1
-0002ba  f6446120          MOV      r1,#0x4e20            ;692
-0002be  f8a91000          STRH     r1,[r9,#0]            ;692
-0002c2  e7ea              B        |L1.666|
-                  |L1.708|
-0002c4  fbb5f1fb          UDIV     r1,r5,r11             ;695
-0002c8  61e1              STR      r1,[r4,#0x1c]         ;696  ; x2
-0002ca  f8b90000          LDRH     r0,[r9,#0]            ;696  ; Contr_Laod
-0002ce  eeb80a40          VCVT.F32.U32 s0,s0                 ;697
-0002d2  ee010a10          VMOV     s2,r0                 ;697
-0002d6  eef80a60          VCVT.F32.U32 s1,s1                 ;697
-0002da  6220              STR      r0,[r4,#0x20]         ;697  ; y2
-0002dc  eeb81a41          VCVT.F32.U32 s2,s2                 ;697
-0002e0  ee311a40          VSUB.F32 s2,s2,s0              ;697
-0002e4  ee001a10          VMOV     s0,r1                 ;697
-0002e8  eeb80a40          VCVT.F32.U32 s0,s0                 ;697
-0002ec  ee300a60          VSUB.F32 s0,s0,s1              ;697
-0002f0  eec10a00          VDIV.F32 s1,s2,s0              ;697
-0002f4  ee001a10          VMOV     s0,r1                 ;698
-0002f8  eeb81a40          VCVT.F32.U32 s2,s0                 ;698
-0002fc  ee000a10          VMOV     s0,r0                 ;698
-000300  eeb80a40          VCVT.F32.U32 s0,s0                 ;698
-000304  edca0a0e          VSTR     s1,[r10,#0x38]        ;697
-000308  ee000ac1          VMLS.F32 s0,s1,s2              ;698
-00030c  ed8a0a1c          VSTR     s0,[r10,#0x70]        ;698
-000310  e1d6              B        |L1.1728|
-                  |L1.786|
-000312  b311              CBZ      r1,|L1.858|
-000314  f8dfb118          LDR      r11,|L1.1072|
-000318  2901              CMP      r1,#1                 ;712
-00031a  d020              BEQ      |L1.862|
-00031c  2902              CMP      r1,#2                 ;720
-00031e  d029              BEQ      |L1.884|
-000320  483a              LDR      r0,|L1.1036|
-000322  2903              CMP      r1,#3                 ;728
-000324  edd03a0e          VLDR     s7,[r0,#0x38]         ;603
-000328  ed903a0d          VLDR     s6,[r0,#0x34]         ;603
-00032c  edd01a08          VLDR     s3,[r0,#0x20]         ;603
-000330  ed901a07          VLDR     s2,[r0,#0x1c]         ;603
-000334  d02c              BEQ      |L1.912|
-000336  2904              CMP      r1,#4                 ;748
-000338  d07e              BEQ      |L1.1080|
-00033a  2905              CMP      r1,#5                 ;754
-00033c  d07d              BEQ      |L1.1082|
-00033e  2906              CMP      r1,#6                 ;763
-000340  d07c              BEQ      |L1.1084|
-000342  2907              CMP      r1,#7                 ;772
-000344  d07b              BEQ      |L1.1086|
-000346  2908              CMP      r1,#8                 ;781
-000348  d07a              BEQ      |L1.1088|
-00034a  2909              CMP      r1,#9                 ;805
-00034c  d079              BEQ      |L1.1090|
-00034e  4839              LDR      r0,|L1.1076|
-000350  290a              CMP      r1,#0xa               ;810
-000352  d077              BEQ      |L1.1092|
-000354  290b              CMP      r1,#0xb               ;818
-000356  d076              BEQ      |L1.1094|
-000358  e345              B        |L1.2534|
-                  |L1.858|
-00035a  6217              STR      r7,[r2,#0x20]         ;707  ; Run_Control
-00035c  e0bf              B        |L1.1246|
-                  |L1.862|
-00035e  6217              STR      r7,[r2,#0x20]         ;714  ; Run_Control
-000360  6165              STR      r5,[r4,#0x14]         ;716  ; x1
-000362  f8b91000          LDRH     r1,[r9,#0]            ;716  ; Contr_Laod
-000366  4648              MOV      r0,r9                 ;716
-000368  61a1              STR      r1,[r4,#0x18]         ;717  ; y1
-00036a  f8bb1000          LDRH     r1,[r11,#0]           ;717  ; Imon_Load_value
-00036e  e9c4150b          STRD     r1,r5,[r4,#0x2c]      ;717
-000372  e0df              B        |L1.1332|
-                  |L1.884|
-000374  6217              STR      r7,[r2,#0x20]         ;722  ; Run_Control
-000376  61e5              STR      r5,[r4,#0x1c]         ;724  ; x2
-000378  f8b91000          LDRH     r1,[r9,#0]            ;724  ; Contr_Laod
-00037c  4648              MOV      r0,r9                 ;724
-00037e  6221              STR      r1,[r4,#0x20]         ;725  ; y2
-000380  f8bb1000          LDRH     r1,[r11,#0]           ;725  ; Imon_Load_value
-000384  e9c4150d          STRD     r1,r5,[r4,#0x34]      ;725
-000388  f64e2160          MOV      r1,#0xea60            ;727
-                  |L1.908|
-00038c  8001              STRH     r1,[r0,#0]            ;719
-00038e  e32a              B        |L1.2534|
-                  |L1.912|
-000390  6265              STR      r5,[r4,#0x24]         ;731  ; x3
-000392  f8b92000          LDRH     r2,[r9,#0]            ;731  ; Contr_Laod
-000396  62a2              STR      r2,[r4,#0x28]         ;732  ; y3
-000398  f8bb1000          LDRH     r1,[r11,#0]           ;732  ; Imon_Load_value
-00039c  eeb82a61          VCVT.F32.U32 s4,s3                 ;735
-0003a0  eeb80a40          VCVT.F32.U32 s0,s0                 ;735
-0003a4  eef80a60          VCVT.F32.U32 s1,s1                 ;735
-0003a8  e9c4150f          STRD     r1,r5,[r4,#0x3c]      ;735
-0003ac  ee322a40          VSUB.F32 s4,s4,s0              ;735
-0003b0  eeb80a41          VCVT.F32.U32 s0,s2                 ;735
-0003b4  4650              MOV      r0,r10                ;735
-0003b6  ee700a60          VSUB.F32 s1,s0,s1              ;735
-0003ba  ee820a20          VDIV.F32 s0,s4,s1              ;735
-0003be  eeb82a41          VCVT.F32.U32 s4,s2                 ;736
-0003c2  eef80a61          VCVT.F32.U32 s1,s3                 ;736
-0003c6  ed8a0a08          VSTR     s0,[r10,#0x20]        ;735
-0003ca  ee400a42          VMLS.F32 s1,s0,s4              ;736
-0003ce  ee002a10          VMOV     s0,r2                 ;737
-0003d2  eeb80a40          VCVT.F32.U32 s0,s0                 ;737
-0003d6  edca0a16          VSTR     s1,[r10,#0x58]        ;736
-0003da  eef80a61          VCVT.F32.U32 s1,s3                 ;737
-0003de  ee701a60          VSUB.F32 s3,s0,s1              ;737
-0003e2  ee005a10          VMOV     s0,r5                 ;737
-0003e6  eef80a41          VCVT.F32.U32 s1,s2                 ;737
-0003ea  eeb80a40          VCVT.F32.U32 s0,s0                 ;737
-0003ee  ee300a60          VSUB.F32 s0,s0,s1              ;737
-0003f2  eec10a80          VDIV.F32 s1,s3,s0              ;737
-0003f6  ee005a10          VMOV     s0,r5                 ;738
-0003fa  eeb81a40          VCVT.F32.U32 s2,s0                 ;738
-0003fe  edca0a09          VSTR     s1,[r10,#0x24]        ;737
-000402  e021              B        |L1.1096|
-                  |L1.1028|
+000184  8800              LDRH     r0,[r0,#0]            ;643  ; Vmon_POWE_value
+000186  ee011a10          VMOV     s2,r1                 ;646
+00018a  eeb80a40          VCVT.F32.U32 s0,s0                 ;646
+00018e  eef80a60          VCVT.F32.U32 s1,s1                 ;646
+000192  eeb81a41          VCVT.F32.U32 s2,s2                 ;646
+000196  e9c4050b          STRD     r0,r5,[r4,#0x2c]      ;643
+00019a  ee311a40          VSUB.F32 s2,s2,s0              ;646
+00019e  ee005a10          VMOV     s0,r5                 ;646
+0001a2  4652              MOV      r2,r10                ;646
+0001a4  eeb80a40          VCVT.F32.U32 s0,s0                 ;646
+0001a8  ee300a60          VSUB.F32 s0,s0,s1              ;646
+0001ac  eec10a00          VDIV.F32 s1,s2,s0              ;646
+0001b0  ee005a10          VMOV     s0,r5                 ;647
+0001b4  eeb81a40          VCVT.F32.U32 s2,s0                 ;647
+0001b8  ee001a10          VMOV     s0,r1                 ;647
+0001bc  eeb80a40          VCVT.F32.U32 s0,s0                 ;647
+0001c0  edca0a02          VSTR     s1,[r10,#8]           ;646
+0001c4  ee000ac1          VMLS.F32 s0,s1,s2              ;647
+0001c8  eef80a62          VCVT.F32.U32 s1,s5                 ;649
+0001cc  ed8a0a06          VSTR     s0,[r10,#0x18]        ;647
+0001d0  ee005a10          VMOV     s0,r5                 ;649
+0001d4  eeb80a40          VCVT.F32.U32 s0,s0                 ;649
+0001d8  ee301a60          VSUB.F32 s2,s0,s1              ;649
+0001dc  ee000a10          VMOV     s0,r0                 ;649
+0001e0  eef80a42          VCVT.F32.U32 s1,s4                 ;649
+0001e4  eeb80a40          VCVT.F32.U32 s0,s0                 ;649
+0001e8  ee300a60          VSUB.F32 s0,s0,s1              ;649
+0001ec  eec10a00          VDIV.F32 s1,s2,s0              ;649
+0001f0  ee000a10          VMOV     s0,r0                 ;650
+0001f4  eeb81a40          VCVT.F32.U32 s2,s0                 ;650
+0001f8  ee005a10          VMOV     s0,r5                 ;650
+0001fc  eeb80a40          VCVT.F32.U32 s0,s0                 ;650
+000200  edc20a03          VSTR     s1,[r2,#0xc]          ;649
+000204  ee000ac1          VMLS.F32 s0,s1,s2              ;650
+000208  ed8a0a07          VSTR     s0,[r10,#0x1c]        ;650
+00020c  e25b              B        |L1.1734|
+                  |L1.526|
+00020e  f8c28018          STR      r8,[r2,#0x18]         ;656  ; Run_Control
+000212  61d7              STR      r7,[r2,#0x1c]         ;657  ; Run_Control
+000214  2102              MOVS     r1,#2                 ;658
+000216  f7fffffe          BL       GPIO_ResetBits
+00021a  e037              B        |L1.652|
+                  |L1.540|
+00021c  f8c28018          STR      r8,[r2,#0x18]         ;663  ; Run_Control
+000220  61d7              STR      r7,[r2,#0x1c]         ;664  ; Run_Control
+000222  2102              MOVS     r1,#2                 ;665
+000224  f7fffffe          BL       GPIO_ResetBits
+000228  6165              STR      r5,[r4,#0x14]         ;667  ; x1
+00022a  f8b91000          LDRH     r1,[r9,#0]            ;667  ; Contr_Laod
+00022e  4648              MOV      r0,r9                 ;667
+000230  61a1              STR      r1,[r4,#0x18]         ;668  ; y1
+000232  e182              B        |L1.1338|
+                  |L1.564|
+000234  61e5              STR      r5,[r4,#0x1c]         ;672  ; x2
+000236  f8b90000          LDRH     r0,[r9,#0]            ;672  ; Contr_Laod
+00023a  eeb80a40          VCVT.F32.U32 s0,s0                 ;673
+00023e  ee010a10          VMOV     s2,r0                 ;673
+000242  eef80a60          VCVT.F32.U32 s1,s1                 ;673
+000246  6220              STR      r0,[r4,#0x20]         ;673  ; y2
+000248  eeb81a41          VCVT.F32.U32 s2,s2                 ;673
+00024c  ee311a40          VSUB.F32 s2,s2,s0              ;673
+000250  ee005a10          VMOV     s0,r5                 ;673
+000254  eeb80a40          VCVT.F32.U32 s0,s0                 ;673
+000258  ee300a60          VSUB.F32 s0,s0,s1              ;673
+00025c  eec10a00          VDIV.F32 s1,s2,s0              ;673
+000260  ee005a10          VMOV     s0,r5                 ;674
+000264  eeb81a40          VCVT.F32.U32 s2,s0                 ;674
+000268  ee000a10          VMOV     s0,r0                 ;674
+00026c  eeb80a40          VCVT.F32.U32 s0,s0                 ;674
+000270  edca0a0d          VSTR     s1,[r10,#0x34]        ;673
+000274  ee000ac1          VMLS.F32 s0,s1,s2              ;674
+000278  ed8a0a1b          VSTR     s0,[r10,#0x6c]        ;674
+00027c  e223              B        |L1.1734|
+                  |L1.638|
+00027e  f8c28018          STR      r8,[r2,#0x18]         ;680  ; Run_Control
+000282  f8c2801c          STR      r8,[r2,#0x1c]         ;681  ; Run_Control
+000286  2102              MOVS     r1,#2                 ;682
+000288  f7fffffe          BL       GPIO_SetBits
+                  |L1.652|
+00028c  f8868000          STRB     r8,[r6,#0]            ;659
+000290  f44f707a          MOV      r0,#0x3e8             ;660
+000294  f8a90000          STRH     r0,[r9,#0]            ;660
+                  |L1.664|
+000298  2101              MOVS     r1,#1                 ;661
+00029a  2002              MOVS     r0,#2                 ;661
+00029c  e129              B        |L1.1266|
+                  |L1.670|
+00029e  f8c28018          STR      r8,[r2,#0x18]         ;687  ; Run_Control
+0002a2  f8c2801c          STR      r8,[r2,#0x1c]         ;688  ; Run_Control
+0002a6  2102              MOVS     r1,#2                 ;689
+0002a8  f7fffffe          BL       GPIO_SetBits
+0002ac  fbb5f0fb          UDIV     r0,r5,r11             ;690
+0002b0  6160              STR      r0,[r4,#0x14]         ;691  ; x1
+0002b2  f8b91000          LDRH     r1,[r9,#0]            ;691  ; Contr_Laod
+0002b6  61a1              STR      r1,[r4,#0x18]         ;692  ; y1
+0002b8  f6446120          MOV      r1,#0x4e20            ;692
+0002bc  f8a91000          STRH     r1,[r9,#0]            ;692
+0002c0  e7ea              B        |L1.664|
+                  |L1.706|
+0002c2  fbb5f0fb          UDIV     r0,r5,r11             ;695
+0002c6  61e0              STR      r0,[r4,#0x1c]         ;696  ; x2
+0002c8  f8b91000          LDRH     r1,[r9,#0]            ;696  ; Contr_Laod
+0002cc  eeb80a40          VCVT.F32.U32 s0,s0                 ;697
+0002d0  ee011a10          VMOV     s2,r1                 ;697
+0002d4  eef80a60          VCVT.F32.U32 s1,s1                 ;697
+0002d8  6221              STR      r1,[r4,#0x20]         ;697  ; y2
+0002da  eeb81a41          VCVT.F32.U32 s2,s2                 ;697
+0002de  ee311a40          VSUB.F32 s2,s2,s0              ;697
+0002e2  ee000a10          VMOV     s0,r0                 ;697
+0002e6  eeb80a40          VCVT.F32.U32 s0,s0                 ;697
+0002ea  ee300a60          VSUB.F32 s0,s0,s1              ;697
+0002ee  eec10a00          VDIV.F32 s1,s2,s0              ;697
+0002f2  ee000a10          VMOV     s0,r0                 ;698
+0002f6  eeb81a40          VCVT.F32.U32 s2,s0                 ;698
+0002fa  ee001a10          VMOV     s0,r1                 ;698
+0002fe  eeb80a40          VCVT.F32.U32 s0,s0                 ;698
+000302  edca0a0e          VSTR     s1,[r10,#0x38]        ;697
+000306  ee000ac1          VMLS.F32 s0,s1,s2              ;698
+00030a  ed8a0a1c          VSTR     s0,[r10,#0x70]        ;698
+00030e  e1da              B        |L1.1734|
+                  |L1.784|
+000310  b311              CBZ      r1,|L1.856|
+000312  f8dfb118          LDR      r11,|L1.1068|
+000316  2901              CMP      r1,#1                 ;712
+000318  d024              BEQ      |L1.868|
+00031a  2902              CMP      r1,#2                 ;720
+00031c  d02d              BEQ      |L1.890|
+00031e  483a              LDR      r0,|L1.1032|
+000320  2903              CMP      r1,#3                 ;728
+000322  edd03a0e          VLDR     s7,[r0,#0x38]         ;603
+000326  ed903a0d          VLDR     s6,[r0,#0x34]         ;603
+00032a  edd01a08          VLDR     s3,[r0,#0x20]         ;603
+00032e  ed901a07          VLDR     s2,[r0,#0x1c]         ;603
+000332  d030              BEQ      |L1.918|
+000334  2904              CMP      r1,#4                 ;748
+000336  d062              BEQ      |L1.1022|
+000338  2905              CMP      r1,#5                 ;754
+00033a  d07b              BEQ      |L1.1076|
+00033c  2906              CMP      r1,#6                 ;763
+00033e  d07a              BEQ      |L1.1078|
+000340  2907              CMP      r1,#7                 ;772
+000342  d079              BEQ      |L1.1080|
+000344  2908              CMP      r1,#8                 ;781
+000346  d078              BEQ      |L1.1082|
+000348  2909              CMP      r1,#9                 ;805
+00034a  d077              BEQ      |L1.1084|
+00034c  4838              LDR      r0,|L1.1072|
+00034e  290a              CMP      r1,#0xa               ;810
+000350  d075              BEQ      |L1.1086|
+000352  290b              CMP      r1,#0xb               ;818
+000354  d074              BEQ      |L1.1088|
+000356  e348              B        |L1.2538|
+                  |L1.856|
+000358  6217              STR      r7,[r2,#0x20]         ;707  ; Run_Control
+00035a  f2427010          MOV      r0,#0x2710            ;708
+00035e  f8a90000          STRH     r0,[r9,#0]            ;708
+000362  e0c3              B        |L1.1260|
+                  |L1.868|
+000364  6217              STR      r7,[r2,#0x20]         ;714  ; Run_Control
+000366  6165              STR      r5,[r4,#0x14]         ;716  ; x1
+000368  f8b91000          LDRH     r1,[r9,#0]            ;716  ; Contr_Laod
+00036c  4648              MOV      r0,r9                 ;716
+00036e  61a1              STR      r1,[r4,#0x18]         ;717  ; y1
+000370  f8bb1000          LDRH     r1,[r11,#0]           ;717  ; Imon_Load_value
+000374  e9c4150b          STRD     r1,r5,[r4,#0x2c]      ;717
+000378  e0df              B        |L1.1338|
+                  |L1.890|
+00037a  6217              STR      r7,[r2,#0x20]         ;722  ; Run_Control
+00037c  61e5              STR      r5,[r4,#0x1c]         ;724  ; x2
+00037e  f8b91000          LDRH     r1,[r9,#0]            ;724  ; Contr_Laod
+000382  4648              MOV      r0,r9                 ;724
+000384  6221              STR      r1,[r4,#0x20]         ;725  ; y2
+000386  f8bb1000          LDRH     r1,[r11,#0]           ;725  ; Imon_Load_value
+00038a  e9c4150d          STRD     r1,r5,[r4,#0x34]      ;725
+00038e  f64e2160          MOV      r1,#0xea60            ;727
+                  |L1.914|
+000392  8001              STRH     r1,[r0,#0]            ;719
+000394  e329              B        |L1.2538|
+                  |L1.918|
+000396  6265              STR      r5,[r4,#0x24]         ;731  ; x3
+000398  f8b92000          LDRH     r2,[r9,#0]            ;731  ; Contr_Laod
+00039c  62a2              STR      r2,[r4,#0x28]         ;732  ; y3
+00039e  f8bb1000          LDRH     r1,[r11,#0]           ;732  ; Imon_Load_value
+0003a2  eeb82a61          VCVT.F32.U32 s4,s3                 ;735
+0003a6  eeb80a40          VCVT.F32.U32 s0,s0                 ;735
+0003aa  eef80a60          VCVT.F32.U32 s1,s1                 ;735
+0003ae  e9c4150f          STRD     r1,r5,[r4,#0x3c]      ;735
+0003b2  ee322a40          VSUB.F32 s4,s4,s0              ;735
+0003b6  eeb80a41          VCVT.F32.U32 s0,s2                 ;735
+0003ba  4650              MOV      r0,r10                ;735
+0003bc  ee700a60          VSUB.F32 s1,s0,s1              ;735
+0003c0  ee820a20          VDIV.F32 s0,s4,s1              ;735
+0003c4  eeb82a41          VCVT.F32.U32 s4,s2                 ;736
+0003c8  eef80a61          VCVT.F32.U32 s1,s3                 ;736
+0003cc  ed8a0a08          VSTR     s0,[r10,#0x20]        ;735
+0003d0  ee400a42          VMLS.F32 s1,s0,s4              ;736
+0003d4  ee002a10          VMOV     s0,r2                 ;737
+0003d8  eeb80a40          VCVT.F32.U32 s0,s0                 ;737
+0003dc  edca0a16          VSTR     s1,[r10,#0x58]        ;736
+0003e0  eef80a61          VCVT.F32.U32 s1,s3                 ;737
+0003e4  ee701a60          VSUB.F32 s3,s0,s1              ;737
+0003e8  ee005a10          VMOV     s0,r5                 ;737
+0003ec  eef80a41          VCVT.F32.U32 s1,s2                 ;737
+0003f0  eeb80a40          VCVT.F32.U32 s0,s0                 ;737
+0003f4  ee300a60          VSUB.F32 s0,s0,s1              ;737
+0003f8  eec10a80          VDIV.F32 s1,s3,s0              ;737
+0003fc  e021              B        |L1.1090|
+                  |L1.1022|
+0003fe  e06b              B        |L1.1240|
+                  |L1.1024|
                           DCD      calflag
-                  |L1.1032|
+                  |L1.1028|
                           DCD      Run_Control
-                  |L1.1036|
+                  |L1.1032|
                           DCD      ||.data||
-                  |L1.1040|
+                  |L1.1036|
                           DCD      CalPara
-                  |L1.1044|
+                  |L1.1040|
                           DCD      flagB
-                  |L1.1048|
+                  |L1.1044|
                           DCD      Contr_Laod
-                  |L1.1052|
+                  |L1.1048|
                           DCD      Vmon_Load_value
-                  |L1.1056|
+                  |L1.1052|
                           DCD      Vmon_POWE_value
-                  |L1.1060|
+                  |L1.1056|
                           DCD      0x40020400
-                  |L1.1064|
+                  |L1.1060|
                           DCD      Contr_Voltage
-                  |L1.1068|
+                  |L1.1064|
                           DCD      Contr_Current
-                  |L1.1072|
+                  |L1.1068|
                           DCD      Imon_Load_value
-                  |L1.1076|
+                  |L1.1072|
                           DCD      Imon_POWE_value
+                  |L1.1076|
+000434  e060              B        |L1.1272|
+                  |L1.1078|
+000436  e071              B        |L1.1308|
                   |L1.1080|
-000438  e04b              B        |L1.1234|
+000438  e082              B        |L1.1344|
                   |L1.1082|
-00043a  e05a              B        |L1.1266|
+00043a  e093              B        |L1.1380|
                   |L1.1084|
-00043c  e06b              B        |L1.1302|
+00043c  e149              B        |L1.1746|
                   |L1.1086|
-00043e  e07c              B        |L1.1338|
+00043e  e155              B        |L1.1772|
                   |L1.1088|
-000440  e08d              B        |L1.1374|
+000440  e162              B        |L1.1800|
                   |L1.1090|
-000442  e143              B        |L1.1740|
-                  |L1.1092|
-000444  e14f              B        |L1.1766|
-                  |L1.1094|
-000446  e15c              B        |L1.1794|
-                  |L1.1096|
-000448  ee002a10          VMOV     s0,r2                 ;738
-00044c  eeb80a40          VCVT.F32.U32 s0,s0                 ;738
-000450  ee000ac1          VMLS.F32 s0,s1,s2              ;738
-000454  eef80a63          VCVT.F32.U32 s1,s7                 ;740
-000458  eeb81a43          VCVT.F32.U32 s2,s6                 ;740
-00045c  ed800a17          VSTR     s0,[r0,#0x5c]         ;738
-000460  ed940a0c          VLDR     s0,[r4,#0x30]         ;740
-000464  eeb80a40          VCVT.F32.U32 s0,s0                 ;740
-000468  ee700ac0          VSUB.F32 s1,s1,s0              ;740
-00046c  ed940a0b          VLDR     s0,[r4,#0x2c]         ;740
-000470  eeb80a40          VCVT.F32.U32 s0,s0                 ;740
-000474  ee311a40          VSUB.F32 s2,s2,s0              ;740
-000478  ee800a81          VDIV.F32 s0,s1,s2              ;740
-00047c  eeb81a43          VCVT.F32.U32 s2,s6                 ;741
-000480  eef80a63          VCVT.F32.U32 s1,s7                 ;741
-000484  ed800a0f          VSTR     s0,[r0,#0x3c]         ;740
-000488  ee400a41          VMLS.F32 s1,s0,s2              ;741
-00048c  ee005a10          VMOV     s0,r5                 ;742
-000490  eeb80a40          VCVT.F32.U32 s0,s0                 ;742
-000494  edc00a1d          VSTR     s1,[r0,#0x74]         ;741
-000498  eef80a63          VCVT.F32.U32 s1,s7                 ;742
-00049c  ee301a60          VSUB.F32 s2,s0,s1              ;742
-0004a0  ee001a10          VMOV     s0,r1                 ;742
-0004a4  eef80a43          VCVT.F32.U32 s1,s6                 ;742
-0004a8  eeb80a40          VCVT.F32.U32 s0,s0                 ;742
-0004ac  ee300a60          VSUB.F32 s0,s0,s1              ;742
-0004b0  eec10a00          VDIV.F32 s1,s2,s0              ;742
-0004b4  ee001a10          VMOV     s0,r1                 ;743
-0004b8  eeb81a40          VCVT.F32.U32 s2,s0                 ;743
-0004bc  ee005a10          VMOV     s0,r5                 ;743
-0004c0  eeb80a40          VCVT.F32.U32 s0,s0                 ;743
-0004c4  edc00a10          VSTR     s1,[r0,#0x40]         ;742
-0004c8  ee000ac1          VMLS.F32 s0,s1,s2              ;743
-0004cc  ed8a0a1e          VSTR     s0,[r10,#0x78]        ;743
-0004d0  e0f6              B        |L1.1728|
-                  |L1.1234|
-0004d2  f8c28020          STR      r8,[r2,#0x20]         ;749  ; Run_Control
-0004d6  4671              MOV      r1,lr                 ;750
-0004d8  48f8              LDR      r0,|L1.2236|
-0004da  f7fffffe          BL       GPIO_ResetBits
-                  |L1.1246|
-0004de  f2417070          MOV      r0,#0x1770            ;708
-0004e2  f8a90000          STRH     r0,[r9,#0]            ;708
-0004e6  f8868000          STRB     r8,[r6,#0]            ;709
-0004ea  e6d6              B        |L1.666|
+000442  ee005a10          VMOV     s0,r5                 ;738
+000446  edca0a09          VSTR     s1,[r10,#0x24]        ;738
+00044a  eeb81a40          VCVT.F32.U32 s2,s0                 ;738
+00044e  ee002a10          VMOV     s0,r2                 ;738
+000452  eeb80a40          VCVT.F32.U32 s0,s0                 ;738
+000456  ee000ac1          VMLS.F32 s0,s1,s2              ;738
+00045a  eef80a63          VCVT.F32.U32 s1,s7                 ;740
+00045e  eeb81a43          VCVT.F32.U32 s2,s6                 ;740
+000462  ed800a17          VSTR     s0,[r0,#0x5c]         ;738
+000466  ed940a0c          VLDR     s0,[r4,#0x30]         ;740
+00046a  eeb80a40          VCVT.F32.U32 s0,s0                 ;740
+00046e  ee700ac0          VSUB.F32 s1,s1,s0              ;740
+000472  ed940a0b          VLDR     s0,[r4,#0x2c]         ;740
+000476  eeb80a40          VCVT.F32.U32 s0,s0                 ;740
+00047a  ee311a40          VSUB.F32 s2,s2,s0              ;740
+00047e  ee800a81          VDIV.F32 s0,s1,s2              ;740
+000482  eeb81a43          VCVT.F32.U32 s2,s6                 ;741
+000486  eef80a63          VCVT.F32.U32 s1,s7                 ;741
+00048a  ed800a0f          VSTR     s0,[r0,#0x3c]         ;740
+00048e  ee400a41          VMLS.F32 s1,s0,s2              ;741
+000492  ee005a10          VMOV     s0,r5                 ;742
+000496  eeb80a40          VCVT.F32.U32 s0,s0                 ;742
+00049a  edc00a1d          VSTR     s1,[r0,#0x74]         ;741
+00049e  eef80a63          VCVT.F32.U32 s1,s7                 ;742
+0004a2  ee301a60          VSUB.F32 s2,s0,s1              ;742
+0004a6  ee001a10          VMOV     s0,r1                 ;742
+0004aa  eef80a43          VCVT.F32.U32 s1,s6                 ;742
+0004ae  eeb80a40          VCVT.F32.U32 s0,s0                 ;742
+0004b2  ee300a60          VSUB.F32 s0,s0,s1              ;742
+0004b6  eec10a00          VDIV.F32 s1,s2,s0              ;742
+0004ba  ee001a10          VMOV     s0,r1                 ;743
+0004be  eeb81a40          VCVT.F32.U32 s2,s0                 ;743
+0004c2  ee005a10          VMOV     s0,r5                 ;743
+0004c6  eeb80a40          VCVT.F32.U32 s0,s0                 ;743
+0004ca  edc00a10          VSTR     s1,[r0,#0x40]         ;742
+0004ce  ee000ac1          VMLS.F32 s0,s1,s2              ;743
+0004d2  ed8a0a1e          VSTR     s0,[r10,#0x78]        ;743
+0004d6  e0f6              B        |L1.1734|
+                  |L1.1240|
+0004d8  f8c28020          STR      r8,[r2,#0x20]         ;749  ; Run_Control
+0004dc  4671              MOV      r1,lr                 ;750
+0004de  48f8              LDR      r0,|L1.2240|
+0004e0  f7fffffe          BL       GPIO_ResetBits
+0004e4  f2417170          MOV      r1,#0x1770            ;751
+0004e8  f8a91000          STRH     r1,[r9,#0]            ;751
                   |L1.1260|
-0004ec  f7fffffe          BL       OnOff_GPOI_ResetSet
-                  |L1.1264|
-0004f0  e279              B        |L1.2534|
+0004ec  f8868000          STRB     r8,[r6,#0]            ;709
+0004f0  e6d2              B        |L1.664|
                   |L1.1266|
-0004f2  f8c28020          STR      r8,[r2,#0x20]         ;756  ; Run_Control
-0004f6  4671              MOV      r1,lr                 ;757
-0004f8  48f0              LDR      r0,|L1.2236|
-0004fa  f7fffffe          BL       GPIO_ResetBits
-0004fe  6165              STR      r5,[r4,#0x14]         ;759  ; x1
-000500  f8b91000          LDRH     r1,[r9,#0]            ;759  ; Contr_Laod
-000504  4648              MOV      r0,r9                 ;759
-000506  61a1              STR      r1,[r4,#0x18]         ;760  ; y1
-000508  f8bb1000          LDRH     r1,[r11,#0]           ;760  ; Imon_Load_value
-00050c  e9c4150d          STRD     r1,r5,[r4,#0x34]      ;760
-000510  f64261e0          MOV      r1,#0x2ee0            ;762
-000514  e73a              B        |L1.908|
-                  |L1.1302|
-000516  f8c28020          STR      r8,[r2,#0x20]         ;765  ; Run_Control
-00051a  4671              MOV      r1,lr                 ;766
-00051c  48e7              LDR      r0,|L1.2236|
-00051e  f7fffffe          BL       GPIO_ResetBits
-000522  61e5              STR      r5,[r4,#0x1c]         ;768  ; x2
-000524  f8b91000          LDRH     r1,[r9,#0]            ;768  ; Contr_Laod
-000528  4648              MOV      r0,r9                 ;768
-00052a  6221              STR      r1,[r4,#0x20]         ;769  ; y2
-00052c  f8bb1000          LDRH     r1,[r11,#0]           ;769  ; Imon_Load_value
-000530  e9c4150f          STRD     r1,r5,[r4,#0x3c]      ;769
-                  |L1.1332|
-000534  f6446120          MOV      r1,#0x4e20            ;668
-000538  e728              B        |L1.908|
+0004f2  f7fffffe          BL       OnOff_GPOI_ResetSet
+                  |L1.1270|
+0004f6  e278              B        |L1.2538|
+                  |L1.1272|
+0004f8  f8c28020          STR      r8,[r2,#0x20]         ;756  ; Run_Control
+0004fc  4671              MOV      r1,lr                 ;757
+0004fe  48f0              LDR      r0,|L1.2240|
+000500  f7fffffe          BL       GPIO_ResetBits
+000504  6165              STR      r5,[r4,#0x14]         ;759  ; x1
+000506  f8b91000          LDRH     r1,[r9,#0]            ;759  ; Contr_Laod
+00050a  4648              MOV      r0,r9                 ;759
+00050c  61a1              STR      r1,[r4,#0x18]         ;760  ; y1
+00050e  f8bb1000          LDRH     r1,[r11,#0]           ;760  ; Imon_Load_value
+000512  e9c4150d          STRD     r1,r5,[r4,#0x34]      ;760
+000516  f64261e0          MOV      r1,#0x2ee0            ;762
+00051a  e73a              B        |L1.914|
+                  |L1.1308|
+00051c  f8c28020          STR      r8,[r2,#0x20]         ;765  ; Run_Control
+000520  4671              MOV      r1,lr                 ;766
+000522  48e7              LDR      r0,|L1.2240|
+000524  f7fffffe          BL       GPIO_ResetBits
+000528  61e5              STR      r5,[r4,#0x1c]         ;768  ; x2
+00052a  f8b91000          LDRH     r1,[r9,#0]            ;768  ; Contr_Laod
+00052e  4648              MOV      r0,r9                 ;768
+000530  6221              STR      r1,[r4,#0x20]         ;769  ; y2
+000532  f8bb1000          LDRH     r1,[r11,#0]           ;769  ; Imon_Load_value
+000536  e9c4150f          STRD     r1,r5,[r4,#0x3c]      ;769
                   |L1.1338|
-00053a  f8c28020          STR      r8,[r2,#0x20]         ;774  ; Run_Control
-00053e  4671              MOV      r1,lr                 ;775
-000540  48de              LDR      r0,|L1.2236|
-000542  f7fffffe          BL       GPIO_ResetBits
-000546  6265              STR      r5,[r4,#0x24]         ;777  ; x3
-000548  f8b91000          LDRH     r1,[r9,#0]            ;777  ; Contr_Laod
-00054c  4648              MOV      r0,r9                 ;777
-00054e  62a1              STR      r1,[r4,#0x28]         ;778  ; y3
-000550  f8bb1000          LDRH     r1,[r11,#0]           ;778  ; Imon_Load_value
-000554  e9c41511          STRD     r1,r5,[r4,#0x44]      ;778
-000558  f6494140          MOV      r1,#0x9c40            ;780
-00055c  e716              B        |L1.908|
-                  |L1.1374|
-00055e  62e5              STR      r5,[r4,#0x2c]         ;784  ; x4
-000560  f8b92000          LDRH     r2,[r9,#0]            ;784  ; Contr_Laod
-000564  6322              STR      r2,[r4,#0x30]         ;785  ; y4
-000566  f8bb1000          LDRH     r1,[r11,#0]           ;785  ; Imon_Load_value
-00056a  eeb84a61          VCVT.F32.U32 s8,s3                 ;788
-00056e  eeb80a40          VCVT.F32.U32 s0,s0                 ;788
-000572  eef80a60          VCVT.F32.U32 s1,s1                 ;788
-000576  e9c41513          STRD     r1,r5,[r4,#0x4c]      ;788
-00057a  ee344a40          VSUB.F32 s8,s8,s0              ;788
-00057e  eeb80a41          VCVT.F32.U32 s0,s2                 ;788
-000582  4650              MOV      r0,r10                ;788
-000584  ee700a60          VSUB.F32 s1,s0,s1              ;788
-000588  ee840a20          VDIV.F32 s0,s8,s1              ;788
-00058c  eeb84a41          VCVT.F32.U32 s8,s2                 ;789
-000590  eef80a61          VCVT.F32.U32 s1,s3                 ;789
-000594  eeb81a41          VCVT.F32.U32 s2,s2                 ;790
-000598  ed8a0a0a          VSTR     s0,[r10,#0x28]        ;788
-00059c  ee400a44          VMLS.F32 s1,s0,s8              ;789
-0005a0  eeb80a62          VCVT.F32.U32 s0,s5                 ;790
-0005a4  edca0a18          VSTR     s1,[r10,#0x60]        ;789
-0005a8  eef80a61          VCVT.F32.U32 s1,s3                 ;790
-0005ac  ee700a60          VSUB.F32 s1,s0,s1              ;790
-0005b0  eeb80a42          VCVT.F32.U32 s0,s4                 ;790
-0005b4  ee301a41          VSUB.F32 s2,s0,s2              ;790
-0005b8  ee800a81          VDIV.F32 s0,s1,s2              ;790
-0005bc  eeb81a42          VCVT.F32.U32 s2,s4                 ;791
-0005c0  eef80a62          VCVT.F32.U32 s1,s5                 ;791
-0005c4  ed8a0a0b          VSTR     s0,[r10,#0x2c]        ;790
-0005c8  ee400a41          VMLS.F32 s1,s0,s2              ;791
-0005cc  ee002a10          VMOV     s0,r2                 ;792
-0005d0  eeb80a40          VCVT.F32.U32 s0,s0                 ;792
-0005d4  edc00a19          VSTR     s1,[r0,#0x64]         ;791
-0005d8  eef80a62          VCVT.F32.U32 s1,s5                 ;792
-0005dc  ee301a60          VSUB.F32 s2,s0,s1              ;792
-0005e0  ee005a10          VMOV     s0,r5                 ;792
-0005e4  eef80a42          VCVT.F32.U32 s1,s4                 ;792
-0005e8  eeb82a43          VCVT.F32.U32 s4,s6                 ;795
-0005ec  eeb80a40          VCVT.F32.U32 s0,s0                 ;792
-0005f0  ee300a60          VSUB.F32 s0,s0,s1              ;792
-0005f4  eec10a00          VDIV.F32 s1,s2,s0              ;792
-0005f8  ee005a10          VMOV     s0,r5                 ;793
-0005fc  eeb81a40          VCVT.F32.U32 s2,s0                 ;793
-000600  ee002a10          VMOV     s0,r2                 ;793
-000604  eeb80a40          VCVT.F32.U32 s0,s0                 ;793
-000608  edc00a0c          VSTR     s1,[r0,#0x30]         ;792
-00060c  ee000ac1          VMLS.F32 s0,s1,s2              ;793
-000610  eeb81a63          VCVT.F32.U32 s2,s7                 ;795
-000614  ed800a1a          VSTR     s0,[r0,#0x68]         ;793
-000618  ed940a10          VLDR     s0,[r4,#0x40]         ;795
-00061c  eef80a40          VCVT.F32.U32 s1,s0                 ;795
-000620  ee701ac1          VSUB.F32 s3,s1,s2              ;795
-000624  edd40a0f          VLDR     s1,[r4,#0x3c]         ;795
-000628  eeb81a60          VCVT.F32.U32 s2,s1                 ;795
-00062c  ee312a42          VSUB.F32 s4,s2,s4              ;795
-000630  ee811a82          VDIV.F32 s2,s3,s4              ;795
-000634  eeb82a60          VCVT.F32.U32 s4,s1                 ;796
-000638  eef81a40          VCVT.F32.U32 s3,s0                 ;796
-00063c  eeb80a40          VCVT.F32.U32 s0,s0                 ;797
-000640  eef80a60          VCVT.F32.U32 s1,s1                 ;797
-000644  ed801a11          VSTR     s2,[r0,#0x44]         ;795
-000648  ee411a42          VMLS.F32 s3,s2,s4              ;796
-00064c  edc01a1f          VSTR     s3,[r0,#0x7c]         ;796
-000650  ed941a12          VLDR     s2,[r4,#0x48]         ;797
-000654  eef81a41          VCVT.F32.U32 s3,s2                 ;797
-000658  ee711ac0          VSUB.F32 s3,s3,s0              ;797
-00065c  ed940a11          VLDR     s0,[r4,#0x44]         ;797
-000660  eeb82a40          VCVT.F32.U32 s4,s0                 ;797
-000664  ee322a60          VSUB.F32 s4,s4,s1              ;797
-000668  eec10a82          VDIV.F32 s1,s3,s4              ;797
-00066c  eeb82a40          VCVT.F32.U32 s4,s0                 ;798
-000670  eef81a41          VCVT.F32.U32 s3,s2                 ;798
-000674  eeb81a41          VCVT.F32.U32 s2,s2                 ;799
-000678  edc00a12          VSTR     s1,[r0,#0x48]         ;797
-00067c  ee401ac2          VMLS.F32 s3,s1,s4              ;798
-000680  ee005a90          VMOV     s1,r5                 ;799
-000684  eef80a60          VCVT.F32.U32 s1,s1                 ;799
-000688  edc01a20          VSTR     s3,[r0,#0x80]         ;798
-00068c  ee301ac1          VSUB.F32 s2,s1,s2              ;799
-000690  ee001a90          VMOV     s1,r1                 ;799
-000694  eeb80a40          VCVT.F32.U32 s0,s0                 ;799
-000698  eef80a60          VCVT.F32.U32 s1,s1                 ;799
-00069c  ee300ac0          VSUB.F32 s0,s1,s0              ;799
-0006a0  eec10a00          VDIV.F32 s1,s2,s0              ;799
-0006a4  ee001a10          VMOV     s0,r1                 ;800
-0006a8  eeb81a40          VCVT.F32.U32 s2,s0                 ;800
-0006ac  ee005a10          VMOV     s0,r5                 ;800
-0006b0  eeb80a40          VCVT.F32.U32 s0,s0                 ;800
-0006b4  edc00a13          VSTR     s1,[r0,#0x4c]         ;799
-0006b8  ee000ac1          VMLS.F32 s0,s1,s2              ;800
-0006bc  ed8a0a21          VSTR     s0,[r10,#0x84]        ;800
-                  |L1.1728|
-0006c0  f8cc3000          STR      r3,[r12,#0]           ;746  ; flagB
-0006c4  7037              STRB     r7,[r6,#0]            ;746
-0006c6  f7fffffe          BL       Off_GPOI_ResetSet
-0006ca  e18c              B        |L1.2534|
-                  |L1.1740|
-0006cc  497c              LDR      r1,|L1.2240|
-0006ce  f64050ac          MOV      r0,#0xdac             ;806
-0006d2  8008              STRH     r0,[r1,#0]            ;806
-0006d4  487b              LDR      r0,|L1.2244|
-0006d6  f44f617a          MOV      r1,#0xfa0             ;807
-0006da  8001              STRH     r1,[r0,#0]            ;807
-0006dc  f8868000          STRB     r8,[r6,#0]            ;808
-                  |L1.1760|
-0006e0  2101              MOVS     r1,#1                 ;632
-0006e2  2000              MOVS     r0,#0                 ;632
-0006e4  e702              B        |L1.1260|
+00053a  f6446120          MOV      r1,#0x4e20            ;668
+00053e  e728              B        |L1.914|
+                  |L1.1344|
+000540  f8c28020          STR      r8,[r2,#0x20]         ;774  ; Run_Control
+000544  4671              MOV      r1,lr                 ;775
+000546  48de              LDR      r0,|L1.2240|
+000548  f7fffffe          BL       GPIO_ResetBits
+00054c  6265              STR      r5,[r4,#0x24]         ;777  ; x3
+00054e  f8b91000          LDRH     r1,[r9,#0]            ;777  ; Contr_Laod
+000552  4648              MOV      r0,r9                 ;777
+000554  62a1              STR      r1,[r4,#0x28]         ;778  ; y3
+000556  f8bb1000          LDRH     r1,[r11,#0]           ;778  ; Imon_Load_value
+00055a  e9c41511          STRD     r1,r5,[r4,#0x44]      ;778
+00055e  f6494140          MOV      r1,#0x9c40            ;780
+000562  e716              B        |L1.914|
+                  |L1.1380|
+000564  62e5              STR      r5,[r4,#0x2c]         ;784  ; x4
+000566  f8b92000          LDRH     r2,[r9,#0]            ;784  ; Contr_Laod
+00056a  6322              STR      r2,[r4,#0x30]         ;785  ; y4
+00056c  f8bb1000          LDRH     r1,[r11,#0]           ;785  ; Imon_Load_value
+000570  eeb84a61          VCVT.F32.U32 s8,s3                 ;788
+000574  eeb80a40          VCVT.F32.U32 s0,s0                 ;788
+000578  eef80a60          VCVT.F32.U32 s1,s1                 ;788
+00057c  e9c41513          STRD     r1,r5,[r4,#0x4c]      ;788
+000580  ee344a40          VSUB.F32 s8,s8,s0              ;788
+000584  eeb80a41          VCVT.F32.U32 s0,s2                 ;788
+000588  4650              MOV      r0,r10                ;788
+00058a  ee700a60          VSUB.F32 s1,s0,s1              ;788
+00058e  ee840a20          VDIV.F32 s0,s8,s1              ;788
+000592  eeb84a41          VCVT.F32.U32 s8,s2                 ;789
+000596  eef80a61          VCVT.F32.U32 s1,s3                 ;789
+00059a  eeb81a41          VCVT.F32.U32 s2,s2                 ;790
+00059e  ed8a0a0a          VSTR     s0,[r10,#0x28]        ;788
+0005a2  ee400a44          VMLS.F32 s1,s0,s8              ;789
+0005a6  eeb80a62          VCVT.F32.U32 s0,s5                 ;790
+0005aa  edca0a18          VSTR     s1,[r10,#0x60]        ;789
+0005ae  eef80a61          VCVT.F32.U32 s1,s3                 ;790
+0005b2  ee700a60          VSUB.F32 s1,s0,s1              ;790
+0005b6  eeb80a42          VCVT.F32.U32 s0,s4                 ;790
+0005ba  ee301a41          VSUB.F32 s2,s0,s2              ;790
+0005be  ee800a81          VDIV.F32 s0,s1,s2              ;790
+0005c2  eeb81a42          VCVT.F32.U32 s2,s4                 ;791
+0005c6  eef80a62          VCVT.F32.U32 s1,s5                 ;791
+0005ca  ed8a0a0b          VSTR     s0,[r10,#0x2c]        ;790
+0005ce  ee400a41          VMLS.F32 s1,s0,s2              ;791
+0005d2  ee002a10          VMOV     s0,r2                 ;792
+0005d6  eeb80a40          VCVT.F32.U32 s0,s0                 ;792
+0005da  edc00a19          VSTR     s1,[r0,#0x64]         ;791
+0005de  eef80a62          VCVT.F32.U32 s1,s5                 ;792
+0005e2  ee301a60          VSUB.F32 s2,s0,s1              ;792
+0005e6  ee005a10          VMOV     s0,r5                 ;792
+0005ea  eef80a42          VCVT.F32.U32 s1,s4                 ;792
+0005ee  eeb82a43          VCVT.F32.U32 s4,s6                 ;795
+0005f2  eeb80a40          VCVT.F32.U32 s0,s0                 ;792
+0005f6  ee300a60          VSUB.F32 s0,s0,s1              ;792
+0005fa  eec10a00          VDIV.F32 s1,s2,s0              ;792
+0005fe  ee005a10          VMOV     s0,r5                 ;793
+000602  eeb81a40          VCVT.F32.U32 s2,s0                 ;793
+000606  ee002a10          VMOV     s0,r2                 ;793
+00060a  eeb80a40          VCVT.F32.U32 s0,s0                 ;793
+00060e  edc00a0c          VSTR     s1,[r0,#0x30]         ;792
+000612  ee000ac1          VMLS.F32 s0,s1,s2              ;793
+000616  eeb81a63          VCVT.F32.U32 s2,s7                 ;795
+00061a  ed800a1a          VSTR     s0,[r0,#0x68]         ;793
+00061e  ed940a10          VLDR     s0,[r4,#0x40]         ;795
+000622  eef80a40          VCVT.F32.U32 s1,s0                 ;795
+000626  ee701ac1          VSUB.F32 s3,s1,s2              ;795
+00062a  ed941a0f          VLDR     s2,[r4,#0x3c]         ;795
+00062e  eef80a41          VCVT.F32.U32 s1,s2                 ;795
+000632  ee302ac2          VSUB.F32 s4,s1,s4              ;795
+000636  eec10a82          VDIV.F32 s1,s3,s4              ;795
+00063a  eeb82a41          VCVT.F32.U32 s4,s2                 ;796
+00063e  eef81a40          VCVT.F32.U32 s3,s0                 ;796
+000642  eeb80a40          VCVT.F32.U32 s0,s0                 ;797
+000646  eeb81a41          VCVT.F32.U32 s2,s2                 ;797
+00064a  edc00a11          VSTR     s1,[r0,#0x44]         ;795
+00064e  ee401ac2          VMLS.F32 s3,s1,s4              ;796
+000652  edc01a1f          VSTR     s3,[r0,#0x7c]         ;796
+000656  edd40a12          VLDR     s1,[r4,#0x48]         ;797
+00065a  eef81a60          VCVT.F32.U32 s3,s1                 ;797
+00065e  ee711ac0          VSUB.F32 s3,s3,s0              ;797
+000662  ed940a11          VLDR     s0,[r4,#0x44]         ;797
+000666  eeb82a40          VCVT.F32.U32 s4,s0                 ;797
+00066a  ee322a41          VSUB.F32 s4,s4,s2              ;797
+00066e  ee811a82          VDIV.F32 s2,s3,s4              ;797
+000672  eeb82a40          VCVT.F32.U32 s4,s0                 ;798
+000676  eef81a60          VCVT.F32.U32 s3,s1                 ;798
+00067a  eef80a60          VCVT.F32.U32 s1,s1                 ;799
+00067e  ed801a12          VSTR     s2,[r0,#0x48]         ;797
+000682  ee411a42          VMLS.F32 s3,s2,s4              ;798
+000686  ee015a10          VMOV     s2,r5                 ;799
+00068a  eeb81a41          VCVT.F32.U32 s2,s2                 ;799
+00068e  edc01a20          VSTR     s3,[r0,#0x80]         ;798
+000692  ee311a60          VSUB.F32 s2,s2,s1              ;799
+000696  ee001a90          VMOV     s1,r1                 ;799
+00069a  eeb80a40          VCVT.F32.U32 s0,s0                 ;799
+00069e  eef80a60          VCVT.F32.U32 s1,s1                 ;799
+0006a2  ee300ac0          VSUB.F32 s0,s1,s0              ;799
+0006a6  eec10a00          VDIV.F32 s1,s2,s0              ;799
+0006aa  ee001a10          VMOV     s0,r1                 ;800
+0006ae  eeb81a40          VCVT.F32.U32 s2,s0                 ;800
+0006b2  ee005a10          VMOV     s0,r5                 ;800
+0006b6  eeb80a40          VCVT.F32.U32 s0,s0                 ;800
+0006ba  edc00a13          VSTR     s1,[r0,#0x4c]         ;799
+0006be  ee000ac1          VMLS.F32 s0,s1,s2              ;800
+0006c2  ed8a0a21          VSTR     s0,[r10,#0x84]        ;800
+                  |L1.1734|
+0006c6  f8cc3000          STR      r3,[r12,#0]           ;746  ; flagB
+0006ca  7037              STRB     r7,[r6,#0]            ;746
+0006cc  f7fffffe          BL       Off_GPOI_ResetSet
+0006d0  e18b              B        |L1.2538|
+                  |L1.1746|
+0006d2  497c              LDR      r1,|L1.2244|
+0006d4  f64050ac          MOV      r0,#0xdac             ;806
+0006d8  8008              STRH     r0,[r1,#0]            ;806
+0006da  487b              LDR      r0,|L1.2248|
+0006dc  f44f617a          MOV      r1,#0xfa0             ;807
+0006e0  8001              STRH     r1,[r0,#0]            ;807
+0006e2  f8868000          STRB     r8,[r6,#0]            ;808
                   |L1.1766|
-0006e6  4977              LDR      r1,|L1.2244|
-0006e8  6165              STR      r5,[r4,#0x14]         ;813  ; x1
-0006ea  880a              LDRH     r2,[r1,#0]            ;813  ; Contr_Current
-0006ec  61a2              STR      r2,[r4,#0x18]         ;814  ; y1
-0006ee  8800              LDRH     r0,[r0,#0]            ;814  ; Imon_POWE_value
-0006f0  e9c40509          STRD     r0,r5,[r4,#0x24]      ;814
-0006f4  4a72              LDR      r2,|L1.2240|
-0006f6  f64050ac          MOV      r0,#0xdac             ;816
-0006fa  8010              STRH     r0,[r2,#0]            ;816
-0006fc  0080              LSLS     r0,r0,#2              ;817
-                  |L1.1790|
-0006fe  8008              STRH     r0,[r1,#0]            ;817
-000700  e171              B        |L1.2534|
-                  |L1.1794|
-000702  4970              LDR      r1,|L1.2244|
-000704  61e5              STR      r5,[r4,#0x1c]         ;821  ; x2
-000706  8809              LDRH     r1,[r1,#0]            ;821  ; Contr_Current
-000708  6221              STR      r1,[r4,#0x20]         ;822  ; y2
-00070a  8800              LDRH     r0,[r0,#0]            ;822  ; Imon_POWE_value
-00070c  ee011a10          VMOV     s2,r1                 ;825
-000710  eeb80a40          VCVT.F32.U32 s0,s0                 ;825
-000714  eef80a60          VCVT.F32.U32 s1,s1                 ;825
-000718  eeb81a41          VCVT.F32.U32 s2,s2                 ;825
-00071c  e9c4050b          STRD     r0,r5,[r4,#0x2c]      ;822
-000720  ee311a40          VSUB.F32 s2,s2,s0              ;825
-000724  ee005a10          VMOV     s0,r5                 ;825
-000728  4652              MOV      r2,r10                ;825
-00072a  eeb80a40          VCVT.F32.U32 s0,s0                 ;825
-00072e  ee300a60          VSUB.F32 s0,s0,s1              ;825
-000732  eec10a00          VDIV.F32 s1,s2,s0              ;825
-000736  ee005a10          VMOV     s0,r5                 ;826
-00073a  eeb81a40          VCVT.F32.U32 s2,s0                 ;826
-00073e  ee001a10          VMOV     s0,r1                 ;826
-000742  eeb80a40          VCVT.F32.U32 s0,s0                 ;826
-000746  edca0a14          VSTR     s1,[r10,#0x50]        ;825
-00074a  ee000ac1          VMLS.F32 s0,s1,s2              ;826
-00074e  eef80a62          VCVT.F32.U32 s1,s5                 ;828
-000752  ed8a0a22          VSTR     s0,[r10,#0x88]        ;826
-000756  ee005a10          VMOV     s0,r5                 ;828
-00075a  eeb80a40          VCVT.F32.U32 s0,s0                 ;828
-00075e  ee301a60          VSUB.F32 s2,s0,s1              ;828
-000762  ee000a10          VMOV     s0,r0                 ;828
-000766  eef80a42          VCVT.F32.U32 s1,s4                 ;828
-00076a  eeb80a40          VCVT.F32.U32 s0,s0                 ;828
-00076e  ee300a60          VSUB.F32 s0,s0,s1              ;828
-000772  eec10a00          VDIV.F32 s1,s2,s0              ;828
-000776  ee000a10          VMOV     s0,r0                 ;829
-00077a  eeb81a40          VCVT.F32.U32 s2,s0                 ;829
-00077e  ee005a10          VMOV     s0,r5                 ;829
-000782  eeb80a40          VCVT.F32.U32 s0,s0                 ;829
-000786  edc20a15          VSTR     s1,[r2,#0x54]         ;828
-00078a  ee000ac1          VMLS.F32 s0,s1,s2              ;829
-00078e  ed8a0a23          VSTR     s0,[r10,#0x8c]        ;829
-000792  e795              B        |L1.1728|
-                  |L1.1940|
+0006e6  2101              MOVS     r1,#1                 ;632
+0006e8  2000              MOVS     r0,#0                 ;632
+0006ea  e702              B        |L1.1266|
+                  |L1.1772|
+0006ec  4976              LDR      r1,|L1.2248|
+0006ee  6165              STR      r5,[r4,#0x14]         ;813  ; x1
+0006f0  880a              LDRH     r2,[r1,#0]            ;813  ; Contr_Current
+0006f2  61a2              STR      r2,[r4,#0x18]         ;814  ; y1
+0006f4  8800              LDRH     r0,[r0,#0]            ;814  ; Imon_POWE_value
+0006f6  e9c40509          STRD     r0,r5,[r4,#0x24]      ;814
+0006fa  4a72              LDR      r2,|L1.2244|
+0006fc  f64050ac          MOV      r0,#0xdac             ;816
+000700  8010              STRH     r0,[r2,#0]            ;816
+000702  0080              LSLS     r0,r0,#2              ;817
+                  |L1.1796|
+000704  8008              STRH     r0,[r1,#0]            ;817
+000706  e170              B        |L1.2538|
+                  |L1.1800|
+000708  496f              LDR      r1,|L1.2248|
+00070a  61e5              STR      r5,[r4,#0x1c]         ;821  ; x2
+00070c  8809              LDRH     r1,[r1,#0]            ;821  ; Contr_Current
+00070e  6221              STR      r1,[r4,#0x20]         ;822  ; y2
+000710  8800              LDRH     r0,[r0,#0]            ;822  ; Imon_POWE_value
+000712  ee011a10          VMOV     s2,r1                 ;825
+000716  eeb80a40          VCVT.F32.U32 s0,s0                 ;825
+00071a  eef80a60          VCVT.F32.U32 s1,s1                 ;825
+00071e  eeb81a41          VCVT.F32.U32 s2,s2                 ;825
+000722  e9c4050b          STRD     r0,r5,[r4,#0x2c]      ;822
+000726  ee311a40          VSUB.F32 s2,s2,s0              ;825
+00072a  ee005a10          VMOV     s0,r5                 ;825
+00072e  4652              MOV      r2,r10                ;825
+000730  eeb80a40          VCVT.F32.U32 s0,s0                 ;825
+000734  ee300a60          VSUB.F32 s0,s0,s1              ;825
+000738  eec10a00          VDIV.F32 s1,s2,s0              ;825
+00073c  ee005a10          VMOV     s0,r5                 ;826
+000740  eeb81a40          VCVT.F32.U32 s2,s0                 ;826
+000744  ee001a10          VMOV     s0,r1                 ;826
+000748  eeb80a40          VCVT.F32.U32 s0,s0                 ;826
+00074c  edca0a14          VSTR     s1,[r10,#0x50]        ;825
+000750  ee000ac1          VMLS.F32 s0,s1,s2              ;826
+000754  eef80a62          VCVT.F32.U32 s1,s5                 ;828
+000758  ed8a0a22          VSTR     s0,[r10,#0x88]        ;826
+00075c  ee005a10          VMOV     s0,r5                 ;828
+000760  eeb80a40          VCVT.F32.U32 s0,s0                 ;828
+000764  ee301a60          VSUB.F32 s2,s0,s1              ;828
+000768  ee000a10          VMOV     s0,r0                 ;828
+00076c  eef80a42          VCVT.F32.U32 s1,s4                 ;828
+000770  eeb80a40          VCVT.F32.U32 s0,s0                 ;828
+000774  ee300a60          VSUB.F32 s0,s0,s1              ;828
+000778  eec10a00          VDIV.F32 s1,s2,s0              ;828
+00077c  ee000a10          VMOV     s0,r0                 ;829
+000780  eeb81a40          VCVT.F32.U32 s2,s0                 ;829
+000784  ee005a10          VMOV     s0,r5                 ;829
+000788  eeb80a40          VCVT.F32.U32 s0,s0                 ;829
+00078c  edc20a15          VSTR     s1,[r2,#0x54]         ;828
+000790  ee000ac1          VMLS.F32 s0,s1,s2              ;829
+000794  ed8a0a23          VSTR     s0,[r10,#0x8c]        ;829
+000798  e795              B        |L1.1734|
+                  |L1.1946|
 ;;;836    		if(range == 0)//内阻低档位低段
 ;;;837    		{
 ;;;838    			LOAD_I_SW = 1;
@@ -910,8 +913,8 @@
 ;;;840    			RCONT_SW = 0;
 ;;;841    			calflag = 1;
 ;;;842    			x1 = Rmon_value;
-000794  f8df9130          LDR      r9,|L1.2248|
-000798  b1c1              CBZ      r1,|L1.1996|
+00079a  f8df9130          LDR      r9,|L1.2252|
+00079e  b1c1              CBZ      r1,|L1.2002|
 ;;;843    			y1 = data;
 ;;;844    			
 ;;;845    //			Modify_A_READ=0;
@@ -919,8 +922,8 @@
 ;;;847    //			Modify_A_READ = Rmon_value;//测量电阻值
 ;;;848    //			Modify_A_ACT = data;//读取低段
 ;;;849    		}else if (range == 1)//内阻低档位高段
-00079a  2901              CMP      r1,#1
-00079c  d025              BEQ      |L1.2026|
+0007a0  2901              CMP      r1,#1
+0007a2  d025              BEQ      |L1.2032|
 ;;;850    		{
 ;;;851    			
 ;;;852    			x2 = Rmon_value;
@@ -931,8 +934,8 @@
 ;;;857    			Flag_DAC_OFF=0;
 ;;;858    			calflag = 0;
 ;;;859    		}else if(range == 2)//内阻高档位低段
-00079e  2902              CMP      r1,#2
-0007a0  d048              BEQ      |L1.2100|
+0007a4  2902              CMP      r1,#2
+0007a6  d048              BEQ      |L1.2106|
 ;;;860    		{
 ;;;861    			LOAD_I_SW = 1;
 ;;;862    			GPIO_ResetBits(GPIOC,GPIO_Pin_11);//电流测量为高档位
@@ -941,8 +944,8 @@
 ;;;865    			x1 = Rmon_value;
 ;;;866    			y1 = data;
 ;;;867    		}else if (range == 3)//内阻高档位高段
-0007a2  2903              CMP      r1,#3
-0007a4  d050              BEQ      |L1.2120|
+0007a8  2903              CMP      r1,#3
+0007aa  d050              BEQ      |L1.2126|
 ;;;868    		{
 ;;;869    			
 ;;;870    			x2 = Rmon_value;
@@ -957,14 +960,14 @@
 ;;;879    			calflag = 1;
 ;;;880    //			x1 = (R1mon_value*1000)/(65535-R1mon_value);
 ;;;881    			x1 = (R1mon_value*1000)/(65535-R1mon_value);
-0007a6  f8dfb124          LDR      r11,|L1.2252|
-0007aa  f64f70ff          MOV      r0,#0xffff
-0007ae  2904              CMP      r1,#4                 ;877
-0007b0  d074              BEQ      |L1.2204|
+0007ac  f8dfb120          LDR      r11,|L1.2256|
+0007b0  f64f70ff          MOV      r0,#0xffff
+0007b4  2904              CMP      r1,#4                 ;877
+0007b6  d074              BEQ      |L1.2210|
 ;;;882    			y1 = data;
 ;;;883    		}else if (range == 5)//识别电阻1高段
-0007b2  2905              CMP      r1,#5
-0007b4  d06e              BEQ      |L1.2196|
+0007b8  2905              CMP      r1,#5
+0007ba  d06e              BEQ      |L1.2202|
 ;;;884    		{
 ;;;885    			
 ;;;886    //			x2 = (R1mon_value*1000)/(65535-R1mon_value);
@@ -979,13 +982,13 @@
 ;;;895    		{
 ;;;896    			calflag = 1;
 ;;;897    			x1 = (R2mon_value*1000)/(65535-R2mon_value);
-0007b6  f8dfb118          LDR      r11,|L1.2256|
-0007ba  2906              CMP      r1,#6                 ;894
-0007bc  d06e              BEQ      |L1.2204|
+0007bc  f8dfb114          LDR      r11,|L1.2260|
+0007c0  2906              CMP      r1,#6                 ;894
+0007c2  d06e              BEQ      |L1.2210|
 ;;;898    			y1 = data;
 ;;;899    		}else if (range == 7)//识别电阻2高段
-0007be  2907              CMP      r1,#7
-0007c0  d069              BEQ      |L1.2198|
+0007c4  2907              CMP      r1,#7
+0007c6  d069              BEQ      |L1.2204|
 ;;;900    		{
 ;;;901    			
 ;;;902    			x2 = (R2mon_value*1000)/(65535-R2mon_value);
@@ -996,210 +999,209 @@
 ;;;907    			Flag_DAC_OFF=0;
 ;;;908    			calflag = 0;
 ;;;909    		}else if(range == 8)//内阻高档位低段
-0007c2  2908              CMP      r1,#8
-0007c4  d068              BEQ      |L1.2200|
+0007c8  2908              CMP      r1,#8
+0007ca  d068              BEQ      |L1.2206|
 ;;;910    		{
 ;;;911    			RCONT_SW = 1;
 ;;;912    			calflag = 1;
 ;;;913    			x1 = Rmon_value;
 ;;;914    			y1 = data;
 ;;;915    		}else if (range == 9)//内阻高档位高段
-0007c6  2909              CMP      r1,#9
-0007c8  d067              BEQ      |L1.2202|
-0007ca  e10c              B        |L1.2534|
-                  |L1.1996|
-0007cc  4640              MOV      r0,r8                 ;838
-0007ce  46c2              MOV      r10,r8                ;838
-0007d0  4690              MOV      r8,r2                 ;838
-0007d2  6210              STR      r0,[r2,#0x20]         ;838  ; Run_Control
-0007d4  4671              MOV      r1,lr                 ;839
-0007d6  4839              LDR      r0,|L1.2236|
-0007d8  f7fffffe          BL       GPIO_ResetBits
-0007dc  f8c87024          STR      r7,[r8,#0x24]         ;840  ; Run_Control
-0007e0  f886a000          STRB     r10,[r6,#0]           ;841
-0007e4  e0d6              B        |L1.2452|
-                  |L1.2022|
-0007e6  8800              LDRH     r0,[r0,#0]            ;603  ; Vmon_Load_value
-0007e8  e064              B        |L1.2228|
-                  |L1.2026|
-0007ea  f8b90000          LDRH     r0,[r9,#0]            ;852  ; Rmon_value
-0007ee  ee015a10          VMOV     s2,r5                 ;854
-0007f2  eeb80a40          VCVT.F32.U32 s0,s0                 ;854
-0007f6  eef80a60          VCVT.F32.U32 s1,s1                 ;854
-0007fa  eeb81a41          VCVT.F32.U32 s2,s2                 ;854
-0007fe  e9c40507          STRD     r0,r5,[r4,#0x1c]      ;852
-000802  ee311a40          VSUB.F32 s2,s2,s0              ;854
-000806  ee000a10          VMOV     s0,r0                 ;854
-00080a  eeb80a40          VCVT.F32.U32 s0,s0                 ;854
-00080e  ee300a60          VSUB.F32 s0,s0,s1              ;854
-000812  eec10a00          VDIV.F32 s1,s2,s0              ;854
-000816  ee000a10          VMOV     s0,r0                 ;855
-00081a  eeb81a40          VCVT.F32.U32 s2,s0                 ;855
-00081e  ee005a10          VMOV     s0,r5                 ;855
-000822  eeb80a40          VCVT.F32.U32 s0,s0                 ;855
-000826  edca0a24          VSTR     s1,[r10,#0x90]        ;854
-00082a  ee000ac1          VMLS.F32 s0,s1,s2              ;855
-00082e  ed8a0a29          VSTR     s0,[r10,#0xa4]        ;855
-                  |L1.2098|
-000832  e0d5              B        |L1.2528|
-                  |L1.2100|
-000834  4617              MOV      r7,r2                 ;861
-000836  f8c28020          STR      r8,[r2,#0x20]         ;861  ; Run_Control
-00083a  4671              MOV      r1,lr                 ;862
-00083c  481f              LDR      r0,|L1.2236|
-00083e  f7fffffe          BL       GPIO_ResetBits
-000842  f8c78024          STR      r8,[r7,#0x24]         ;863  ; Run_Control
-000846  e0a3              B        |L1.2448|
-                  |L1.2120|
-000848  f8b90000          LDRH     r0,[r9,#0]            ;870  ; Rmon_value
-00084c  ee015a10          VMOV     s2,r5                 ;872
-000850  eeb80a40          VCVT.F32.U32 s0,s0                 ;872
-000854  eef80a60          VCVT.F32.U32 s1,s1                 ;872
-000858  eeb81a41          VCVT.F32.U32 s2,s2                 ;872
-00085c  e9c40507          STRD     r0,r5,[r4,#0x1c]      ;870
-000860  ee311a40          VSUB.F32 s2,s2,s0              ;872
-000864  ee000a10          VMOV     s0,r0                 ;872
-000868  eeb80a40          VCVT.F32.U32 s0,s0                 ;872
-00086c  ee300a60          VSUB.F32 s0,s0,s1              ;872
-000870  eec10a00          VDIV.F32 s1,s2,s0              ;872
-000874  ee000a10          VMOV     s0,r0                 ;873
-000878  eeb81a40          VCVT.F32.U32 s2,s0                 ;873
-00087c  ee005a10          VMOV     s0,r5                 ;873
-000880  eeb80a40          VCVT.F32.U32 s0,s0                 ;873
-000884  edca0a25          VSTR     s1,[r10,#0x94]        ;872
-000888  ee000ac1          VMLS.F32 s0,s1,s2              ;873
-00088c  ed8a0a2a          VSTR     s0,[r10,#0xa8]        ;873
-000890  e0a6              B        |L1.2528|
-000892  e003              B        |L1.2204|
-                  |L1.2196|
-000894  e01e              B        |L1.2260|
-                  |L1.2198|
-000896  e04b              B        |L1.2352|
-                  |L1.2200|
-000898  e078              B        |L1.2444|
+0007cc  2909              CMP      r1,#9
+0007ce  d067              BEQ      |L1.2208|
+0007d0  e10b              B        |L1.2538|
+                  |L1.2002|
+0007d2  4640              MOV      r0,r8                 ;838
+0007d4  46c2              MOV      r10,r8                ;838
+0007d6  4690              MOV      r8,r2                 ;838
+0007d8  6210              STR      r0,[r2,#0x20]         ;838  ; Run_Control
+0007da  4671              MOV      r1,lr                 ;839
+0007dc  4838              LDR      r0,|L1.2240|
+0007de  f7fffffe          BL       GPIO_ResetBits
+0007e2  f8c87024          STR      r7,[r8,#0x24]         ;840  ; Run_Control
+0007e6  f886a000          STRB     r10,[r6,#0]           ;841
+0007ea  e0d5              B        |L1.2456|
+                  |L1.2028|
+0007ec  8800              LDRH     r0,[r0,#0]            ;603  ; Vmon_Load_value
+0007ee  e064              B        |L1.2234|
+                  |L1.2032|
+0007f0  f8b90000          LDRH     r0,[r9,#0]            ;852  ; Rmon_value
+0007f4  ee015a10          VMOV     s2,r5                 ;854
+0007f8  eeb80a40          VCVT.F32.U32 s0,s0                 ;854
+0007fc  eef80a60          VCVT.F32.U32 s1,s1                 ;854
+000800  eeb81a41          VCVT.F32.U32 s2,s2                 ;854
+000804  e9c40507          STRD     r0,r5,[r4,#0x1c]      ;852
+000808  ee311a40          VSUB.F32 s2,s2,s0              ;854
+00080c  ee000a10          VMOV     s0,r0                 ;854
+000810  eeb80a40          VCVT.F32.U32 s0,s0                 ;854
+000814  ee300a60          VSUB.F32 s0,s0,s1              ;854
+000818  eec10a00          VDIV.F32 s1,s2,s0              ;854
+00081c  ee000a10          VMOV     s0,r0                 ;855
+000820  eeb81a40          VCVT.F32.U32 s2,s0                 ;855
+000824  ee005a10          VMOV     s0,r5                 ;855
+000828  eeb80a40          VCVT.F32.U32 s0,s0                 ;855
+00082c  edca0a24          VSTR     s1,[r10,#0x90]        ;854
+000830  ee000ac1          VMLS.F32 s0,s1,s2              ;855
+000834  ed8a0a29          VSTR     s0,[r10,#0xa4]        ;855
+                  |L1.2104|
+000838  e0d4              B        |L1.2532|
+                  |L1.2106|
+00083a  4617              MOV      r7,r2                 ;861
+00083c  f8c28020          STR      r8,[r2,#0x20]         ;861  ; Run_Control
+000840  4671              MOV      r1,lr                 ;862
+000842  481f              LDR      r0,|L1.2240|
+000844  f7fffffe          BL       GPIO_ResetBits
+000848  f8c78024          STR      r8,[r7,#0x24]         ;863  ; Run_Control
+00084c  e0a2              B        |L1.2452|
+                  |L1.2126|
+00084e  f8b90000          LDRH     r0,[r9,#0]            ;870  ; Rmon_value
+000852  ee015a10          VMOV     s2,r5                 ;872
+000856  eeb80a40          VCVT.F32.U32 s0,s0                 ;872
+00085a  eef80a60          VCVT.F32.U32 s1,s1                 ;872
+00085e  eeb81a41          VCVT.F32.U32 s2,s2                 ;872
+000862  e9c40507          STRD     r0,r5,[r4,#0x1c]      ;870
+000866  ee311a40          VSUB.F32 s2,s2,s0              ;872
+00086a  ee000a10          VMOV     s0,r0                 ;872
+00086e  eeb80a40          VCVT.F32.U32 s0,s0                 ;872
+000872  ee300a60          VSUB.F32 s0,s0,s1              ;872
+000876  eec10a00          VDIV.F32 s1,s2,s0              ;872
+00087a  ee000a10          VMOV     s0,r0                 ;873
+00087e  eeb81a40          VCVT.F32.U32 s2,s0                 ;873
+000882  ee005a10          VMOV     s0,r5                 ;873
+000886  eeb80a40          VCVT.F32.U32 s0,s0                 ;873
+00088a  edca0a25          VSTR     s1,[r10,#0x94]        ;872
+00088e  ee000ac1          VMLS.F32 s0,s1,s2              ;873
+000892  ed8a0a2a          VSTR     s0,[r10,#0xa8]        ;873
+000896  e0a5              B        |L1.2532|
+000898  e003              B        |L1.2210|
                   |L1.2202|
-00089a  e07d              B        |L1.2456|
+00089a  e01d              B        |L1.2264|
                   |L1.2204|
-00089c  f8868000          STRB     r8,[r6,#0]            ;879
-0008a0  f8bb2000          LDRH     r2,[r11,#0]           ;881  ; R1mon_value
-0008a4  f44f737a          MOV      r3,#0x3e8             ;881
-0008a8  f8bb1000          LDRH     r1,[r11,#0]           ;881  ; R1mon_value
-0008ac  435a              MULS     r2,r3,r2              ;881
-0008ae  1a40              SUBS     r0,r0,r1              ;881
-0008b0  fbb2f0f0          UDIV     r0,r2,r0              ;881
-                  |L1.2228|
-0008b4  e9c40505          STRD     r0,r5,[r4,#0x14]      ;881
-0008b8  e095              B        |L1.2534|
-0008ba  0000              DCW      0x0000
-                  |L1.2236|
-                          DCD      0x40020800
+00089c  e04a              B        |L1.2356|
+                  |L1.2206|
+00089e  e077              B        |L1.2448|
+                  |L1.2208|
+0008a0  e07c              B        |L1.2460|
+                  |L1.2210|
+0008a2  f8868000          STRB     r8,[r6,#0]            ;879
+0008a6  f8bb2000          LDRH     r2,[r11,#0]           ;881  ; R1mon_value
+0008aa  f44f737a          MOV      r3,#0x3e8             ;881
+0008ae  f8bb1000          LDRH     r1,[r11,#0]           ;881  ; R1mon_value
+0008b2  435a              MULS     r2,r3,r2              ;881
+0008b4  1a40              SUBS     r0,r0,r1              ;881
+0008b6  fbb2f0f0          UDIV     r0,r2,r0              ;881
+                  |L1.2234|
+0008ba  e9c40505          STRD     r0,r5,[r4,#0x14]      ;881
+0008be  e094              B        |L1.2538|
                   |L1.2240|
-                          DCD      Contr_Voltage
+                          DCD      0x40020800
                   |L1.2244|
-                          DCD      Contr_Current
+                          DCD      Contr_Voltage
                   |L1.2248|
-                          DCD      Rmon_value
+                          DCD      Contr_Current
                   |L1.2252|
-                          DCD      R1mon_value
+                          DCD      Rmon_value
                   |L1.2256|
-                          DCD      R2mon_value
+                          DCD      R1mon_value
                   |L1.2260|
-0008d4  f8bb2000          LDRH     r2,[r11,#0]           ;887  ; R1mon_value
-0008d8  f44f787a          MOV      r8,#0x3e8             ;887
-0008dc  f8bb1000          LDRH     r1,[r11,#0]           ;887  ; R1mon_value
-0008e0  fb02f208          MUL      r2,r2,r8              ;887
-0008e4  ee015a10          VMOV     s2,r5                 ;889
-0008e8  1a40              SUBS     r0,r0,r1              ;887
-0008ea  fbb2f0f0          UDIV     r0,r2,r0              ;887
-0008ee  eeb81a41          VCVT.F32.U32 s2,s2                 ;889
-0008f2  eeb80a40          VCVT.F32.U32 s0,s0                 ;889
-0008f6  eef80a60          VCVT.F32.U32 s1,s1                 ;889
-0008fa  e9c40507          STRD     r0,r5,[r4,#0x1c]      ;887
-0008fe  ee311a40          VSUB.F32 s2,s2,s0              ;889
-000902  ee000a10          VMOV     s0,r0                 ;889
-000906  eeb80a40          VCVT.F32.U32 s0,s0                 ;889
-00090a  ee300a60          VSUB.F32 s0,s0,s1              ;889
-00090e  eec10a00          VDIV.F32 s1,s2,s0              ;889
-000912  ee000a10          VMOV     s0,r0                 ;890
-000916  eeb81a40          VCVT.F32.U32 s2,s0                 ;890
-00091a  ee005a10          VMOV     s0,r5                 ;890
-00091e  eeb80a40          VCVT.F32.U32 s0,s0                 ;890
-000922  edca0a27          VSTR     s1,[r10,#0x9c]        ;889
-000926  ee000ac1          VMLS.F32 s0,s1,s2              ;890
-00092a  ed8a0a2c          VSTR     s0,[r10,#0xb0]        ;890
-00092e  e057              B        |L1.2528|
-                  |L1.2352|
-000930  f8bb2000          LDRH     r2,[r11,#0]           ;902  ; R2mon_value
-000934  f44f787a          MOV      r8,#0x3e8             ;902
-000938  f8bb1000          LDRH     r1,[r11,#0]           ;902  ; R2mon_value
-00093c  fb02f208          MUL      r2,r2,r8              ;902
-000940  ee015a10          VMOV     s2,r5                 ;904
-000944  1a40              SUBS     r0,r0,r1              ;902
-000946  fbb2f0f0          UDIV     r0,r2,r0              ;902
-00094a  eeb81a41          VCVT.F32.U32 s2,s2                 ;904
-00094e  eeb80a40          VCVT.F32.U32 s0,s0                 ;904
-000952  eef80a60          VCVT.F32.U32 s1,s1                 ;904
-000956  e9c40507          STRD     r0,r5,[r4,#0x1c]      ;902
-00095a  ee311a40          VSUB.F32 s2,s2,s0              ;904
-00095e  ee000a10          VMOV     s0,r0                 ;904
-000962  eeb80a40          VCVT.F32.U32 s0,s0                 ;904
-000966  ee300a60          VSUB.F32 s0,s0,s1              ;904
-00096a  eec10a00          VDIV.F32 s1,s2,s0              ;904
-00096e  ee000a10          VMOV     s0,r0                 ;905
-000972  eeb81a40          VCVT.F32.U32 s2,s0                 ;905
-000976  ee005a10          VMOV     s0,r5                 ;905
-00097a  eeb80a40          VCVT.F32.U32 s0,s0                 ;905
-00097e  edca0a28          VSTR     s1,[r10,#0xa0]        ;904
-000982  ee000ac1          VMLS.F32 s0,s1,s2              ;905
-000986  ed8a0a2d          VSTR     s0,[r10,#0xb4]        ;905
-00098a  e029              B        |L1.2528|
-                  |L1.2444|
-00098c  f8c28024          STR      r8,[r2,#0x24]         ;911  ; Run_Control
+                          DCD      R2mon_value
+                  |L1.2264|
+0008d8  f8bb2000          LDRH     r2,[r11,#0]           ;887  ; R1mon_value
+0008dc  f44f787a          MOV      r8,#0x3e8             ;887
+0008e0  f8bb1000          LDRH     r1,[r11,#0]           ;887  ; R1mon_value
+0008e4  fb02f208          MUL      r2,r2,r8              ;887
+0008e8  ee015a10          VMOV     s2,r5                 ;889
+0008ec  1a40              SUBS     r0,r0,r1              ;887
+0008ee  fbb2f0f0          UDIV     r0,r2,r0              ;887
+0008f2  eeb81a41          VCVT.F32.U32 s2,s2                 ;889
+0008f6  eeb80a40          VCVT.F32.U32 s0,s0                 ;889
+0008fa  eef80a60          VCVT.F32.U32 s1,s1                 ;889
+0008fe  e9c40507          STRD     r0,r5,[r4,#0x1c]      ;887
+000902  ee311a40          VSUB.F32 s2,s2,s0              ;889
+000906  ee000a10          VMOV     s0,r0                 ;889
+00090a  eeb80a40          VCVT.F32.U32 s0,s0                 ;889
+00090e  ee300a60          VSUB.F32 s0,s0,s1              ;889
+000912  eec10a00          VDIV.F32 s1,s2,s0              ;889
+000916  ee000a10          VMOV     s0,r0                 ;890
+00091a  eeb81a40          VCVT.F32.U32 s2,s0                 ;890
+00091e  ee005a10          VMOV     s0,r5                 ;890
+000922  eeb80a40          VCVT.F32.U32 s0,s0                 ;890
+000926  edca0a27          VSTR     s1,[r10,#0x9c]        ;889
+00092a  ee000ac1          VMLS.F32 s0,s1,s2              ;890
+00092e  ed8a0a2c          VSTR     s0,[r10,#0xb0]        ;890
+000932  e057              B        |L1.2532|
+                  |L1.2356|
+000934  f8bb2000          LDRH     r2,[r11,#0]           ;902  ; R2mon_value
+000938  f44f787a          MOV      r8,#0x3e8             ;902
+00093c  f8bb1000          LDRH     r1,[r11,#0]           ;902  ; R2mon_value
+000940  fb02f208          MUL      r2,r2,r8              ;902
+000944  ee015a10          VMOV     s2,r5                 ;904
+000948  1a40              SUBS     r0,r0,r1              ;902
+00094a  fbb2f0f0          UDIV     r0,r2,r0              ;902
+00094e  eeb81a41          VCVT.F32.U32 s2,s2                 ;904
+000952  eeb80a40          VCVT.F32.U32 s0,s0                 ;904
+000956  eef80a60          VCVT.F32.U32 s1,s1                 ;904
+00095a  e9c40507          STRD     r0,r5,[r4,#0x1c]      ;902
+00095e  ee311a40          VSUB.F32 s2,s2,s0              ;904
+000962  ee000a10          VMOV     s0,r0                 ;904
+000966  eeb80a40          VCVT.F32.U32 s0,s0                 ;904
+00096a  ee300a60          VSUB.F32 s0,s0,s1              ;904
+00096e  eec10a00          VDIV.F32 s1,s2,s0              ;904
+000972  ee000a10          VMOV     s0,r0                 ;905
+000976  eeb81a40          VCVT.F32.U32 s2,s0                 ;905
+00097a  ee005a10          VMOV     s0,r5                 ;905
+00097e  eeb80a40          VCVT.F32.U32 s0,s0                 ;905
+000982  edca0a28          VSTR     s1,[r10,#0xa0]        ;904
+000986  ee000ac1          VMLS.F32 s0,s1,s2              ;905
+00098a  ed8a0a2d          VSTR     s0,[r10,#0xb4]        ;905
+00098e  e029              B        |L1.2532|
                   |L1.2448|
-000990  f8868000          STRB     r8,[r6,#0]            ;912
+000990  f8c28024          STR      r8,[r2,#0x24]         ;911  ; Run_Control
                   |L1.2452|
-000994  4648              MOV      r0,r9                 ;913
-000996  e726              B        |L1.2022|
+000994  f8868000          STRB     r8,[r6,#0]            ;912
                   |L1.2456|
+000998  4648              MOV      r0,r9                 ;913
+00099a  e727              B        |L1.2028|
+                  |L1.2460|
 ;;;916    		{
 ;;;917    			
 ;;;918    			x2 = Rmon_value;
-000998  f8b90000          LDRH     r0,[r9,#0]  ; Rmon_value
+00099c  f8b90000          LDRH     r0,[r9,#0]  ; Rmon_value
 ;;;919    			y2 = data;
 ;;;920    			CalPara.TestR[2] = ((float)y2 - (float)y1)/((float)x2 - (float)x1);
-00099c  ee015a10          VMOV     s2,r5
-0009a0  eeb80a40          VCVT.F32.U32 s0,s0
-0009a4  eef80a60          VCVT.F32.U32 s1,s1
-0009a8  eeb81a41          VCVT.F32.U32 s2,s2
-0009ac  e9c40507          STRD     r0,r5,[r4,#0x1c]      ;918
-0009b0  ee311a40          VSUB.F32 s2,s2,s0
-0009b4  ee000a10          VMOV     s0,r0
-0009b8  eeb80a40          VCVT.F32.U32 s0,s0
-0009bc  ee300a60          VSUB.F32 s0,s0,s1
-0009c0  eec10a00          VDIV.F32 s1,s2,s0
+0009a0  ee015a10          VMOV     s2,r5
+0009a4  eeb80a40          VCVT.F32.U32 s0,s0
+0009a8  eef80a60          VCVT.F32.U32 s1,s1
+0009ac  eeb81a41          VCVT.F32.U32 s2,s2
+0009b0  e9c40507          STRD     r0,r5,[r4,#0x1c]      ;918
+0009b4  ee311a40          VSUB.F32 s2,s2,s0
+0009b8  ee000a10          VMOV     s0,r0
+0009bc  eeb80a40          VCVT.F32.U32 s0,s0
+0009c0  ee300a60          VSUB.F32 s0,s0,s1
+0009c4  eec10a00          VDIV.F32 s1,s2,s0
 ;;;921    			CalPara.OffsetR[2] = (float)y2 - CalPara.TestR[2]*(float)x2;
-0009c4  ee000a10          VMOV     s0,r0
-0009c8  eeb81a40          VCVT.F32.U32 s2,s0
-0009cc  ee005a10          VMOV     s0,r5
-0009d0  eeb80a40          VCVT.F32.U32 s0,s0
-0009d4  edca0a26          VSTR     s1,[r10,#0x98]        ;920
-0009d8  ee000ac1          VMLS.F32 s0,s1,s2
-0009dc  ed8a0a2b          VSTR     s0,[r10,#0xac]
-                  |L1.2528|
+0009c8  ee000a10          VMOV     s0,r0
+0009cc  eeb81a40          VCVT.F32.U32 s2,s0
+0009d0  ee005a10          VMOV     s0,r5
+0009d4  eeb80a40          VCVT.F32.U32 s0,s0
+0009d8  edca0a26          VSTR     s1,[r10,#0x98]        ;920
+0009dc  ee000ac1          VMLS.F32 s0,s1,s2
+0009e0  ed8a0a2b          VSTR     s0,[r10,#0xac]
+                  |L1.2532|
 ;;;922    				//参数写进FLASH
 ;;;923    			Flag_DAC_OFF=0;
 ;;;924    			calflag = 0;
-0009e0  f8cc3000          STR      r3,[r12,#0]  ; flagB
-0009e4  7037              STRB     r7,[r6,#0]
-                  |L1.2534|
+0009e4  f8cc3000          STR      r3,[r12,#0]  ; flagB
+0009e8  7037              STRB     r7,[r6,#0]
+                  |L1.2538|
 ;;;925    		}
 ;;;926    		
 ;;;927    	}
 ;;;928    		
 ;;;929    
 ;;;930    	Write_Flash_Bytes();
-0009e6  e8bd5ff0          POP      {r4-r12,lr}
-0009ea  f7ffbffe          B.W      Write_Flash_Bytes
+0009ea  e8bd5ff0          POP      {r4-r12,lr}
+0009ee  f7ffbffe          B.W      Write_Flash_Bytes
 ;;;931    //	else if(mode == 1){//测量电流
 ;;;932    //		if(range == 1)
 ;;;933    //		{

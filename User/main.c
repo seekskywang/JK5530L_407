@@ -47,6 +47,7 @@ vu8 C_DISCHARGE;      	//放电  1  --  正在放电   0  --
 vu8 trig_flag_state = 0;     //trig按键状态
 vu8 calflag;//校准标志位
 vu32 readpowflag;
+vu32 setpowflag;
 float max_discahrgeNum = 0;  
 float DISS_Voltage;
 float DISS_POW_Voltage;
@@ -358,6 +359,33 @@ void JumpBoot(u8 flag)
 	}
 }
 
+void SetPowerHandle(void)
+{
+	if(sendwait == 3)
+	{
+		SetPowerModeS();
+	}
+	if(sendwait == 2)
+	{
+		SetPowerModeC();
+	}
+	if(sendwait == 1)
+	{
+		SetPowerModeV();
+	}
+	if(listsend == 3)
+	{
+		SetListPS();
+	}
+	if(listsend == 2)
+	{
+		SetListPC();
+	}
+	if(listsend == 1)
+	{
+		SetListPV();
+	}
+}
 
 int main(void)
 {
@@ -418,6 +446,11 @@ int main(void)
 		{
 			ReadPowData();
 			readpowflag = 0;
+		}
+		if(setpowflag > 100/* && sendwait == 0 && listsend == 0*//* && mainswitch == 1*/)
+		{
+			SetPowerHandle();
+			setpowflag = 0;
 		}
 //		PLimit();//功率限制保护
 		if(USART_RX_STA&0x8000)	   //判断是否接收完数据

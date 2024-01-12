@@ -278,7 +278,7 @@ void TIM3_IRQHandler(void){
     if(TIM_GetITStatus(TIM3,TIM_IT_Update) == SET) 
     {
 		readpowflag ++;//读取电源数据计时
-		
+		setpowflag ++;
 		if( ms_time > (1 << 31) - 2 )
 			
 			ms_time = 0;

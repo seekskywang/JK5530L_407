@@ -35377,6 +35377,7 @@ Nextern float old_I;
 Nextern vu8 off_state; 
 Nextern float v_memory;
 Nextern vu32 readpowflag;
+Nextern vu32 setpowflag;
 Nvoid  Delay_ms(vu16 mstime);
 Nvoid Delay_usS(vu16 ustime);
 Nvoid OnOff_GPOI_ResetSet( vu8 _type, vu8 _value );
@@ -35390,6 +35391,12 @@ Nvoid MODE_ONOFF(vu8 value);
 Nvoid JumpBoot(u8 flag);
 Nvoid SetPowerC(vu16 powc);
 Nvoid PowerCommWaitHandle(u8 command,u8 mode);
+Nvoid SetPowerModeS(void);
+Nvoid SetPowerModeC(void);
+Nvoid SetPowerModeV(void);
+Nvoid SetListPS(void);
+Nvoid SetListPC(void);
+Nvoid SetListPV(void);
 Nextern void ReadPowData(void);
 Nextern u8 USART3_Recive_flg;
 Nstruct MODS_T
@@ -36046,6 +36053,7 @@ Sextern float old_I;
 Sextern vu8 off_state; 
 Sextern float v_memory;
 Sextern vu32 readpowflag;
+Sextern vu32 setpowflag;
 Svoid  Delay_ms(vu16 mstime);
 Svoid Delay_usS(vu16 ustime);
 Svoid OnOff_GPOI_ResetSet( vu8 _type, vu8 _value );
@@ -36059,6 +36067,12 @@ Svoid MODE_ONOFF(vu8 value);
 Svoid JumpBoot(u8 flag);
 Svoid SetPowerC(vu16 powc);
 Svoid PowerCommWaitHandle(u8 command,u8 mode);
+Svoid SetPowerModeS(void);
+Svoid SetPowerModeC(void);
+Svoid SetPowerModeV(void);
+Svoid SetListPS(void);
+Svoid SetListPC(void);
+Svoid SetListPV(void);
 Sextern void ReadPowData(void);
 Sextern u8 USART3_Recive_flg;
 Sstruct MODS_T
@@ -37753,6 +37767,7 @@ Sextern float old_I;
 Sextern vu8 off_state; 
 Sextern float v_memory;
 Sextern vu32 readpowflag;
+Sextern vu32 setpowflag;
 Svoid  Delay_ms(vu16 mstime);
 Svoid Delay_usS(vu16 ustime);
 Svoid OnOff_GPOI_ResetSet( vu8 _type, vu8 _value );
@@ -37766,6 +37781,12 @@ Svoid MODE_ONOFF(vu8 value);
 Svoid JumpBoot(u8 flag);
 Svoid SetPowerC(vu16 powc);
 Svoid PowerCommWaitHandle(u8 command,u8 mode);
+Svoid SetPowerModeS(void);
+Svoid SetPowerModeC(void);
+Svoid SetPowerModeV(void);
+Svoid SetListPS(void);
+Svoid SetListPC(void);
+Svoid SetListPV(void);
 Sextern void ReadPowData(void);
 Sextern u8 USART3_Recive_flg;
 Sstruct MODS_T
@@ -52196,6 +52217,7 @@ Sextern float old_I;
 Sextern vu8 off_state; 
 Sextern float v_memory;
 Sextern vu32 readpowflag;
+Sextern vu32 setpowflag;
 Svoid  Delay_ms(vu16 mstime);
 Svoid Delay_usS(vu16 ustime);
 Svoid OnOff_GPOI_ResetSet( vu8 _type, vu8 _value );
@@ -52209,6 +52231,12 @@ Svoid MODE_ONOFF(vu8 value);
 Svoid JumpBoot(u8 flag);
 Svoid SetPowerC(vu16 powc);
 Svoid PowerCommWaitHandle(u8 command,u8 mode);
+Svoid SetPowerModeS(void);
+Svoid SetPowerModeC(void);
+Svoid SetPowerModeV(void);
+Svoid SetListPS(void);
+Svoid SetListPC(void);
+Svoid SetListPV(void);
 Sextern void ReadPowData(void);
 Sextern u8 USART3_Recive_flg;
 Sstruct MODS_T
@@ -52769,6 +52797,7 @@ Sextern float old_I;
 Sextern vu8 off_state; 
 Sextern float v_memory;
 Sextern vu32 readpowflag;
+Sextern vu32 setpowflag;
 Svoid  Delay_ms(vu16 mstime);
 Svoid Delay_usS(vu16 ustime);
 Svoid OnOff_GPOI_ResetSet( vu8 _type, vu8 _value );
@@ -52782,6 +52811,12 @@ Svoid MODE_ONOFF(vu8 value);
 Svoid JumpBoot(u8 flag);
 Svoid SetPowerC(vu16 powc);
 Svoid PowerCommWaitHandle(u8 command,u8 mode);
+Svoid SetPowerModeS(void);
+Svoid SetPowerModeC(void);
+Svoid SetPowerModeV(void);
+Svoid SetListPS(void);
+Svoid SetListPC(void);
+Svoid SetListPV(void);
 Sextern void ReadPowData(void);
 Sextern u8 USART3_Recive_flg;
 Sstruct MODS_T
@@ -53353,6 +53388,7 @@ Sextern float old_I;
 Sextern vu8 off_state; 
 Sextern float v_memory;
 Sextern vu32 readpowflag;
+Sextern vu32 setpowflag;
 Svoid  Delay_ms(vu16 mstime);
 Svoid Delay_usS(vu16 ustime);
 Svoid OnOff_GPOI_ResetSet( vu8 _type, vu8 _value );
@@ -53366,6 +53402,12 @@ Svoid MODE_ONOFF(vu8 value);
 Svoid JumpBoot(u8 flag);
 Svoid SetPowerC(vu16 powc);
 Svoid PowerCommWaitHandle(u8 command,u8 mode);
+Svoid SetPowerModeS(void);
+Svoid SetPowerModeC(void);
+Svoid SetPowerModeV(void);
+Svoid SetListPS(void);
+Svoid SetListPC(void);
+Svoid SetListPV(void);
 Sextern void ReadPowData(void);
 Sextern u8 USART3_Recive_flg;
 Sstruct MODS_T
@@ -53928,6 +53970,7 @@ Sextern float old_I;
 Sextern vu8 off_state; 
 Sextern float v_memory;
 Sextern vu32 readpowflag;
+Sextern vu32 setpowflag;
 Svoid  Delay_ms(vu16 mstime);
 Svoid Delay_usS(vu16 ustime);
 Svoid OnOff_GPOI_ResetSet( vu8 _type, vu8 _value );
@@ -53941,6 +53984,12 @@ Svoid MODE_ONOFF(vu8 value);
 Svoid JumpBoot(u8 flag);
 Svoid SetPowerC(vu16 powc);
 Svoid PowerCommWaitHandle(u8 command,u8 mode);
+Svoid SetPowerModeS(void);
+Svoid SetPowerModeC(void);
+Svoid SetPowerModeV(void);
+Svoid SetListPS(void);
+Svoid SetListPC(void);
+Svoid SetListPV(void);
 Sextern void ReadPowData(void);
 Sextern u8 USART3_Recive_flg;
 Sstruct MODS_T
@@ -54690,6 +54739,7 @@ Sextern float old_I;
 Sextern vu8 off_state; 
 Sextern float v_memory;
 Sextern vu32 readpowflag;
+Sextern vu32 setpowflag;
 Svoid  Delay_ms(vu16 mstime);
 Svoid Delay_usS(vu16 ustime);
 Svoid OnOff_GPOI_ResetSet( vu8 _type, vu8 _value );
@@ -54703,6 +54753,12 @@ Svoid MODE_ONOFF(vu8 value);
 Svoid JumpBoot(u8 flag);
 Svoid SetPowerC(vu16 powc);
 Svoid PowerCommWaitHandle(u8 command,u8 mode);
+Svoid SetPowerModeS(void);
+Svoid SetPowerModeC(void);
+Svoid SetPowerModeV(void);
+Svoid SetListPS(void);
+Svoid SetListPC(void);
+Svoid SetListPV(void);
 Sextern void ReadPowData(void);
 Sextern u8 USART3_Recive_flg;
 Sstruct MODS_T
@@ -54772,6 +54828,7 @@ Nvu8 C_DISCHARGE;      	//放电  1  --  正在放电   0  --
 Nvu8 trig_flag_state = 0;     //trig按键状态
 Nvu8 calflag;//校准标志位
 Nvu32 readpowflag;
+Nvu32 setpowflag;
 Nfloat max_discahrgeNum = 0;  
 Nfloat DISS_Voltage;
 Nfloat DISS_POW_Voltage;
@@ -55138,6 +55195,33 @@ N		pUserApp();
 N	}
 N}
 N
+Nvoid SetPowerHandle(void)
+N{
+N	if(sendwait == 3)
+N	{
+N		SetPowerModeS();
+N	}
+N	if(sendwait == 2)
+N	{
+N		SetPowerModeC();
+N	}
+N	if(sendwait == 1)
+N	{
+N		SetPowerModeV();
+N	}
+N	if(listsend == 3)
+N	{
+N		SetListPS();
+N	}
+N	if(listsend == 2)
+N	{
+N		SetListPC();
+N	}
+N	if(listsend == 1)
+N	{
+N		SetListPV();
+N	}
+N}
 N
 Nint main(void)
 N{
@@ -55206,6 +55290,11 @@ N		if(readpowflag > 200 && sendwait == 0 && listsend == 0/* && mainswitch == 1*/
 N		{
 N			ReadPowData();
 N			readpowflag = 0;
+N		}
+N		if(setpowflag > 100/* && sendwait == 0 && listsend == 0*//* && mainswitch == 1*/)
+N		{
+N			SetPowerHandle();
+N			setpowflag = 0;
 N		}
 N//		PLimit();//功率限制保护
 N		if(USART_RX_STA&0x8000)	   //判断是否接收完数据

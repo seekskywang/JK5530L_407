@@ -5,76 +5,76 @@
                           AREA ||i.Ds18b20Check||, CODE, READONLY, ALIGN=2
 
                   Ds18b20Check PROC
-;;;137    //返回0:存在
-;;;138    u8 Ds18b20Check(void) 	   
+;;;138    //返回0:存在
+;;;139    u8 Ds18b20Check(void) 	   
 000000  b570              PUSH     {r4-r6,lr}
-;;;139    {   
-;;;140        u8 retry=0;
+;;;140    {   
+;;;141        u8 retry=0;
 000002  2400              MOVS     r4,#0
-;;;141        DS18B20_IN();//SET PA0 INPUT	 
+;;;142        DS18B20_IN();//SET PA0 INPUT	 
 000004  f7fffffe          BL       DS18B20_IN
-;;;142        while (DS18B20_DQ_IN&&retry<200)
+;;;143        while (DS18B20_DQ_IN&&retry<200)
 000008  f44f6580          MOV      r5,#0x400
 00000c  4e12              LDR      r6,|L1.88|
 00000e  e004              B        |L1.26|
                   |L1.16|
 000010  1c64              ADDS     r4,r4,#1
-;;;143        {
-;;;144            retry++;
+;;;144        {
+;;;145            retry++;
 000012  b2e4              UXTB     r4,r4
-;;;145            Delay_usS(3);
+;;;146            Delay_usS(3);
 000014  2003              MOVS     r0,#3
 000016  f7fffffe          BL       Delay_usS
                   |L1.26|
-00001a  4629              MOV      r1,r5                 ;142
-00001c  4630              MOV      r0,r6                 ;142
+00001a  4629              MOV      r1,r5                 ;143
+00001c  4630              MOV      r0,r6                 ;143
 00001e  f7fffffe          BL       GPIO_ReadInputDataBit
 000022  b110              CBZ      r0,|L1.42|
-000024  2cc8              CMP      r4,#0xc8              ;142
+000024  2cc8              CMP      r4,#0xc8              ;143
 000026  d3f3              BCC      |L1.16|
 000028  e00f              B        |L1.74|
                   |L1.42|
-;;;146        };	 
-;;;147        if(retry>=200)
+;;;147        };	 
+;;;148        if(retry>=200)
 00002a  2cc8              CMP      r4,#0xc8
 00002c  d20d              BCS      |L1.74|
-;;;148    		return 1;
-;;;149        else 
-;;;150    		retry=0;
+;;;149    		return 1;
+;;;150        else 
+;;;151    		retry=0;
 00002e  2400              MOVS     r4,#0
 000030  e004              B        |L1.60|
                   |L1.50|
 000032  1c64              ADDS     r4,r4,#1
-;;;151        while (!DS18B20_DQ_IN&&retry<240)
-;;;152        {
-;;;153            retry++;
+;;;152        while (!DS18B20_DQ_IN&&retry<240)
+;;;153        {
+;;;154            retry++;
 000034  b2e4              UXTB     r4,r4
-;;;154            Delay_usS(3);
+;;;155            Delay_usS(3);
 000036  2003              MOVS     r0,#3
 000038  f7fffffe          BL       Delay_usS
                   |L1.60|
-00003c  4629              MOV      r1,r5                 ;151
-00003e  4630              MOV      r0,r6                 ;151
+00003c  4629              MOV      r1,r5                 ;152
+00003e  4630              MOV      r0,r6                 ;152
 000040  f7fffffe          BL       GPIO_ReadInputDataBit
 000044  b118              CBZ      r0,|L1.78|
-;;;155        };
-;;;156        if(retry>=240)
+;;;156        };
+;;;157        if(retry>=240)
 000046  2cf0              CMP      r4,#0xf0
 000048  d304              BCC      |L1.84|
                   |L1.74|
-;;;157    		return 1;	    
+;;;158    		return 1;	    
 00004a  2001              MOVS     r0,#1
-;;;158        return 0;
-;;;159    }
+;;;159        return 0;
+;;;160    }
 00004c  bd70              POP      {r4-r6,pc}
                   |L1.78|
-00004e  2cf0              CMP      r4,#0xf0              ;151
+00004e  2cf0              CMP      r4,#0xf0              ;152
 000050  d3ef              BCC      |L1.50|
 000052  e7fa              B        |L1.74|
                   |L1.84|
-000054  2000              MOVS     r0,#0                 ;158
+000054  2000              MOVS     r0,#0                 ;159
 000056  bd70              POP      {r4-r6,pc}
-;;;160    
+;;;161    
                           ENDP
 
                   |L1.88|
@@ -83,70 +83,70 @@
                           AREA ||i.Ds18b20GetTemp||, CODE, READONLY, ALIGN=2
 
                   Ds18b20GetTemp PROC
-;;;253    //返回值：温度值 （-550~1250） 
-;;;254    short Ds18b20GetTemp(void)
+;;;254    //返回值：温度值 （-550~1250） 
+;;;255    short Ds18b20GetTemp(void)
 000000  b570              PUSH     {r4-r6,lr}
-;;;255    {
-;;;256        u8 temp;
-;;;257        u8 TL,TH;
-;;;258        short tem;
-;;;259        Ds18b20Start ();                    // ds1820 start convert
+;;;256    {
+;;;257        u8 temp;
+;;;258        u8 TL,TH;
+;;;259        short tem;
+;;;260        Ds18b20Start ();                    // ds1820 start convert
 000002  f7fffffe          BL       Ds18b20Start
-;;;260        Ds18b20Rst();
+;;;261        Ds18b20Rst();
 000006  f7fffffe          BL       Ds18b20Rst
-;;;261        Ds18b20Check();	 
+;;;262        Ds18b20Check();	 
 00000a  f7fffffe          BL       Ds18b20Check
-;;;262        Ds18b20WriteByte(0xcc);// skip rom
+;;;263        Ds18b20WriteByte(0xcc);// skip rom
 00000e  20cc              MOVS     r0,#0xcc
 000010  f7fffffe          BL       Ds18b20WriteByte
-;;;263        Ds18b20WriteByte(0xbe);// convert	    
+;;;264        Ds18b20WriteByte(0xbe);// convert	    
 000014  20be              MOVS     r0,#0xbe
 000016  f7fffffe          BL       Ds18b20WriteByte
-;;;264        TL=Ds18b20ReadByte(); // LSB   
+;;;265        TL=Ds18b20ReadByte(); // LSB   
 00001a  f7fffffe          BL       Ds18b20ReadByte
 00001e  4604              MOV      r4,r0
-;;;265        TH=Ds18b20ReadByte(); // MSB  
+;;;266        TH=Ds18b20ReadByte(); // MSB  
 000020  f7fffffe          BL       Ds18b20ReadByte
-;;;266        
-;;;267        if(TH>7)
+;;;267        
+;;;268        if(TH>7)
 000024  2807              CMP      r0,#7
 000026  d905              BLS      |L2.52|
-;;;268        {
-;;;269            TH=~TH;
+;;;269        {
+;;;270            TH=~TH;
 000028  43c0              MVNS     r0,r0
-;;;270            TL=~TL; 
+;;;271            TL=~TL; 
 00002a  43e1              MVNS     r1,r4
-00002c  b2c0              UXTB     r0,r0                 ;269
+00002c  b2c0              UXTB     r0,r0                 ;270
 00002e  b2cc              UXTB     r4,r1
-;;;271            temp=0;//温度为负  
+;;;272            temp=0;//温度为负  
 000030  2500              MOVS     r5,#0
 000032  e000              B        |L2.54|
                   |L2.52|
-;;;272        }else temp=1;//温度为正	  	  
+;;;273        }else temp=1;//温度为正	  	  
 000034  2501              MOVS     r5,#1
                   |L2.54|
-;;;273        tem=TH; //获得高八位
-;;;274        tem<<=8;    
-;;;275        tem+=TL;//获得底八位
+;;;274        tem=TH; //获得高八位
+;;;275        tem<<=8;    
+;;;276        tem+=TL;//获得底八位
 000036  eb042000          ADD      r0,r4,r0,LSL #8
 00003a  b200              SXTH     r0,r0
-;;;276        tem=(short)((float)tem*0.625);//转换     
+;;;277        tem=(short)((float)tem*0.625);//转换     
 00003c  f7fffffe          BL       __aeabi_i2d
 000040  ed9f1b06          VLDR     d1,|L2.92|
 000044  ec532b11          VMOV     r2,r3,d1
 000048  f7fffffe          BL       __aeabi_dmul
 00004c  f7fffffe          BL       __aeabi_d2iz
 000050  b200              SXTH     r0,r0
-;;;277        if(temp)return tem; //返回温度值
+;;;278        if(temp)return tem; //返回温度值
 000052  2d00              CMP      r5,#0
 000054  d101              BNE      |L2.90|
-;;;278        else return -tem;    
+;;;279        else return -tem;    
 000056  4240              RSBS     r0,r0,#0
 000058  b200              SXTH     r0,r0
                   |L2.90|
-;;;279    } 
+;;;280    } 
 00005a  bd70              POP      {r4-r6,pc}
-;;;280    
+;;;281    
                           ENDP
 
                   |L2.92|
@@ -156,43 +156,43 @@
                           AREA ||i.Ds18b20Init||, CODE, READONLY, ALIGN=2
 
                   Ds18b20Init PROC
-;;;163    //返回0:存在    	 
-;;;164    u8 Ds18b20Init(void)
+;;;164    //返回0:存在    	 
+;;;165    u8 Ds18b20Init(void)
 000000  b57c              PUSH     {r2-r6,lr}
-;;;165    {
-;;;166        GPIO_InitTypeDef  GPIO_InitStructure;
-;;;167        
-;;;168       GPIO_InitStructure.GPIO_Speed =GPIO_Speed_50MHz;
+;;;166    {
+;;;167        GPIO_InitTypeDef  GPIO_InitStructure;
+;;;168        
+;;;169       GPIO_InitStructure.GPIO_Speed =GPIO_Speed_50MHz;
 000002  2002              MOVS     r0,#2
 000004  f88d0005          STRB     r0,[sp,#5]
-;;;169    	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+;;;170    	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
 000008  2001              MOVS     r0,#1
 00000a  f88d0004          STRB     r0,[sp,#4]
-;;;170    	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+;;;171    	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
 00000e  2000              MOVS     r0,#0
-;;;171    	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;//DS18B20
-;;;172    	GPIO_Init(GPIOB, &GPIO_InitStructure);//
+;;;172    	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;//DS18B20
+;;;173    	GPIO_Init(GPIOB, &GPIO_InitStructure);//
 000010  4d09              LDR      r5,|L3.56|
-000012  f88d0006          STRB     r0,[sp,#6]            ;170
-000016  f44f6480          MOV      r4,#0x400             ;171
+000012  f88d0006          STRB     r0,[sp,#6]            ;171
+000016  f44f6480          MOV      r4,#0x400             ;172
 00001a  4669              MOV      r1,sp
 00001c  4628              MOV      r0,r5
 00001e  9400              STR      r4,[sp,#0]
 000020  f7fffffe          BL       GPIO_Init
-;;;173        
-;;;174        GPIO_SetBits(GPIOB,GPIO_Pin_10);    //输出1
+;;;174        
+;;;175        GPIO_SetBits(GPIOB,GPIO_Pin_10);    //输出1
 000024  4621              MOV      r1,r4
 000026  4628              MOV      r0,r5
 000028  f7fffffe          BL       GPIO_SetBits
-;;;175        
-;;;176        Ds18b20Rst();
+;;;176        
+;;;177        Ds18b20Rst();
 00002c  f7fffffe          BL       Ds18b20Rst
-;;;177        
-;;;178        return Ds18b20Check();
+;;;178        
+;;;179        return Ds18b20Check();
 000030  f7fffffe          BL       Ds18b20Check
-;;;179    }  
+;;;180    }  
 000034  bd7c              POP      {r2-r6,pc}
-;;;180    
+;;;181    
                           ENDP
 
 000036  0000              DCW      0x0000
@@ -202,52 +202,52 @@
                           AREA ||i.Ds18b20ReadBit||, CODE, READONLY, ALIGN=2
 
                   Ds18b20ReadBit PROC
-;;;182    //返回值：1/0
-;;;183    u8 Ds18b20ReadBit(void) 			 // read one bit
+;;;183    //返回值：1/0
+;;;184    u8 Ds18b20ReadBit(void) 			 // read one bit
 000000  b570              PUSH     {r4-r6,lr}
-;;;184    {
-;;;185        u8 data;
-;;;186        DS18B20_OUT();//SET PA0 OUTPUT
+;;;185    {
+;;;186        u8 data;
+;;;187        DS18B20_OUT();//SET PA0 OUTPUT
 000002  f7fffffe          BL       DS18B20_OUT
-;;;187        DS18B20_DQ_OUT_0; 
+;;;188        DS18B20_DQ_OUT_0; 
 000006  4d10              LDR      r5,|L4.72|
 000008  f44f6480          MOV      r4,#0x400
 00000c  4621              MOV      r1,r4
 00000e  4628              MOV      r0,r5
 000010  f7fffffe          BL       GPIO_ResetBits
-;;;188        Delay_usS(5);
+;;;189        Delay_usS(5);
 000014  2005              MOVS     r0,#5
 000016  f7fffffe          BL       Delay_usS
-;;;189        DS18B20_DQ_OUT_1; 
+;;;190        DS18B20_DQ_OUT_1; 
 00001a  4621              MOV      r1,r4
 00001c  4628              MOV      r0,r5
 00001e  f7fffffe          BL       GPIO_SetBits
-;;;190        DS18B20_IN();//SET PA0 INPUT
+;;;191        DS18B20_IN();//SET PA0 INPUT
 000022  f7fffffe          BL       DS18B20_IN
-;;;191        Delay_usS(30);
+;;;192        Delay_usS(30);
 000026  201e              MOVS     r0,#0x1e
 000028  f7fffffe          BL       Delay_usS
-;;;192        if(DS18B20_DQ_IN)
+;;;193        if(DS18B20_DQ_IN)
 00002c  4621              MOV      r1,r4
 00002e  4628              MOV      r0,r5
 000030  f7fffffe          BL       GPIO_ReadInputDataBit
 000034  b108              CBZ      r0,|L4.58|
-;;;193    		data=1;
+;;;194    		data=1;
 000036  2401              MOVS     r4,#1
 000038  e000              B        |L4.60|
                   |L4.58|
-;;;194        else 
-;;;195    		data=0;	 
+;;;195        else 
+;;;196    		data=0;	 
 00003a  2400              MOVS     r4,#0
                   |L4.60|
-;;;196        Delay_usS(125);           
+;;;197        Delay_usS(125);           
 00003c  207d              MOVS     r0,#0x7d
 00003e  f7fffffe          BL       Delay_usS
-;;;197        return data;
+;;;198        return data;
 000042  4620              MOV      r0,r4
-;;;198    }
+;;;199    }
 000044  bd70              POP      {r4-r6,pc}
-;;;199    
+;;;200    
                           ENDP
 
 000046  0000              DCW      0x0000
@@ -257,64 +257,64 @@
                           AREA ||i.Ds18b20ReadByte||, CODE, READONLY, ALIGN=2
 
                   Ds18b20ReadByte PROC
-;;;201    //返回值：读到的数据
-;;;202    u8 Ds18b20ReadByte(void)    // read one byte
+;;;202    //返回值：读到的数据
+;;;203    u8 Ds18b20ReadByte(void)    // read one byte
 000000  b570              PUSH     {r4-r6,lr}
-;;;203    {        
-;;;204        u8 i,j,dat;
-;;;205        dat=0;
+;;;204    {        
+;;;205        u8 i,j,dat;
+;;;206        dat=0;
 000002  2500              MOVS     r5,#0
-;;;206        for (i=1;i<=8;i++) 
+;;;207        for (i=1;i<=8;i++) 
 000004  f05f0401          MOVS.W   r4,#1
                   |L5.8|
-;;;207        {
-;;;208            j=Ds18b20ReadBit();
+;;;208        {
+;;;209            j=Ds18b20ReadBit();
 000008  f7fffffe          BL       Ds18b20ReadBit
-;;;209            dat=(j<<7)|(dat>>1);
+;;;210            dat=(j<<7)|(dat>>1);
 00000c  01c0              LSLS     r0,r0,#7
 00000e  1c64              ADDS     r4,r4,#1
 000010  ea400055          ORR      r0,r0,r5,LSR #1
-000014  b2e4              UXTB     r4,r4                 ;206
+000014  b2e4              UXTB     r4,r4                 ;207
 000016  b2c5              UXTB     r5,r0
-000018  2c08              CMP      r4,#8                 ;206
+000018  2c08              CMP      r4,#8                 ;207
 00001a  d9f5              BLS      |L5.8|
-;;;210        }						    
-;;;211        return dat;
+;;;211        }						    
+;;;212        return dat;
 00001c  4628              MOV      r0,r5
-;;;212    }
+;;;213    }
 00001e  bd70              POP      {r4-r6,pc}
-;;;213    
+;;;214    
                           ENDP
 
 
                           AREA ||i.Ds18b20Rst||, CODE, READONLY, ALIGN=2
 
                   Ds18b20Rst PROC
-;;;125    //复位DS18B20
-;;;126    void Ds18b20Rst(void)	   
+;;;126    //复位DS18B20
+;;;127    void Ds18b20Rst(void)	   
 000000  b570              PUSH     {r4-r6,lr}
-;;;127    {                 
-;;;128        DS18B20_OUT(); //SET PA0 OUTPUT
+;;;128    {                 
+;;;129        DS18B20_OUT(); //SET PA0 OUTPUT
 000002  f7fffffe          BL       DS18B20_OUT
-;;;129        DS18B20_DQ_OUT_0; //拉低DQ
+;;;130        DS18B20_DQ_OUT_0; //拉低DQ
 000006  4d0a              LDR      r5,|L6.48|
 000008  f44f6480          MOV      r4,#0x400
 00000c  4621              MOV      r1,r4
 00000e  4628              MOV      r0,r5
 000010  f7fffffe          BL       GPIO_ResetBits
-;;;130        Delay_usS(1250);    //拉低750us
+;;;131        Delay_usS(1250);    //拉低750us
 000014  f24040e2          MOV      r0,#0x4e2
 000018  f7fffffe          BL       Delay_usS
-;;;131        DS18B20_DQ_OUT_1; //DQ=1 
+;;;132        DS18B20_DQ_OUT_1; //DQ=1 
 00001c  4621              MOV      r1,r4
 00001e  4628              MOV      r0,r5
 000020  f7fffffe          BL       GPIO_SetBits
-;;;132        Delay_usS(38);     //15US
+;;;133        Delay_usS(38);     //15US
 000024  e8bd4070          POP      {r4-r6,lr}
 000028  2026              MOVS     r0,#0x26
 00002a  f7ffbffe          B.W      Delay_usS
-;;;133    }
-;;;134    
+;;;134    }
+;;;135    
                           ENDP
 
 00002e  0000              DCW      0x0000
@@ -324,91 +324,91 @@
                           AREA ||i.Ds18b20Start||, CODE, READONLY, ALIGN=1
 
                   Ds18b20Start PROC
-;;;242    
-;;;243    void Ds18b20Start(void)// ds1820 start convert
+;;;243    
+;;;244    void Ds18b20Start(void)// ds1820 start convert
 000000  b510              PUSH     {r4,lr}
-;;;244    {   						               
-;;;245        Ds18b20Rst();	   
+;;;245    {   						               
+;;;246        Ds18b20Rst();	   
 000002  f7fffffe          BL       Ds18b20Rst
-;;;246        Ds18b20Check();	 
+;;;247        Ds18b20Check();	 
 000006  f7fffffe          BL       Ds18b20Check
-;;;247        Ds18b20WriteByte(0xcc);// skip rom
+;;;248        Ds18b20WriteByte(0xcc);// skip rom
 00000a  20cc              MOVS     r0,#0xcc
 00000c  f7fffffe          BL       Ds18b20WriteByte
-;;;248        Ds18b20WriteByte(0x44);// convert
+;;;249        Ds18b20WriteByte(0x44);// convert
 000010  e8bd4010          POP      {r4,lr}
 000014  2044              MOVS     r0,#0x44
 000016  f7ffbffe          B.W      Ds18b20WriteByte
-;;;249    } 
-;;;250    
+;;;250    } 
+;;;251    
                           ENDP
 
 
                           AREA ||i.Ds18b20WriteByte||, CODE, READONLY, ALIGN=2
 
                   Ds18b20WriteByte PROC
-;;;215    //dat：要写入的字节
-;;;216    void Ds18b20WriteByte(u8 dat)     
+;;;216    //dat：要写入的字节
+;;;217    void Ds18b20WriteByte(u8 dat)     
 000000  e92d41f0          PUSH     {r4-r8,lr}
-;;;217    {             
+;;;218    {             
 000004  4605              MOV      r5,r0
-;;;218        u8 j;
-;;;219        u8 testb;
-;;;220        DS18B20_OUT();//SET PA0 OUTPUT;
+;;;219        u8 j;
+;;;220        u8 testb;
+;;;221        DS18B20_OUT();//SET PA0 OUTPUT;
 000006  f7fffffe          BL       DS18B20_OUT
-;;;221        for (j=1;j<=8;j++) 
+;;;222        for (j=1;j<=8;j++) 
 00000a  2401              MOVS     r4,#1
-;;;222        {
-;;;223            testb=dat&0x01;
-;;;224            dat=dat>>1;
-;;;225            if (testb) 
-;;;226            {
-;;;227                DS18B20_DQ_OUT_0;// Write 1
+;;;223        {
+;;;224            testb=dat&0x01;
+;;;225            dat=dat>>1;
+;;;226            if (testb) 
+;;;227            {
+;;;228                DS18B20_DQ_OUT_0;// Write 1
 00000c  4f12              LDR      r7,|L8.88|
 00000e  02a6              LSLS     r6,r4,#10
                   |L8.16|
-000010  f0150f01          TST      r5,#1                 ;223
-000014  ea4f0555          LSR      r5,r5,#1              ;224
-;;;228                Delay_usS(5);                            
-;;;229                DS18B20_DQ_OUT_1;
-;;;230                Delay_usS(150);             
-;;;231            }
-;;;232            else 
-;;;233            {
-;;;234                DS18B20_DQ_OUT_0;// Write 0
+000010  f0150f01          TST      r5,#1                 ;224
+000014  ea4f0555          LSR      r5,r5,#1              ;225
+;;;229                Delay_usS(5);                            
+;;;230                DS18B20_DQ_OUT_1;
+;;;231                Delay_usS(150);             
+;;;232            }
+;;;233            else 
+;;;234            {
+;;;235                DS18B20_DQ_OUT_0;// Write 0
 000018  4631              MOV      r1,r6
 00001a  4638              MOV      r0,r7
 00001c  d00a              BEQ      |L8.52|
 00001e  f7fffffe          BL       GPIO_ResetBits
-000022  2005              MOVS     r0,#5                 ;228
+000022  2005              MOVS     r0,#5                 ;229
 000024  f7fffffe          BL       Delay_usS
-000028  4631              MOV      r1,r6                 ;229
-00002a  4638              MOV      r0,r7                 ;229
+000028  4631              MOV      r1,r6                 ;230
+00002a  4638              MOV      r0,r7                 ;230
 00002c  f7fffffe          BL       GPIO_SetBits
-000030  2096              MOVS     r0,#0x96              ;230
+000030  2096              MOVS     r0,#0x96              ;231
 000032  e009              B        |L8.72|
                   |L8.52|
 000034  f7fffffe          BL       GPIO_ResetBits
-;;;235                Delay_usS(150);             
+;;;236                Delay_usS(150);             
 000038  2096              MOVS     r0,#0x96
 00003a  f7fffffe          BL       Delay_usS
-;;;236                DS18B20_DQ_OUT_1;
+;;;237                DS18B20_DQ_OUT_1;
 00003e  4631              MOV      r1,r6
 000040  4638              MOV      r0,r7
 000042  f7fffffe          BL       GPIO_SetBits
-;;;237                Delay_usS(5);                          
+;;;238                Delay_usS(5);                          
 000046  2005              MOVS     r0,#5
                   |L8.72|
 000048  f7fffffe          BL       Delay_usS
 00004c  1c64              ADDS     r4,r4,#1
-00004e  b2e4              UXTB     r4,r4                 ;221
-000050  2c08              CMP      r4,#8                 ;221
+00004e  b2e4              UXTB     r4,r4                 ;222
+000050  2c08              CMP      r4,#8                 ;222
 000052  d9dd              BLS      |L8.16|
-;;;238            }
-;;;239        }
-;;;240    }
+;;;239            }
+;;;240        }
+;;;241    }
 000054  e8bd81f0          POP      {r4-r8,pc}
-;;;241    
+;;;242    
                           ENDP
 
                   |L8.88|
@@ -417,219 +417,219 @@
                           AREA ||i.JumpBoot||, CODE, READONLY, ALIGN=2
 
                   JumpBoot PROC
-;;;294    
-;;;295    void JumpBoot(u8 flag)
+;;;295    
+;;;296    void JumpBoot(u8 flag)
 000000  e92d41f0          PUSH     {r4-r8,lr}
-;;;296    {
-;;;297      	void (*pUserApp)(void);
-;;;298      uint32_t JumpAddress;
-;;;299    	if(flag==55)
+;;;297    {
+;;;298      	void (*pUserApp)(void);
+;;;299      uint32_t JumpAddress;
+;;;300    	if(flag==55)
 000004  2837              CMP      r0,#0x37
 000006  d17d              BNE      |L9.260|
-;;;300      {		
-;;;301    	__asm("CPSID  I");
-;;;302            
-;;;303    		JumpAddress = *(volatile uint32_t*) (0x08000000+4);
+;;;301      {		
+;;;302    	__asm("CPSID  I");
+;;;303            
+;;;304    		JumpAddress = *(volatile uint32_t*) (0x08000000+4);
 000008  f04f6500          MOV      r5,#0x8000000
-00000c  b672              CPSID    i                     ;301
+00000c  b672              CPSID    i                     ;302
 00000e  686c              LDR      r4,[r5,#4]
-;;;304    		pUserApp = (void (*)(void)) JumpAddress;
-;;;305    		TIM_Cmd(TIM1, DISABLE);	
+;;;305    		pUserApp = (void (*)(void)) JumpAddress;
+;;;306    		TIM_Cmd(TIM1, DISABLE);	
 000010  4e5c              LDR      r6,|L9.388|
 000012  2100              MOVS     r1,#0
 000014  4630              MOV      r0,r6
 000016  f7fffffe          BL       TIM_Cmd
-;;;306    		TIM_DeInit(TIM1);
+;;;307    		TIM_DeInit(TIM1);
 00001a  4630              MOV      r0,r6
 00001c  f7fffffe          BL       TIM_DeInit
-;;;307    		TIM_ITConfig(TIM1,TIM_IT_Update,DISABLE);
+;;;308    		TIM_ITConfig(TIM1,TIM_IT_Update,DISABLE);
 000020  2200              MOVS     r2,#0
 000022  2101              MOVS     r1,#1
 000024  4630              MOV      r0,r6
 000026  f7fffffe          BL       TIM_ITConfig
-;;;308    		TIM_Cmd(TIM2, DISABLE);	
+;;;309    		TIM_Cmd(TIM2, DISABLE);	
 00002a  00ee              LSLS     r6,r5,#3
 00002c  2100              MOVS     r1,#0
 00002e  4630              MOV      r0,r6
 000030  f7fffffe          BL       TIM_Cmd
-;;;309    		TIM_DeInit(TIM2);
+;;;310    		TIM_DeInit(TIM2);
 000034  4630              MOV      r0,r6
 000036  f7fffffe          BL       TIM_DeInit
-;;;310    		TIM_ITConfig(TIM2,TIM_IT_Update,DISABLE);
+;;;311    		TIM_ITConfig(TIM2,TIM_IT_Update,DISABLE);
 00003a  2200              MOVS     r2,#0
 00003c  2101              MOVS     r1,#1
 00003e  4630              MOV      r0,r6
 000040  f7fffffe          BL       TIM_ITConfig
-;;;311    		TIM_Cmd(TIM3, DISABLE);	
+;;;312    		TIM_Cmd(TIM3, DISABLE);	
 000044  4e50              LDR      r6,|L9.392|
 000046  2100              MOVS     r1,#0
 000048  4630              MOV      r0,r6
 00004a  f7fffffe          BL       TIM_Cmd
-;;;312    		TIM_DeInit(TIM3);
+;;;313    		TIM_DeInit(TIM3);
 00004e  4630              MOV      r0,r6
 000050  f7fffffe          BL       TIM_DeInit
-;;;313    		TIM_ITConfig(TIM3,TIM_IT_Update,DISABLE);
+;;;314    		TIM_ITConfig(TIM3,TIM_IT_Update,DISABLE);
 000054  2200              MOVS     r2,#0
 000056  2101              MOVS     r1,#1
 000058  4630              MOV      r0,r6
 00005a  f7fffffe          BL       TIM_ITConfig
-;;;314    		TIM_Cmd(TIM4,DISABLE);
+;;;315    		TIM_Cmd(TIM4,DISABLE);
 00005e  4e4b              LDR      r6,|L9.396|
 000060  2100              MOVS     r1,#0
 000062  4630              MOV      r0,r6
 000064  f7fffffe          BL       TIM_Cmd
-;;;315    		TIM_DeInit(TIM4);
+;;;316    		TIM_DeInit(TIM4);
 000068  4630              MOV      r0,r6
 00006a  f7fffffe          BL       TIM_DeInit
-;;;316    		TIM_ITConfig(TIM4,TIM_IT_Update,DISABLE);
+;;;317    		TIM_ITConfig(TIM4,TIM_IT_Update,DISABLE);
 00006e  2200              MOVS     r2,#0
 000070  2101              MOVS     r1,#1
 000072  4630              MOV      r0,r6
 000074  f7fffffe          BL       TIM_ITConfig
-;;;317    	    TIM_Cmd(TIM5,DISABLE);
+;;;318    	    TIM_Cmd(TIM5,DISABLE);
 000078  4e45              LDR      r6,|L9.400|
 00007a  2100              MOVS     r1,#0
 00007c  4630              MOV      r0,r6
 00007e  f7fffffe          BL       TIM_Cmd
-;;;318    		TIM_DeInit(TIM5);
+;;;319    		TIM_DeInit(TIM5);
 000082  4630              MOV      r0,r6
 000084  f7fffffe          BL       TIM_DeInit
-;;;319    		TIM_ITConfig(TIM5,TIM_IT_Update,DISABLE);
+;;;320    		TIM_ITConfig(TIM5,TIM_IT_Update,DISABLE);
 000088  2200              MOVS     r2,#0
 00008a  2101              MOVS     r1,#1
 00008c  4630              MOV      r0,r6
 00008e  f7fffffe          BL       TIM_ITConfig
-;;;320    		TIM_Cmd(TIM6, DISABLE);	
+;;;321    		TIM_Cmd(TIM6, DISABLE);	
 000092  4e40              LDR      r6,|L9.404|
 000094  2100              MOVS     r1,#0
 000096  4630              MOV      r0,r6
 000098  f7fffffe          BL       TIM_Cmd
-;;;321    	    TIM_DeInit(TIM6);
+;;;322    	    TIM_DeInit(TIM6);
 00009c  4630              MOV      r0,r6
 00009e  f7fffffe          BL       TIM_DeInit
-;;;322    		TIM_ITConfig(TIM6,TIM_IT_Update,DISABLE);
+;;;323    		TIM_ITConfig(TIM6,TIM_IT_Update,DISABLE);
 0000a2  2200              MOVS     r2,#0
 0000a4  2101              MOVS     r1,#1
 0000a6  4630              MOV      r0,r6
 0000a8  f7fffffe          BL       TIM_ITConfig
-;;;323    		USART_DeInit(USART1);
+;;;324    		USART_DeInit(USART1);
 0000ac  4e3a              LDR      r6,|L9.408|
 0000ae  4630              MOV      r0,r6
 0000b0  f7fffffe          BL       USART_DeInit
-;;;324    		USART_ITConfig(USART1, USART_IT_RXNE, DISABLE);		
+;;;325    		USART_ITConfig(USART1, USART_IT_RXNE, DISABLE);		
 0000b4  f2405725          MOV      r7,#0x525
 0000b8  2200              MOVS     r2,#0
 0000ba  4639              MOV      r1,r7
 0000bc  4630              MOV      r0,r6
 0000be  f7fffffe          BL       USART_ITConfig
-;;;325    		USART_Cmd(USART1,DISABLE);
+;;;326    		USART_Cmd(USART1,DISABLE);
 0000c2  2100              MOVS     r1,#0
 0000c4  4630              MOV      r0,r6
 0000c6  f7fffffe          BL       USART_Cmd
-;;;326    		USART_DeInit(USART2);
+;;;327    		USART_DeInit(USART2);
 0000ca  4e34              LDR      r6,|L9.412|
 0000cc  4630              MOV      r0,r6
 0000ce  f7fffffe          BL       USART_DeInit
-;;;327    		USART_ITConfig(USART2, USART_IT_RXNE, DISABLE);		
+;;;328    		USART_ITConfig(USART2, USART_IT_RXNE, DISABLE);		
 0000d2  2200              MOVS     r2,#0
 0000d4  4639              MOV      r1,r7
 0000d6  4630              MOV      r0,r6
 0000d8  f7fffffe          BL       USART_ITConfig
-;;;328    		USART_Cmd(USART2,DISABLE);
+;;;329    		USART_Cmd(USART2,DISABLE);
 0000dc  2100              MOVS     r1,#0
 0000de  4630              MOV      r0,r6
 0000e0  f7fffffe          BL       USART_Cmd
-;;;329    	    USART_DeInit(USART3);
+;;;330    	    USART_DeInit(USART3);
 0000e4  4e2e              LDR      r6,|L9.416|
 0000e6  4630              MOV      r0,r6
 0000e8  f7fffffe          BL       USART_DeInit
-;;;330    		USART_ITConfig(USART3, USART_IT_RXNE, DISABLE);		
+;;;331    		USART_ITConfig(USART3, USART_IT_RXNE, DISABLE);		
 0000ec  2200              MOVS     r2,#0
 0000ee  4639              MOV      r1,r7
 0000f0  4630              MOV      r0,r6
 0000f2  f7fffffe          BL       USART_ITConfig
-;;;331    		USART_Cmd(USART3,DISABLE);
+;;;332    		USART_Cmd(USART3,DISABLE);
 0000f6  2100              MOVS     r1,#0
 0000f8  4630              MOV      r0,r6
 0000fa  f7fffffe          BL       USART_Cmd
-;;;332    		RCC_DeInit();
+;;;333    		RCC_DeInit();
 0000fe  f7fffffe          BL       RCC_DeInit
-;;;333    		RCC_RTCCLKCmd(DISABLE);
+;;;334    		RCC_RTCCLKCmd(DISABLE);
 000102  e000              B        |L9.262|
                   |L9.260|
 000104  e03b              B        |L9.382|
                   |L9.262|
 000106  2000              MOVS     r0,#0
 000108  f7fffffe          BL       RCC_RTCCLKCmd
-;;;334    		EXTI_DeInit();
+;;;335    		EXTI_DeInit();
 00010c  f7fffffe          BL       EXTI_DeInit
-;;;335    		SysTick->CTRL = 0;
+;;;336    		SysTick->CTRL = 0;
 000110  f04f20e0          MOV      r0,#0xe000e000
 000114  2600              MOVS     r6,#0
 000116  6106              STR      r6,[r0,#0x10]
-;;;336    		RTC_DeInit();
+;;;337    		RTC_DeInit();
 000118  f7fffffe          BL       RTC_DeInit
-;;;337    		RTC_ITConfig(RTC_IT_WUT,DISABLE);//关闭WAKE UP 定时器中断
+;;;338    		RTC_ITConfig(RTC_IT_WUT,DISABLE);//关闭WAKE UP 定时器中断
 00011c  2100              MOVS     r1,#0
 00011e  1368              ASRS     r0,r5,#13
 000120  f7fffffe          BL       RTC_ITConfig
-;;;338    		RTC_WakeUpCmd( DISABLE);//关闭WAKE UP 定时器　
+;;;339    		RTC_WakeUpCmd( DISABLE);//关闭WAKE UP 定时器　
 000124  2000              MOVS     r0,#0
 000126  f7fffffe          BL       RTC_WakeUpCmd
-;;;339    		__disable_irq();
+;;;340    		__disable_irq();
 00012a  b672              CPSID    i
-;;;340    		NVIC_DisableIRQ(OTG_FS_IRQn);
+;;;341    		NVIC_DisableIRQ(OTG_FS_IRQn);
 00012c  2043              MOVS     r0,#0x43
 00012e  f7fffffe          BL       NVIC_DisableIRQ
-;;;341    		NVIC_DisableIRQ(OTG_FS_WKUP_IRQn);
+;;;342    		NVIC_DisableIRQ(OTG_FS_WKUP_IRQn);
 000132  202a              MOVS     r0,#0x2a
 000134  f7fffffe          BL       NVIC_DisableIRQ
-;;;342    		NVIC_DisableIRQ(OTG_HS_IRQn);
+;;;343    		NVIC_DisableIRQ(OTG_HS_IRQn);
 000138  204d              MOVS     r0,#0x4d
 00013a  f7fffffe          BL       NVIC_DisableIRQ
-;;;343    		NVIC_DisableIRQ(OTG_HS_WKUP_IRQn);
+;;;344    		NVIC_DisableIRQ(OTG_HS_WKUP_IRQn);
 00013e  204c              MOVS     r0,#0x4c
 000140  f7fffffe          BL       NVIC_DisableIRQ
-;;;344    		ADC_DeInit();
+;;;345    		ADC_DeInit();
 000144  f7fffffe          BL       ADC_DeInit
-;;;345    		DMA_Cmd(DMA2_Stream0, DISABLE);
+;;;346    		DMA_Cmd(DMA2_Stream0, DISABLE);
 000148  4f16              LDR      r7,|L9.420|
 00014a  2100              MOVS     r1,#0
 00014c  4638              MOV      r0,r7
 00014e  f7fffffe          BL       DMA_Cmd
-;;;346    		DMA_ITConfig(DMA2_Stream0,DMA_IT_TC,DISABLE);
+;;;347    		DMA_ITConfig(DMA2_Stream0,DMA_IT_TC,DISABLE);
 000152  2200              MOVS     r2,#0
 000154  2110              MOVS     r1,#0x10
 000156  4638              MOV      r0,r7
 000158  f7fffffe          BL       DMA_ITConfig
-;;;347    		ADC_DMACmd(ADC1, DISABLE);  //使能DMA
+;;;348    		ADC_DMACmd(ADC1, DISABLE);  //使能DMA
 00015c  2100              MOVS     r1,#0
 00015e  4812              LDR      r0,|L9.424|
 000160  f7fffffe          BL       ADC_DMACmd
-;;;348    		__ASM volatile ("cpsid i");
+;;;349    		__ASM volatile ("cpsid i");
 000164  b672              CPSID    i
-;;;349    		/* Initialize user application's Stack Pointer */
-;;;350    		__set_PSP(*(volatile uint32_t*) 0x08000000);
+;;;350    		/* Initialize user application's Stack Pointer */
+;;;351    		__set_PSP(*(volatile uint32_t*) 0x08000000);
 000166  6828              LDR      r0,[r5,#0]
 000168  f3808809          MSR      PSP,r0
 00016c  f3868814          MSR      CONTROL,r6
-;;;351    		__set_CONTROL(0);
-;;;352    		__set_MSP(*(volatile uint32_t*) 0x08000000);
+;;;352    		__set_CONTROL(0);
+;;;353    		__set_MSP(*(volatile uint32_t*) 0x08000000);
 000170  6828              LDR      r0,[r5,#0]
 000172  f3808808          MSR      MSP,r0
-;;;353    		
-;;;354            
-;;;355    		
-;;;356    //		NVIC_SystemReset();
-;;;357    		pUserApp();
+;;;354    		
+;;;355            
+;;;356    		
+;;;357    //		NVIC_SystemReset();
+;;;358    		pUserApp();
 000176  46a4              MOV      r12,r4
 000178  e8bd41f0          POP      {r4-r8,lr}
 00017c  4760              BX       r12
                   |L9.382|
-;;;358    	}
-;;;359    }
+;;;359    	}
+;;;360    }
 00017e  e8bd81f0          POP      {r4-r8,pc}
-;;;360    
+;;;361    
                           ENDP
 
 000182  0000              DCW      0x0000
@@ -677,444 +677,530 @@
                           AREA ||i.Off_GPOI_ResetSet||, CODE, READONLY, ALIGN=2
 
                   Off_GPOI_ResetSet PROC
-;;;281    //关闭所有 -- 使用的
-;;;282    void Off_GPOI_ResetSet(){
+;;;282    //关闭所有 -- 使用的
+;;;283    void Off_GPOI_ResetSet(){
 000000  b510              PUSH     {r4,lr}
-;;;283    	
-;;;284    	POWER_RECHARGE = 0;						
+;;;284    	
+;;;285    	POWER_RECHARGE = 0;						
 000002  4c06              LDR      r4,|L11.28|
 000004  2000              MOVS     r0,#0
 000006  7060              STRB     r0,[r4,#1]
-;;;285    	C_DISCHARGE = 0;							
+;;;286    	C_DISCHARGE = 0;							
 000008  70a0              STRB     r0,[r4,#2]
-;;;286    	OnOff_GPOI_ResetSet( 0,	POWER_RECHARGE );
+;;;287    	OnOff_GPOI_ResetSet( 0,	POWER_RECHARGE );
 00000a  7861              LDRB     r1,[r4,#1]  ; POWER_RECHARGE
 00000c  f7fffffe          BL       OnOff_GPOI_ResetSet
-;;;287    	OnOff_GPOI_ResetSet( 2, C_DISCHARGE );
+;;;288    	OnOff_GPOI_ResetSet( 2, C_DISCHARGE );
 000010  78a1              LDRB     r1,[r4,#2]  ; C_DISCHARGE
 000012  e8bd4010          POP      {r4,lr}
 000016  2002              MOVS     r0,#2
 000018  f7ffbffe          B.W      OnOff_GPOI_ResetSet
-;;;288    }
-;;;289    
+;;;289    }
+;;;290    
                           ENDP
 
                   |L11.28|
-                          DCD      ||area_number.24||
+                          DCD      ||area_number.25||
 
                           AREA ||i.OnOff_GPOI_ResetSet||, CODE, READONLY, ALIGN=2
 
                   OnOff_GPOI_ResetSet PROC
-;;;63     //根据页面
-;;;64     void OnOff_GPOI_ResetSet( vu8 _type, vu8 _value ){
+;;;64     //根据页面
+;;;65     void OnOff_GPOI_ResetSet( vu8 _type, vu8 _value ){
 000000  b403              PUSH     {r0,r1}
-;;;65     	
-;;;66     	switch( _type ){
+;;;66     	
+;;;67     	switch( _type ){
 000002  f89d0000          LDRB     r0,[sp,#0]
-000006  2800              CMP      r0,#0                 ;64
+000006  2800              CMP      r0,#0                 ;65
 000008  d019              BEQ      |L12.62|
 00000a  2802              CMP      r0,#2
 00000c  d117              BNE      |L12.62|
-;;;67     		
-;;;68     //		case 1024:   
-;;;69     //			if( _value == 0 ){
-;;;70     //					
-;;;71     //				flag_Load_CC = 1;//CC模式
-;;;72     //				GPIO_ResetBits(GPIOC,GPIO_Pin_12);   //CC		
-;;;73     //			}
-;;;74     //			else if( _value == 1 ){
-;;;75     //					
-;;;76     //				flag_Load_CC=0;//CV模式
-;;;77     //				GPIO_SetBits(GPIOC,GPIO_Pin_12);   //CV
-;;;78     //			}
-;;;79     //		break;
-;;;80     		
-;;;81     		case 2:  //电子负载ON/OFF
-;;;82     			if( _value == 0 ){
+;;;68     		
+;;;69     //		case 1024:   
+;;;70     //			if( _value == 0 ){
+;;;71     //					
+;;;72     //				flag_Load_CC = 1;//CC模式
+;;;73     //				GPIO_ResetBits(GPIOC,GPIO_Pin_12);   //CC		
+;;;74     //			}
+;;;75     //			else if( _value == 1 ){
+;;;76     //					
+;;;77     //				flag_Load_CC=0;//CV模式
+;;;78     //				GPIO_SetBits(GPIOC,GPIO_Pin_12);   //CV
+;;;79     //			}
+;;;80     //		break;
+;;;81     		
+;;;82     		case 2:  //电子负载ON/OFF
+;;;83     			if( _value == 0 ){
 00000e  f89d3004          LDRB     r3,[sp,#4]
-;;;83     				
-;;;84     				Flag_Swtich_ON = 0;
+;;;84     				
+;;;85     				Flag_Swtich_ON = 0;
 000012  490c              LDR      r1,|L12.68|
-;;;85     				GPIO_SetBits(GPIOC,GPIO_Pin_7);//OFF	  	
+;;;86     				GPIO_SetBits(GPIOC,GPIO_Pin_7);//OFF	  	
 000014  480c              LDR      r0,|L12.72|
-000016  680a              LDR      r2,[r1,#0]            ;82
+000016  680a              LDR      r2,[r1,#0]            ;83
 000018  b153              CBZ      r3,|L12.48|
-;;;86     			}
-;;;87     			else if( _value == 1 ){
+;;;87     			}
+;;;88     			else if( _value == 1 ){
 00001a  f89d3004          LDRB     r3,[sp,#4]
 00001e  2b01              CMP      r3,#1
 000020  d10d              BNE      |L12.62|
-;;;88     				
-;;;89     				Flag_Swtich_ON = 1;
+;;;89     				
+;;;90     				Flag_Swtich_ON = 1;
 000022  f0420240          ORR      r2,r2,#0x40
-;;;90     				GPIO_ResetBits(GPIOC,GPIO_Pin_7);//On
+;;;91     				GPIO_ResetBits(GPIOC,GPIO_Pin_7);//On
 000026  600a              STR      r2,[r1,#0]  ; flagA
 000028  2180              MOVS     r1,#0x80
 00002a  b002              ADD      sp,sp,#8
 00002c  f7ffbffe          B.W      GPIO_ResetBits
                   |L12.48|
-000030  f0220240          BIC      r2,r2,#0x40           ;84
-000034  600a              STR      r2,[r1,#0]            ;85  ; flagA
-000036  2180              MOVS     r1,#0x80              ;85
-000038  b002              ADD      sp,sp,#8              ;85
+000030  f0220240          BIC      r2,r2,#0x40           ;85
+000034  600a              STR      r2,[r1,#0]            ;86  ; flagA
+000036  2180              MOVS     r1,#0x80              ;86
+000038  b002              ADD      sp,sp,#8              ;86
 00003a  f7ffbffe          B.W      GPIO_SetBits
                   |L12.62|
-;;;91     			}
-;;;92     		break;
-;;;93     		
-;;;94     		case 0:  //稳压电源ON/OFF
-;;;95     		
-;;;96     //			if( _value == 0 ){
-;;;97     //				
-;;;98     //				GPIO_ResetBits(GPIOC,GPIO_Pin_1); //关闭电源输出+
-;;;99     //				Para.CSET_Voltage = 0;
-;;;100    //				Para.CSET_Current = 0;
-;;;101    //				GPIO_ResetBits(GPIOE,GPIO_Pin_2); //关闭电源输出继电器
-;;;102    //			}
-;;;103    //			else if( _value == 1 ){
-;;;104    //				
-;;;105    //				GPIO_SetBits(GPIOE,GPIO_Pin_2);   //打开电源输出继电器
-;;;106    //				GPIO_SetBits(GPIOC,GPIO_Pin_1);   //打开电源输出
-;;;107    //			}
-;;;108    		break;
-;;;109    		
-;;;110    	}
-;;;111    	
-;;;112    }
+;;;92     			}
+;;;93     		break;
+;;;94     		
+;;;95     		case 0:  //稳压电源ON/OFF
+;;;96     		
+;;;97     //			if( _value == 0 ){
+;;;98     //				
+;;;99     //				GPIO_ResetBits(GPIOC,GPIO_Pin_1); //关闭电源输出+
+;;;100    //				Para.CSET_Voltage = 0;
+;;;101    //				Para.CSET_Current = 0;
+;;;102    //				GPIO_ResetBits(GPIOE,GPIO_Pin_2); //关闭电源输出继电器
+;;;103    //			}
+;;;104    //			else if( _value == 1 ){
+;;;105    //				
+;;;106    //				GPIO_SetBits(GPIOE,GPIO_Pin_2);   //打开电源输出继电器
+;;;107    //				GPIO_SetBits(GPIOC,GPIO_Pin_1);   //打开电源输出
+;;;108    //			}
+;;;109    		break;
+;;;110    		
+;;;111    	}
+;;;112    	
+;;;113    }
 00003e  b002              ADD      sp,sp,#8
 000040  4770              BX       lr
-;;;113    
+;;;114    
                           ENDP
 
 000042  0000              DCW      0x0000
                   |L12.68|
-                          DCD      ||area_number.24||+0x8
+                          DCD      ||area_number.25||+0x8
                   |L12.72|
                           DCD      0x40020800
 
                           AREA ||i.PLimit||, CODE, READONLY, ALIGN=1
 
                   PLimit PROC
-;;;289    
-;;;290    void PLimit(void)
+;;;290    
+;;;291    void PLimit(void)
 000000  4770              BX       lr
-;;;291    {
-;;;292    	
-;;;293    }
-;;;294    
+;;;292    {
+;;;293    	
+;;;294    }
+;;;295    
                           ENDP
 
+
+                          AREA ||i.SetPowerHandle||, CODE, READONLY, ALIGN=2
+
+                  SetPowerHandle PROC
+;;;361    
+;;;362    void SetPowerHandle(void)
+000000  b510              PUSH     {r4,lr}
+;;;363    {
+;;;364    	if(sendwait == 3)
+000002  4c11              LDR      r4,|L14.72|
+000004  7820              LDRB     r0,[r4,#0]  ; sendwait
+000006  2803              CMP      r0,#3
+000008  d101              BNE      |L14.14|
+;;;365    	{
+;;;366    		SetPowerModeS();
+00000a  f7fffffe          BL       SetPowerModeS
+                  |L14.14|
+;;;367    	}
+;;;368    	if(sendwait == 2)
+00000e  7820              LDRB     r0,[r4,#0]  ; sendwait
+000010  2802              CMP      r0,#2
+000012  d101              BNE      |L14.24|
+;;;369    	{
+;;;370    		SetPowerModeC();
+000014  f7fffffe          BL       SetPowerModeC
+                  |L14.24|
+;;;371    	}
+;;;372    	if(sendwait == 1)
+000018  7820              LDRB     r0,[r4,#0]  ; sendwait
+00001a  2801              CMP      r0,#1
+00001c  d101              BNE      |L14.34|
+;;;373    	{
+;;;374    		SetPowerModeV();
+00001e  f7fffffe          BL       SetPowerModeV
+                  |L14.34|
+;;;375    	}
+;;;376    	if(listsend == 3)
+000022  4c0a              LDR      r4,|L14.76|
+000024  7820              LDRB     r0,[r4,#0]  ; listsend
+000026  2803              CMP      r0,#3
+000028  d101              BNE      |L14.46|
+;;;377    	{
+;;;378    		SetListPS();
+00002a  f7fffffe          BL       SetListPS
+                  |L14.46|
+;;;379    	}
+;;;380    	if(listsend == 2)
+00002e  7820              LDRB     r0,[r4,#0]  ; listsend
+000030  2802              CMP      r0,#2
+000032  d101              BNE      |L14.56|
+;;;381    	{
+;;;382    		SetListPC();
+000034  f7fffffe          BL       SetListPC
+                  |L14.56|
+;;;383    	}
+;;;384    	if(listsend == 1)
+000038  7820              LDRB     r0,[r4,#0]  ; listsend
+00003a  2801              CMP      r0,#1
+00003c  d103              BNE      |L14.70|
+;;;385    	{
+;;;386    		SetListPV();
+00003e  e8bd4010          POP      {r4,lr}
+000042  f7ffbffe          B.W      SetListPV
+                  |L14.70|
+;;;387    	}
+;;;388    }
+000046  bd10              POP      {r4,pc}
+;;;389    
+                          ENDP
+
+                  |L14.72|
+                          DCD      sendwait
+                  |L14.76|
+                          DCD      listsend
 
                           AREA ||i.delay||, CODE, READONLY, ALIGN=1
 
                   delay PROC
-;;;113    
-;;;114    void delay(vu32 i)
+;;;114    
+;;;115    void delay(vu32 i)
 000000  b501              PUSH     {r0,lr}
-                  |L14.2|
-;;;115    {
-;;;116    	do
-;;;117    	{
-;;;118    	__NOP();				/*????,??????,??????,?????intrins.h?,????????????.h??*/
+                  |L15.2|
+;;;116    {
+;;;117    	do
+;;;118    	{
+;;;119    	__NOP();				/*????,??????,??????,?????intrins.h?,????????????.h??*/
 000002  bf00              NOP      
-;;;119    	__NOP();
-000004  bf00              NOP      
 ;;;120    	__NOP();
+000004  bf00              NOP      
+;;;121    	__NOP();
 000006  bf00              NOP      
-;;;121    	i--;
+;;;122    	i--;
 000008  9800              LDR      r0,[sp,#0]
 00000a  1e40              SUBS     r0,r0,#1
-;;;122    	}while(i*28);
+;;;123    	}while(i*28);
 00000c  9000              STR      r0,[sp,#0]
 00000e  ebc000c0          RSB      r0,r0,r0,LSL #3
 000012  0080              LSLS     r0,r0,#2
-000014  d1f5              BNE      |L14.2|
-;;;123    }
+000014  d1f5              BNE      |L15.2|
+;;;124    }
 000016  bd08              POP      {r3,pc}
-;;;124    
+;;;125    
                           ENDP
 
 
                           AREA ||i.main||, CODE, READONLY, ALIGN=2
 
                   main PROC
-;;;361    
-;;;362    int main(void)
+;;;389    
+;;;390    int main(void)
 000000  f44f3100          MOV      r1,#0x20000
-;;;363    {
-;;;364    		u8 i;
-;;;365    	 int t=0;
-;;;366    	u8 ret;
-;;;367    	u16 len;	
-;;;368    	u8 datatemp[30];
-;;;369    	u8 len1 =0;
-;;;370    		
-;;;371     	NVIC_SetVectorTable(NVIC_VectTab_FLASH, 0x20000);
+;;;391    {
+;;;392    		u8 i;
+;;;393    	 int t=0;
+;;;394    	u8 ret;
+;;;395    	u16 len;	
+;;;396    	u8 datatemp[30];
+;;;397    	u8 len1 =0;
+;;;398    		
+;;;399     	NVIC_SetVectorTable(NVIC_VectTab_FLASH, 0x20000);
 000004  0288              LSLS     r0,r1,#10
 000006  f7fffffe          BL       NVIC_SetVectorTable
-;;;372    	__enable_irq();
+;;;400    	__enable_irq();
 00000a  b662              CPSIE    i
-;;;373    	
-;;;374    	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_CRC, ENABLE);//开启CRC时钟，STEMWIN授权使用
+;;;401    	
+;;;402    	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_CRC, ENABLE);//开启CRC时钟，STEMWIN授权使用
 00000c  2101              MOVS     r1,#1
 00000e  0308              LSLS     r0,r1,#12
 000010  f7fffffe          BL       RCC_AHB1PeriphClockCmd
-;;;375    	RCC_Configuration();
+;;;403    	RCC_Configuration();
 000014  f7fffffe          BL       RCC_Configuration
-;;;376    	SysTick_Init();
+;;;404    	SysTick_Init();
 000018  f7fffffe          BL       SysTick_Init
-;;;377    	GPIO_Conf();
+;;;405    	GPIO_Conf();
 00001c  f7fffffe          BL       GPIO_Conf
-;;;378    
-;;;379        abc_time = 0;
-000020  4856              LDR      r0,|L15.380|
+;;;406    
+;;;407        abc_time = 0;
+000020  485a              LDR      r0,|L16.396|
 000022  f04f0800          MOV      r8,#0
 000026  4644              MOV      r4,r8
 000028  f8c08000          STR      r8,[r0,#0]  ; abc_time
-;;;380        ms_time = 0;
-00002c  4854              LDR      r0,|L15.384|
+;;;408        ms_time = 0;
+00002c  4858              LDR      r0,|L16.400|
 00002e  f8c08000          STR      r8,[r0,#0]  ; ms_time
-;;;381    
-;;;382    	TIM1_PWM_Config();
+;;;409    
+;;;410    	TIM1_PWM_Config();
 000032  f7fffffe          BL       TIM1_PWM_Config
-;;;383    	TIM4_PWM_Config();
+;;;411    	TIM4_PWM_Config();
 000036  f7fffffe          BL       TIM4_PWM_Config
-;;;384    	TIM3_Int_Init(10-1,8400-1);
+;;;412    	TIM3_Int_Init(10-1,8400-1);
 00003a  f24205cf          MOV      r5,#0x20cf
 00003e  4629              MOV      r1,r5
 000040  2009              MOVS     r0,#9
 000042  f7fffffe          BL       TIM3_Int_Init
-;;;385    //	TIM3_Int_Init(1,8400-1);
-;;;386    	TIM5_Int_Init(90-1,8400-1);
+;;;413    //	TIM3_Int_Init(1,8400-1);
+;;;414    	TIM5_Int_Init(90-1,8400-1);
 000046  4629              MOV      r1,r5
 000048  2059              MOVS     r0,#0x59
 00004a  f7fffffe          BL       TIM5_Int_Init
-;;;387    	TIM6_Config();
+;;;415    	TIM6_Config();
 00004e  f7fffffe          BL       TIM6_Config
-;;;388    	ADC1_DMA_Init();
+;;;416    	ADC1_DMA_Init();
 000052  f7fffffe          BL       ADC1_DMA_Init
-;;;389    	USART_Configuration();
+;;;417    	USART_Configuration();
 000056  f7fffffe          BL       USART_Configuration
-;;;390    	USART2_Configuration();
+;;;418    	USART2_Configuration();
 00005a  f7fffffe          BL       USART2_Configuration
-;;;391    	USART3_Configuration();
+;;;419    	USART3_Configuration();
 00005e  f7fffffe          BL       USART3_Configuration
-;;;392    	i2c_CfgGpio();//24C01引脚初始化
+;;;420    	i2c_CfgGpio();//24C01引脚初始化
 000062  f7fffffe          BL       i2c_CfgGpio
-;;;393    	TM1650_GPIO_INT();		/*TM1650引脚初始化 */
+;;;421    	TM1650_GPIO_INT();		/*TM1650引脚初始化 */
 000066  f7fffffe          BL       TM1650_GPIO_INT
-;;;394    	AD5541_GPIOCoing();//DAC初始化
+;;;422    	AD5541_GPIOCoing();//DAC初始化
 00006a  f7fffffe          BL       AD5541_GPIOCoing
-;;;395    	AD7689_InitializeSPI1();//AD7689初始化
+;;;423    	AD7689_InitializeSPI1();//AD7689初始化
 00006e  f7fffffe          BL       AD7689_InitializeSPI1
-;;;396    //	LCD_Initializtion();//液晶屏初始化
-;;;397    	//EEPROM_READ_Coeff();//读取校准参数
-;;;398    	RCONT_SW = 0;
-000072  4d44              LDR      r5,|L15.388|
+;;;424    //	LCD_Initializtion();//液晶屏初始化
+;;;425    	//EEPROM_READ_Coeff();//读取校准参数
+;;;426    	RCONT_SW = 0;
+000072  4d48              LDR      r5,|L16.404|
 000074  626c              STR      r4,[r5,#0x24]  ; Run_Control
-;;;399    	Read_Flash_Bytes();
+;;;427    	Read_Flash_Bytes();
 000076  f7fffffe          BL       Read_Flash_Bytes
-;;;400    	Read_Boot_Flag();
+;;;428    	Read_Boot_Flag();
 00007a  f7fffffe          BL       Read_Boot_Flag
-;;;401    	Off_GPOI_ResetSet();
+;;;429    	Off_GPOI_ResetSet();
 00007e  f7fffffe          BL       Off_GPOI_ResetSet
-;;;402    	LOAD_MODE = 0;//负载CC模式
+;;;430    	LOAD_MODE = 0;//负载CC模式
 000082  61ac              STR      r4,[r5,#0x18]  ; Run_Control
-;;;403    	LOAD_V_SW = 0;
+;;;431    	LOAD_V_SW = 0;
 000084  61ec              STR      r4,[r5,#0x1c]  ; Run_Control
-;;;404    	LOAD_I_SW = 0;
+;;;432    	LOAD_I_SW = 0;
 000086  622c              STR      r4,[r5,#0x20]  ; Run_Control
-;;;405    	Flag_Swtich_ON = 0;
-000088  f8dfa0fc          LDR      r10,|L15.392|
-;;;406    	flag_CC_MODE = 1;
+;;;433    	Flag_Swtich_ON = 0;
+000088  f8dfa10c          LDR      r10,|L16.408|
+;;;434    	flag_CC_MODE = 1;
 00008c  f10a0008          ADD      r0,r10,#8
-000090  f8da1000          LDR      r1,[r10,#0]           ;405  ; flagA
-000094  f0210140          BIC      r1,r1,#0x40           ;405
+000090  f8da1000          LDR      r1,[r10,#0]           ;433  ; flagA
+000094  f0210140          BIC      r1,r1,#0x40           ;433
 000098  f8ca1000          STR      r1,[r10,#0]  ; flagA
 00009c  6801              LDR      r1,[r0,#0]  ; flagE
 00009e  f0410180          ORR      r1,r1,#0x80
-;;;407    	Temperature = Ds18b20Init();
+;;;435    	Temperature = Ds18b20Init();
 0000a2  6001              STR      r1,[r0,#0]  ; flagE
 0000a4  f7fffffe          BL       Ds18b20Init
 0000a8  f1aa0408          SUB      r4,r10,#8
-;;;408    	while(1)
-;;;409    	{
-;;;410    		if(tempflag == 20)
-;;;411    		{
-;;;412    			tempflag = 0;
-;;;413    			Temperature = Ds18b20GetTemp();
-;;;414    		}else{
-;;;415    			tempflag ++;
-;;;416    		}
-;;;417    		if(readpowflag > 200 && sendwait == 0 && listsend == 0/* && mainswitch == 1*/)
-;;;418    		{
-;;;419    			ReadPowData();
-;;;420    			readpowflag = 0;
-;;;421    		}
-;;;422    //		PLimit();//功率限制保护
-;;;423    		if(USART_RX_STA&0x8000)	   //判断是否接收完数据
-;;;424    		{					   
-;;;425    
-;;;426    //			len1=USART_RX_STA&0x3f;
-;;;427    			len1=USART_RX_CNT;
-;;;428    			len = SerialRemoteHandleL(len1,USART_RX_BUF);
-;;;429    			len1 =0;
-;;;430    			for(t=0;t<len;t++)								  //通过长度进行循环
-;;;431    			{
-;;;432    				USART_SendData(USART2, USART_RX_BUF[t]);      //将数组采集好的数据 一次向串口1发送
-0000ac  f8df90dc          LDR      r9,|L15.396|
-0000b0  4f37              LDR      r7,|L15.400|
-0000b2  80e0              STRH     r0,[r4,#6]            ;407
-                  |L15.180|
-0000b4  7920              LDRB     r0,[r4,#4]            ;410  ; tempflag
-0000b6  2814              CMP      r0,#0x14              ;410
-0000b8  d008              BEQ      |L15.204|
-0000ba  1c40              ADDS     r0,r0,#1              ;410
-0000bc  7120              STRB     r0,[r4,#4]            ;415
-                  |L15.190|
-0000be  6960              LDR      r0,[r4,#0x14]         ;417  ; readpowflag
-0000c0  28c8              CMP      r0,#0xc8              ;417
-0000c2  d910              BLS      |L15.230|
-0000c4  4833              LDR      r0,|L15.404|
-0000c6  7800              LDRB     r0,[r0,#0]            ;417  ; sendwait
-0000c8  b130              CBZ      r0,|L15.216|
-0000ca  e00c              B        |L15.230|
-                  |L15.204|
-0000cc  f8848004          STRB     r8,[r4,#4]            ;412
-0000d0  f7fffffe          BL       Ds18b20GetTemp
-0000d4  80e0              STRH     r0,[r4,#6]            ;413
-0000d6  e7f2              B        |L15.190|
-                  |L15.216|
-0000d8  482f              LDR      r0,|L15.408|
-0000da  7800              LDRB     r0,[r0,#0]            ;417  ; listsend
-0000dc  b918              CBNZ     r0,|L15.230|
-0000de  f7fffffe          BL       ReadPowData
-0000e2  f8c48014          STR      r8,[r4,#0x14]         ;420  ; readpowflag
-                  |L15.230|
-0000e6  8838              LDRH     r0,[r7,#0]            ;423  ; USART_RX_STA
-0000e8  0400              LSLS     r0,r0,#16             ;423
-0000ea  d51d              BPL      |L15.296|
-0000ec  482b              LDR      r0,|L15.412|
-0000ee  492c              LDR      r1,|L15.416|
-0000f0  7800              LDRB     r0,[r0,#0]            ;427  ; USART_RX_CNT
-0000f2  f7fffffe          BL       SerialRemoteHandleL
-0000f6  4606              MOV      r6,r0                 ;428
-0000f8  2500              MOVS     r5,#0                 ;430
-0000fa  f8dfb0a4          LDR      r11,|L15.416|
-0000fe  e00b              B        |L15.280|
-                  |L15.256|
-000100  f81b1005          LDRB     r1,[r11,r5]
-000104  4648              MOV      r0,r9
-000106  f7fffffe          BL       USART_SendData
-                  |L15.266|
-;;;433    				while(USART_GetFlagStatus(USART2,USART_FLAG_TC)!=SET);//等待发送结束
-00010a  2140              MOVS     r1,#0x40
-00010c  4648              MOV      r0,r9
-00010e  f7fffffe          BL       USART_GetFlagStatus
-000112  2801              CMP      r0,#1
-000114  d1f9              BNE      |L15.266|
-000116  1c6d              ADDS     r5,r5,#1
-                  |L15.280|
-000118  42b5              CMP      r5,r6                 ;430
-00011a  dbf1              BLT      |L15.256|
-;;;434    			}
-;;;435    			memset(USART_RX_BUF,0,USART_REC_LEN);
-00011c  21c8              MOVS     r1,#0xc8
-00011e  4820              LDR      r0,|L15.416|
-000120  f7fffffe          BL       __aeabi_memclr
-;;;436    			
-;;;437    			USART_RX_STA=0;			  //清零 虚拟寄存器		  为一下次采集做准备
-000124  f8a78000          STRH     r8,[r7,#0]
-                  |L15.296|
-;;;438    		}
-;;;439    		if(jumpflag == 1)
-000128  7820              LDRB     r0,[r4,#0]  ; jumpflag
-00012a  2801              CMP      r0,#1
-00012c  d102              BNE      |L15.308|
-;;;440    		{
-;;;441    			JumpBoot(55);
-00012e  2037              MOVS     r0,#0x37
-000130  f7fffffe          BL       JumpBoot
-                  |L15.308|
-;;;442    		}
-;;;443    		if(USART3_Recive_flg == 1)
-000134  481b              LDR      r0,|L15.420|
-000136  7800              LDRB     r0,[r0,#0]  ; USART3_Recive_flg
-000138  2801              CMP      r0,#1
-00013a  d101              BNE      |L15.320|
-;;;444    		{
-;;;445    			USART3HANDLE();
-00013c  f7fffffe          BL       USART3HANDLE
-                  |L15.320|
-;;;446    		}
-;;;447    //		TIM_SetCompare3(TIM4,Contr_Voltage);//稳压电源电流DAC
-;;;448    //		TIM_SetCompare4(TIM4,Contr_Current);//稳压电源电压DAC
-;;;449    		AD5541_Send(Contr_Laod);//加载DAC值
-000140  4819              LDR      r0,|L15.424|
-000142  8800              LDRH     r0,[r0,#0]  ; Contr_Laod
-000144  f7fffffe          BL       AD5541_Send
-;;;450    		MODE_CONT();//电压电流档位切换
-000148  f7fffffe          BL       MODE_CONT
-;;;451    		if(Flag_DAC_OFF==0 && calflag == 0)
-00014c  480e              LDR      r0,|L15.392|
-00014e  1d00              ADDS     r0,r0,#4
-000150  7800              LDRB     r0,[r0,#0]  ; flagB
-000152  0700              LSLS     r0,r0,#28
-000154  d403              BMI      |L15.350|
-000156  78e0              LDRB     r0,[r4,#3]  ; calflag
-000158  b908              CBNZ     r0,|L15.350|
-;;;452    		{
-;;;453    			Transformation_ADC();
-00015a  f7fffffe          BL       Transformation_ADC
-                  |L15.350|
+;;;436    	while(1)
+;;;437    	{
+;;;438    		if(tempflag == 20)
+;;;439    		{
+;;;440    			tempflag = 0;
+;;;441    			Temperature = Ds18b20GetTemp();
+;;;442    		}else{
+;;;443    			tempflag ++;
+;;;444    		}
+;;;445    		if(readpowflag > 200 && sendwait == 0 && listsend == 0/* && mainswitch == 1*/)
+;;;446    		{
+;;;447    			ReadPowData();
+;;;448    			readpowflag = 0;
+;;;449    		}
+;;;450    		if(setpowflag > 100/* && sendwait == 0 && listsend == 0*//* && mainswitch == 1*/)
+;;;451    		{
+;;;452    			SetPowerHandle();
+;;;453    			setpowflag = 0;
 ;;;454    		}
-;;;455    		if(Flag_ADC_Full==1)
-00015e  f8da1000          LDR      r1,[r10,#0]  ; flagA
-000162  078a              LSLS     r2,r1,#30
-000164  d505              BPL      |L15.370|
-;;;456    		{
-;;;457    			Flag_ADC_Full=0;
-000166  f0210102          BIC      r1,r1,#2
-;;;458    			ADC_CH_Scan();//ADC滤波
-00016a  f8ca1000          STR      r1,[r10,#0]  ; flagA
-00016e  f7fffffe          BL       ADC_CH_Scan
-                  |L15.370|
-;;;459    		}
-;;;460    		AD7689_Scan_CH();//读取AD7689各通道AD值
-000172  f7fffffe          BL       AD7689_Scan_CH
-;;;461    		Temp_Comapre();//风扇控制
-000176  f7fffffe          BL       Temp_Comapre
-00017a  e79b              B        |L15.180|
-;;;462    	}
-;;;463    	//IWDG_Inte();
-;;;464    //	MainTask();
-;;;465    }
-;;;466    
+;;;455    //		PLimit();//功率限制保护
+;;;456    		if(USART_RX_STA&0x8000)	   //判断是否接收完数据
+;;;457    		{					   
+;;;458    
+;;;459    //			len1=USART_RX_STA&0x3f;
+;;;460    			len1=USART_RX_CNT;
+;;;461    			len = SerialRemoteHandleL(len1,USART_RX_BUF);
+;;;462    			len1 =0;
+;;;463    			for(t=0;t<len;t++)								  //通过长度进行循环
+;;;464    			{
+;;;465    				USART_SendData(USART2, USART_RX_BUF[t]);      //将数组采集好的数据 一次向串口1发送
+0000ac  f8df90ec          LDR      r9,|L16.412|
+0000b0  4f3b              LDR      r7,|L16.416|
+0000b2  80e0              STRH     r0,[r4,#6]            ;435
+                  |L16.180|
+0000b4  7920              LDRB     r0,[r4,#4]            ;438  ; tempflag
+0000b6  2814              CMP      r0,#0x14              ;438
+0000b8  d008              BEQ      |L16.204|
+0000ba  1c40              ADDS     r0,r0,#1              ;438
+0000bc  7120              STRB     r0,[r4,#4]            ;443
+                  |L16.190|
+0000be  6960              LDR      r0,[r4,#0x14]         ;445  ; readpowflag
+0000c0  28c8              CMP      r0,#0xc8              ;445
+0000c2  d910              BLS      |L16.230|
+0000c4  4837              LDR      r0,|L16.420|
+0000c6  7800              LDRB     r0,[r0,#0]            ;445  ; sendwait
+0000c8  b130              CBZ      r0,|L16.216|
+0000ca  e00c              B        |L16.230|
+                  |L16.204|
+0000cc  f8848004          STRB     r8,[r4,#4]            ;440
+0000d0  f7fffffe          BL       Ds18b20GetTemp
+0000d4  80e0              STRH     r0,[r4,#6]            ;441
+0000d6  e7f2              B        |L16.190|
+                  |L16.216|
+0000d8  4833              LDR      r0,|L16.424|
+0000da  7800              LDRB     r0,[r0,#0]            ;445  ; listsend
+0000dc  b918              CBNZ     r0,|L16.230|
+0000de  f7fffffe          BL       ReadPowData
+0000e2  f8c48014          STR      r8,[r4,#0x14]         ;448  ; readpowflag
+                  |L16.230|
+0000e6  69a0              LDR      r0,[r4,#0x18]         ;450  ; setpowflag
+0000e8  2864              CMP      r0,#0x64              ;450
+0000ea  d903              BLS      |L16.244|
+0000ec  f7fffffe          BL       SetPowerHandle
+0000f0  f8c48018          STR      r8,[r4,#0x18]         ;453  ; setpowflag
+                  |L16.244|
+0000f4  8838              LDRH     r0,[r7,#0]            ;456  ; USART_RX_STA
+0000f6  0400              LSLS     r0,r0,#16             ;456
+0000f8  d51e              BPL      |L16.312|
+0000fa  482c              LDR      r0,|L16.428|
+0000fc  492c              LDR      r1,|L16.432|
+0000fe  7800              LDRB     r0,[r0,#0]            ;460  ; USART_RX_CNT
+000100  f7fffffe          BL       SerialRemoteHandleL
+000104  4606              MOV      r6,r0                 ;461
+000106  2500              MOVS     r5,#0                 ;463
+000108  f8dfb0a4          LDR      r11,|L16.432|
+00010c  e00c              B        |L16.296|
+00010e  bf00              NOP      
+                  |L16.272|
+000110  f81b1005          LDRB     r1,[r11,r5]
+000114  4648              MOV      r0,r9
+000116  f7fffffe          BL       USART_SendData
+                  |L16.282|
+;;;466    				while(USART_GetFlagStatus(USART2,USART_FLAG_TC)!=SET);//等待发送结束
+00011a  2140              MOVS     r1,#0x40
+00011c  4648              MOV      r0,r9
+00011e  f7fffffe          BL       USART_GetFlagStatus
+000122  2801              CMP      r0,#1
+000124  d1f9              BNE      |L16.282|
+000126  1c6d              ADDS     r5,r5,#1
+                  |L16.296|
+000128  42b5              CMP      r5,r6                 ;463
+00012a  dbf1              BLT      |L16.272|
+;;;467    			}
+;;;468    			memset(USART_RX_BUF,0,USART_REC_LEN);
+00012c  21c8              MOVS     r1,#0xc8
+00012e  4820              LDR      r0,|L16.432|
+000130  f7fffffe          BL       __aeabi_memclr
+;;;469    			
+;;;470    			USART_RX_STA=0;			  //清零 虚拟寄存器		  为一下次采集做准备
+000134  f8a78000          STRH     r8,[r7,#0]
+                  |L16.312|
+;;;471    		}
+;;;472    		if(jumpflag == 1)
+000138  7820              LDRB     r0,[r4,#0]  ; jumpflag
+00013a  2801              CMP      r0,#1
+00013c  d102              BNE      |L16.324|
+;;;473    		{
+;;;474    			JumpBoot(55);
+00013e  2037              MOVS     r0,#0x37
+000140  f7fffffe          BL       JumpBoot
+                  |L16.324|
+;;;475    		}
+;;;476    		if(USART3_Recive_flg == 1)
+000144  481b              LDR      r0,|L16.436|
+000146  7800              LDRB     r0,[r0,#0]  ; USART3_Recive_flg
+000148  2801              CMP      r0,#1
+00014a  d101              BNE      |L16.336|
+;;;477    		{
+;;;478    			USART3HANDLE();
+00014c  f7fffffe          BL       USART3HANDLE
+                  |L16.336|
+;;;479    		}
+;;;480    //		TIM_SetCompare3(TIM4,Contr_Voltage);//稳压电源电流DAC
+;;;481    //		TIM_SetCompare4(TIM4,Contr_Current);//稳压电源电压DAC
+;;;482    		AD5541_Send(Contr_Laod);//加载DAC值
+000150  4819              LDR      r0,|L16.440|
+000152  8800              LDRH     r0,[r0,#0]  ; Contr_Laod
+000154  f7fffffe          BL       AD5541_Send
+;;;483    		MODE_CONT();//电压电流档位切换
+000158  f7fffffe          BL       MODE_CONT
+;;;484    		if(Flag_DAC_OFF==0 && calflag == 0)
+00015c  480e              LDR      r0,|L16.408|
+00015e  1d00              ADDS     r0,r0,#4
+000160  7800              LDRB     r0,[r0,#0]  ; flagB
+000162  0700              LSLS     r0,r0,#28
+000164  d403              BMI      |L16.366|
+000166  78e0              LDRB     r0,[r4,#3]  ; calflag
+000168  b908              CBNZ     r0,|L16.366|
+;;;485    		{
+;;;486    			Transformation_ADC();
+00016a  f7fffffe          BL       Transformation_ADC
+                  |L16.366|
+;;;487    		}
+;;;488    		if(Flag_ADC_Full==1)
+00016e  f8da1000          LDR      r1,[r10,#0]  ; flagA
+000172  078a              LSLS     r2,r1,#30
+000174  d505              BPL      |L16.386|
+;;;489    		{
+;;;490    			Flag_ADC_Full=0;
+000176  f0210102          BIC      r1,r1,#2
+;;;491    			ADC_CH_Scan();//ADC滤波
+00017a  f8ca1000          STR      r1,[r10,#0]  ; flagA
+00017e  f7fffffe          BL       ADC_CH_Scan
+                  |L16.386|
+;;;492    		}
+;;;493    		AD7689_Scan_CH();//读取AD7689各通道AD值
+000182  f7fffffe          BL       AD7689_Scan_CH
+;;;494    		Temp_Comapre();//风扇控制
+000186  f7fffffe          BL       Temp_Comapre
+00018a  e793              B        |L16.180|
+;;;495    	}
+;;;496    	//IWDG_Inte();
+;;;497    //	MainTask();
+;;;498    }
+;;;499    
                           ENDP
 
-                  |L15.380|
+                  |L16.396|
                           DCD      abc_time
-                  |L15.384|
+                  |L16.400|
                           DCD      ms_time
-                  |L15.388|
+                  |L16.404|
                           DCD      Run_Control
-                  |L15.392|
-                          DCD      ||area_number.24||+0x8
-                  |L15.396|
+                  |L16.408|
+                          DCD      ||area_number.25||+0x8
+                  |L16.412|
                           DCD      0x40004400
-                  |L15.400|
+                  |L16.416|
                           DCD      USART_RX_STA
-                  |L15.404|
+                  |L16.420|
                           DCD      sendwait
-                  |L15.408|
+                  |L16.424|
                           DCD      listsend
-                  |L15.412|
+                  |L16.428|
                           DCD      USART_RX_CNT
-                  |L15.416|
+                  |L16.432|
                           DCD      USART_RX_BUF
-                  |L15.420|
+                  |L16.436|
                           DCD      USART3_Recive_flg
-                  |L15.424|
+                  |L16.440|
                           DCD      Contr_Laod
 
                           AREA ||.bss||, DATA, NOINIT, ALIGN=2
@@ -1122,15 +1208,15 @@
                   CLists
                           %        144
 
-                          AREA ||area_number.18||, DATA, NOINIT, ALIGN=2
-
-                          EXPORTAS ||area_number.18||, ||.bss||
-                  CalPara
-                          %        184
-
                           AREA ||area_number.19||, DATA, NOINIT, ALIGN=2
 
                           EXPORTAS ||area_number.19||, ||.bss||
+                  CalPara
+                          %        184
+
+                          AREA ||area_number.20||, DATA, NOINIT, ALIGN=2
+
+                          EXPORTAS ||area_number.20||, ||.bss||
                   Para
                           %        176
 
@@ -1139,21 +1225,21 @@
                   trig_flag_state
 000000  00                DCB      0x00
 
-                          AREA ||area_number.22||, DATA, ALIGN=2
-
-                          EXPORTAS ||area_number.22||, ||.data||
-                  max_discahrgeNum
-000000  00000000          DCFS     0x00000000 ; 0
-
                           AREA ||area_number.23||, DATA, ALIGN=2
 
                           EXPORTAS ||area_number.23||, ||.data||
-                  old_I
+                  max_discahrgeNum
 000000  00000000          DCFS     0x00000000 ; 0
 
                           AREA ||area_number.24||, DATA, ALIGN=2
 
                           EXPORTAS ||area_number.24||, ||.data||
+                  old_I
+000000  00000000          DCFS     0x00000000 ; 0
+
+                          AREA ||area_number.25||, DATA, ALIGN=2
+
+                          EXPORTAS ||area_number.25||, ||.data||
                   jumpflag
 000000  00                DCB      0x00
                   POWER_RECHARGE
@@ -1174,76 +1260,78 @@
                           DCD      0x00000000
                   readpowflag
                           DCD      0x00000000
-
-                          AREA ||area_number.25||, DATA, ALIGN=2
-
-                          EXPORTAS ||area_number.25||, ||.data||
-                  flagC
+                  setpowflag
                           DCD      0x00000000
 
                           AREA ||area_number.26||, DATA, ALIGN=2
 
                           EXPORTAS ||area_number.26||, ||.data||
-                  flagD
+                  flagC
                           DCD      0x00000000
 
                           AREA ||area_number.27||, DATA, ALIGN=2
 
                           EXPORTAS ||area_number.27||, ||.data||
-                  flagF
+                  flagD
                           DCD      0x00000000
 
                           AREA ||area_number.28||, DATA, ALIGN=2
 
                           EXPORTAS ||area_number.28||, ||.data||
+                  flagF
+                          DCD      0x00000000
+
+                          AREA ||area_number.29||, DATA, ALIGN=2
+
+                          EXPORTAS ||area_number.29||, ||.data||
                   flagG
                           DCD      0x00000000
 
-                          AREA ||area_number.29||, DATA, ALIGN=0
-
-                          EXPORTAS ||area_number.29||, ||.data||
-                  bootflag
-000000  00                DCB      0x00
-
-                          AREA ||area_number.30||, DATA, ALIGN=2
+                          AREA ||area_number.30||, DATA, ALIGN=0
 
                           EXPORTAS ||area_number.30||, ||.data||
-                  DISS_Voltage
-                          DCD      0x00000000
+                  bootflag
+000000  00                DCB      0x00
 
                           AREA ||area_number.31||, DATA, ALIGN=2
 
                           EXPORTAS ||area_number.31||, ||.data||
-                  DISS_POW_Voltage
+                  DISS_Voltage
                           DCD      0x00000000
 
                           AREA ||area_number.32||, DATA, ALIGN=2
 
                           EXPORTAS ||area_number.32||, ||.data||
-                  DISS_Current
+                  DISS_POW_Voltage
                           DCD      0x00000000
 
                           AREA ||area_number.33||, DATA, ALIGN=2
 
                           EXPORTAS ||area_number.33||, ||.data||
-                  DISS_POW_Current
+                  DISS_Current
                           DCD      0x00000000
 
                           AREA ||area_number.34||, DATA, ALIGN=2
 
                           EXPORTAS ||area_number.34||, ||.data||
-                  DISS_R
+                  DISS_POW_Current
                           DCD      0x00000000
 
                           AREA ||area_number.35||, DATA, ALIGN=2
 
                           EXPORTAS ||area_number.35||, ||.data||
-                  CDC_CsumMah
+                  DISS_R
                           DCD      0x00000000
 
                           AREA ||area_number.36||, DATA, ALIGN=2
 
                           EXPORTAS ||area_number.36||, ||.data||
+                  CDC_CsumMah
+                          DCD      0x00000000
+
+                          AREA ||area_number.37||, DATA, ALIGN=2
+
+                          EXPORTAS ||area_number.37||, ||.data||
                   CDC_DCsumMah
                           DCD      0x00000000
 
