@@ -38126,6 +38126,17 @@ X			(flagB . bit3)=0;
 N			calflag = 0;
 N		}
 N		
+N	}else if(mode == 3){
+N		if(range == 0)
+N		{
+N			Contr_Laod += 50;
+N		}else if(range == 1){
+N			Contr_Laod -= 50;
+N		}else if(range == 2){
+N			Contr_Laod += 500;
+N		}else if(range == 3){
+N			Contr_Laod -= 500;
+N		}
 N	}
 N		
 N
@@ -39270,59 +39281,40 @@ N						buf[currCharNum++] = ChrEndR;
 X						buf[currCharNum++] = 0x0D;
 N					}
 N				}break;
-N//				case 15:
-N//				{
-N//					pntlen = 1;
-N//					if(buf[currCharNum]=='?')
-N//					{
-N//						sprintf(&buf[currCharNum],"%1d",Gmode_Vale);
-N//						currCharNum+=pntlen;
-N//						buf[currCharNum] = ChrEndR;
-N//						currCharNum++;
-N//	//				    buf[currCharNum ++] = ChrEndS;
-N//						
-N//					}
-N//					else
-N//					{
-N//						tmpFg = 1;
-N//						for(i=0;i<pntlen;i++)
+N				case 15:
+N				{
+N					pntlen = 1;
+N					if(buf[currCharNum]=='?')
+N					{
+N
+N	//				    buf[currCharNum ++] = ChrEndS;
+N						
+N					}
+N					else
+N					{
+N						pntlen = 1;				
+N						for(i=0,temp1=0;i<pntlen;i++)
+N						{
+N							  temp1 = temp1*10+(buf[currCharNum++]-0x30);
+N						}		                   
+N						if(temp1>3)
+N						{
+N							return SetErr_ACK(buf, addr ,PARA_ERR);
+X							return SetErr_ACK(buf, addr ,1);
+N						}
+N	//					MODE=temp1;
+N						
+N						fsingal = temp1;
+N						CalHandle(3,fsingal,0);
+N//						if(temp1 == 1)
 N//						{
-N//						   if(IsDigitChar(buf[currCharNum+i])==1)
-N//						   {
-N//							  tmpFg = (tmpFg&0x01);
-N//						   }
-N//						   else
-N//						   {
-N//							  tmpFg = 0;
-N//						   }
+N//							JumpBoot(55);
 N//						}
-N//						if(tmpFg!=1||buf[currCharNum+pntlen]!=ChrEndR)
-N//						{
-N//							return SetErr_ACK(buf, addr ,CMD_ERR);
-N//							
-N//						}					
-N//						for(i=0,temp1=0;i<pntlen;i++)
-N//						{
-N//							  temp1 = temp1*10+(buf[currCharNum++]-0x30);
-N//						}		                   
-N//						if(temp1 >Mode_H)
-N//						 {
-N//							 return SetErr_ACK(buf, addr ,PARA_ERR);
-N//							 
-N//						 }
-N//						 if(H_L == 1)
-N//						 {
-N//							CalHandle(3,1,temp1);
-N//						 }else{
-N//							 CalHandle(3,0,temp1);
-N//						 }
-N//						 
-N////								 Mode=temp1;
-N////								Change_MODE_Val(Mode);
-N////						 buf[currCharNum++] = ChrEndS;
-N//					}
-N//					break;
-N//				}break;
+N						buf[currCharNum++] = ChrEndR;
+X						buf[currCharNum++] = 0x0D;
+N					}
+N				}
+N				break;
 N//				case 16:
 N//				{
 N//					pntlen = 3;

@@ -924,6 +924,17 @@ void CalHandle(u8 mode,u8 range,u32 data)
 			calflag = 0;
 		}
 		
+	}else if(mode == 3){
+		if(range == 0)
+		{
+			Contr_Laod += 50;
+		}else if(range == 1){
+			Contr_Laod -= 50;
+		}else if(range == 2){
+			Contr_Laod += 500;
+		}else if(range == 3){
+			Contr_Laod -= 500;
+		}
 	}
 		
 
@@ -2020,59 +2031,38 @@ u16 SerialRemoteHandleL(u8 len,char* buf)
 						buf[currCharNum++] = ChrEndR;
 					}
 				}break;
-//				case 15:
-//				{
-//					pntlen = 1;
-//					if(buf[currCharNum]=='?')
-//					{
-//						sprintf(&buf[currCharNum],"%1d",Gmode_Vale);
-//						currCharNum+=pntlen;
-//						buf[currCharNum] = ChrEndR;
-//						currCharNum++;
-//	//				    buf[currCharNum ++] = ChrEndS;
-//						
-//					}
-//					else
-//					{
-//						tmpFg = 1;
-//						for(i=0;i<pntlen;i++)
+				case 15:
+				{
+					pntlen = 1;
+					if(buf[currCharNum]=='?')
+					{
+
+	//				    buf[currCharNum ++] = ChrEndS;
+						
+					}
+					else
+					{
+						pntlen = 1;				
+						for(i=0,temp1=0;i<pntlen;i++)
+						{
+							  temp1 = temp1*10+(buf[currCharNum++]-0x30);
+						}		                   
+						if(temp1>3)
+						{
+							return SetErr_ACK(buf, addr ,PARA_ERR);
+						}
+	//					MODE=temp1;
+						
+						fsingal = temp1;
+						CalHandle(3,fsingal,0);
+//						if(temp1 == 1)
 //						{
-//						   if(IsDigitChar(buf[currCharNum+i])==1)
-//						   {
-//							  tmpFg = (tmpFg&0x01);
-//						   }
-//						   else
-//						   {
-//							  tmpFg = 0;
-//						   }
+//							JumpBoot(55);
 //						}
-//						if(tmpFg!=1||buf[currCharNum+pntlen]!=ChrEndR)
-//						{
-//							return SetErr_ACK(buf, addr ,CMD_ERR);
-//							
-//						}					
-//						for(i=0,temp1=0;i<pntlen;i++)
-//						{
-//							  temp1 = temp1*10+(buf[currCharNum++]-0x30);
-//						}		                   
-//						if(temp1 >Mode_H)
-//						 {
-//							 return SetErr_ACK(buf, addr ,PARA_ERR);
-//							 
-//						 }
-//						 if(H_L == 1)
-//						 {
-//							CalHandle(3,1,temp1);
-//						 }else{
-//							 CalHandle(3,0,temp1);
-//						 }
-//						 
-////								 Mode=temp1;
-////								Change_MODE_Val(Mode);
-////						 buf[currCharNum++] = ChrEndS;
-//					}
-//					break;
-//				}break;
+						buf[currCharNum++] = ChrEndR;
+					}
+				}
+				break;
 //				case 16:
 //				{
 //					pntlen = 3;
